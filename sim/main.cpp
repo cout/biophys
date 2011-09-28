@@ -45,17 +45,35 @@ void init_cell()
   cell.radius = 1.0;
 }
 
+double random_double()
+{
+  return double(std::rand()) / RAND_MAX;
+}
+
+Point random_onsphere(double r)
+{
+  double theta = M_PI * 2 * random_double();
+  double phi = acos(1.0 - 2 * random_double());
+
+  double sp = sin(phi) * r;
+  double x = cos(theta) * sp * r;
+  double y = sin(theta) * sp * r;
+  double z = cos(phi);
+
+  Point p(x, y, z);
+  return p;
+}
+
 Point random_insphere(double rmin, double rmax)
 {
-  // TODO: rmin
-  double rho = (((2 * (double)std::rand()) / RAND_MAX) - 1) * rmax;
-  double theta = M_PI * 2 * ((double)std::rand() / RAND_MAX);
-  double phi = M_PI * 2 * ((double)std::rand() / RAND_MAX);
+  Point p = random_onsphere(1.0);
 
-  Point p;
-  p.x = rho * sin(theta) * cos(phi);
-  p.y = rho * sin(theta) * sin(phi);
-  p.z = rho * cos(theta);
+  double u = std::pow(random_double(), 1.0/3.0);
+  double r = rmax * u;
+
+  p.x *= r;
+  p.y *= r;
+  p.z *= r;
 
   return p;
 }
