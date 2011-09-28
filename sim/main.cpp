@@ -59,6 +59,16 @@ void init()
 
   glShadeModel(GL_SMOOTH);
 
+  glEnable (GL_BLEND);
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  // glAlphaFunc(GL_GREATER, 0);
+  // glEnable(GL_ALPHA_TEST);
+
+  glClearDepth(1.0f);
+  glDepthFunc(GL_LESS);
+  glEnable(GL_DEPTH_TEST);
+
   init_lighting();
   init_cell();
   init_ions();
@@ -66,21 +76,11 @@ void init()
 
 void display()
 {
-  glClear (GL_COLOR_BUFFER_BIT);
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glColor3d (1.0, 1.0, 1.0);
   glLoadIdentity ();
   gluLookAt (0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
   glScalef (1.0, 2.0, 1.0);
-
-  // -- Cell --
-
-  GLfloat mcolor[] = { 0.5f, 0.5f, 0.8f, 0.2f };
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mcolor);
-
-  glPushMatrix();
-  glTranslatef(cell.x, cell.y, cell.z);
-  glutSolidSphere(cell.radius, 50, 20);
-  glPopMatrix();
 
   // -- Ions --
 
@@ -98,6 +98,16 @@ void display()
     glVertex3d(it->x, it->y, it->z);
   }
   glEnd();
+
+  // -- Cell --
+
+  GLfloat mcolor[] = { 0.5f, 0.5f, 0.8f, 0.5f };
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mcolor);
+
+  glPushMatrix();
+  glTranslatef(cell.x, cell.y, cell.z);
+  glutSolidSphere(cell.radius, 50, 20);
+  glPopMatrix();
 
   glFlush ();
 }
@@ -136,7 +146,7 @@ void go()
 int main(int argc, char** argv)
 {
    glutInit(&argc, argv);
-   glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_ALPHA);
+   glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
    glutInitWindowSize (500, 500); 
    glutInitWindowPosition (100, 100);
    glutCreateWindow (argv[0]);
