@@ -6,7 +6,7 @@ OBJS = \
 
 CFLAGS = -Wall -g
 
-LDFLAGS = -lGL -lGLU -lglut
+LDFLAGS = -lGL -lGLU -lglut -lm
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CFLAGS) $(CXXFLAGS) -c $< -o $@

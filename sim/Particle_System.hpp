@@ -16,6 +16,8 @@ public:
   Particles const & particles() const { return particles_; }
   Particles & particles() { return particles_; }
 
+  void draw();
+
 private:
   Particles particles_;
 };

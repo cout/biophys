@@ -1,9 +1,11 @@
+#include "Point.hpp"
 #include "Cell.hpp"
 #include "Particle_System.hpp"
 
 #include <GL/glut.h>
 
 #include <cstdlib>
+#include <cmath>
 
 namespace
 {
@@ -11,6 +13,10 @@ namespace
 double outer_limit = 2.0;
 Cell cell;
 Particle_System sodium(10000);
+Particle_System potassium(1000);
+
+GLfloat sodium_color[] = { 0.3f, 0.3f, 1.0f, 1.0f };
+GLfloat potassium_color[] = { 1.0f, 0.3f, 0.3f, 1.0f };
 
 void init_lighting()
 {
@@ -39,6 +45,21 @@ void init_cell()
   cell.radius = 1.0;
 }
 
+Point random_insphere(double rmin, double rmax)
+{
+  // TODO: rmin
+  double rho = (((2 * (double)std::rand()) / RAND_MAX) - 1) * rmax;
+  double theta = M_PI * 2 * ((double)std::rand() / RAND_MAX);
+  double phi = M_PI * 2 * ((double)std::rand() / RAND_MAX);
+
+  Point p;
+  p.x = rho * sin(theta) * cos(phi);
+  p.y = rho * sin(theta) * sin(phi);
+  p.z = rho * cos(theta);
+
+  return p;
+}
+
 void init_ions()
 {
   // Put sodium ions outside the cell
@@ -47,9 +68,24 @@ void init_ions()
 
   for (; it != end; ++it)
   {
-    it->x = cell.x + (((2 * (double)std::rand()) / RAND_MAX) - 1) * outer_limit;
-    it->y = cell.y + (((2 * (double)std::rand()) / RAND_MAX) - 1) * outer_limit;
-    it->z = cell.z + (((2 * (double)std::rand()) / RAND_MAX) - 1) * outer_limit;
+    Point p = random_insphere(cell.radius, outer_limit);
+
+    it->x = cell.x + p.x;
+    it->y = cell.y + p.y;
+    it->z = cell.z + p.z;
+  }
+
+  // Put potassium ions inside the cell
+  it = potassium.particles().begin();
+  end = potassium.particles().end();
+
+  for (; it != end; ++it)
+  {
+    Point p = random_insphere(0, cell.radius);
+
+    it->x = cell.x + p.x;
+    it->y = cell.y + p.y;
+    it->z = cell.z + p.z;
   }
 }
 
@@ -69,6 +105,11 @@ void init()
   glDepthFunc(GL_LESS);
   glEnable(GL_DEPTH_TEST);
 
+  // glEnable(GL_POINT_SMOOTH);
+  // glEnable(GL_LINE_SMOOTH);
+  // glHint(GL_POINT_SMOOTH, GL_NICEST);
+  // glHint(GL_LINE_SMOOTH, GL_NICEST);
+
   init_lighting();
   init_cell();
   init_ions();
@@ -84,20 +125,13 @@ void display()
 
   // -- Ions --
 
-  GLfloat pcolor[] = { 0.3f, 0.3f, 1.0f, 1.0f };
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, pcolor);
-
   glPointSize(2.0);
 
-  Particle_System::Particles::const_iterator it(sodium.particles().begin());
-  Particle_System::Particles::const_iterator end(sodium.particles().end());
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sodium_color);
+  sodium.draw();
 
-  glBegin(GL_POINTS);
-  for (; it != end; ++it)
-  {
-    glVertex3d(it->x, it->y, it->z);
-  }
-  glEnd();
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, potassium_color);
+  potassium.draw();
 
   // -- Cell --
 
@@ -133,6 +167,7 @@ void keyboard(unsigned char key, int x, int y)
 void idle()
 {
   sodium.random_walk(0.01);
+  potassium.random_walk(0.01);
   glutPostRedisplay();
 }
 
