@@ -1,20 +1,31 @@
 # C = delta V / delta T  -> Icap
 #   = Iapp + INa-K + IL + INa + IK
 
-# -- Membrane parameters --
+# ----------------------------------------------------------------------
+# Membrane parameters
+# ----------------------------------------------------------------------
 p cm=1
 
-# -- Stimulus current parameters --
+# ----------------------------------------------------------------------
+# Stimulus current parameters
+# ----------------------------------------------------------------------
 p ton=10,duration=10,amplitude=10
 istim(t)=amplitude*heav(t-ton)*heav(ton+duration-t)
 
-# -- Membrane currents --
+# ----------------------------------------------------------------------
+# Membrane currents
+# ----------------------------------------------------------------------
 
-# Leak current
+# -- Leak current --
 p gl=0.3,El=-54.4
 il(v)=gl*(v-El)
 
-# Potassium current
+# -- Potassium current --
+# I_K = g_K(V)*(V-E_K) = gbar_K * g_K(V) * (V-E_K)
+# gbar_K = "maximum conductance" (mS/cm^2)
+# g_K(V) - "fraction of channels active at V"
+# four potassium gates, all must be aligned -> n^4
+# n' = derivative of n
 p gkbar=36
 Ek=-77
 phi=1
@@ -25,7 +36,11 @@ taun(v)=1/(an(v)+bn(v))
 n'=(ninf(v)-n)/taun(v)
 ik(v)=gkbar*n^4*(v-Ek)
 
-# Sodium current
+# -- Sodium current --
+# I_Na = g_Na * (V-E_Na) = gbar_Na * g_Na * (V-E_Na)
+# g_Na = m(v)^3 * h(v)
+# m = "activation" - very fast
+# h = "inactivation" - slow
 p gnabar=120
 Ena=50
 am(v)=phi*.1*(v+40)/(1-exp(-(v+40)/10)
@@ -40,13 +55,22 @@ tauh(v)=1/(ah(v)+bh(v))
 h'=(hinf(v)-h)/tauh(v)
 ina(v)=gnabar*(m^3)*h*(v-Ena)
 
+# ----------------------------------------------------------------------
 # Initial data
+# ----------------------------------------------------------------------
 init v=-65,n=1e-3,m=1e-3,h=1e-3
 
+# ----------------------------------------------------------------------
 # Voltage membrane equation
+# ----------------------------------------------------------------------
+
+# rate of change of voltage
 v'=(-ina(v)-ik(v)-il(v)+istim(t))/cm
 
+# ----------------------------------------------------------------------
 # Optional graphic parameters
-@ dt=0.01,total=50,method=runge-kutta,
+# ----------------------------------------------------------------------
+@ dt=0.01,total=50,method=runge-kutta,xplot=t,yplot=v,axes=2d
 @ xlo=0.0,xhi=50,ylo=-100,yhi=40
 
+done
