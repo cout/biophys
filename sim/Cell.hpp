@@ -4,6 +4,8 @@
 class Cell
 {
 public:
+  Cell();
+
   double x, y, z;
   double radius;
 };

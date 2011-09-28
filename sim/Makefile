@@ -1,7 +1,8 @@
 OBJS = \
 	main.o \
 	Particle.o \
-	Particle_System.o
+	Particle_System.o \
+	Cell.o
 
 CFLAGS = -Wall -g
 

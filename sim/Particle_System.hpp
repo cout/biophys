@@ -12,7 +12,9 @@ public:
   void random_walk(double max);
 
   typedef std::vector<Particle> Particles;
-  Particles const & particles() { return particles_; }
+
+  Particles const & particles() const { return particles_; }
+  Particles & particles() { return particles_; }
 
 private:
   Particles particles_;

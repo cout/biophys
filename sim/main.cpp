@@ -3,9 +3,12 @@
 
 #include <GL/glut.h>
 
+#include <cstdlib>
+
 namespace
 {
 
+double outer_limit = 2.0;
 Cell cell;
 Particle_System sodium(100);
 
@@ -39,6 +42,15 @@ void init_cell()
 void init_ions()
 {
   // Put sodium ions outside the cell
+  Particle_System::Particles::iterator it(sodium.particles().begin());
+  Particle_System::Particles::iterator end(sodium.particles().end());
+
+  for (; it != end; ++it)
+  {
+    it->x = cell.x + (((2 * (double)std::rand()) / RAND_MAX) - 1) * outer_limit;
+    it->y = cell.y + (((2 * (double)std::rand()) / RAND_MAX) - 1) * outer_limit;
+    it->z = cell.z + (((2 * (double)std::rand()) / RAND_MAX) - 1) * outer_limit;
+  }
 }
 
 void init()
