@@ -10,7 +10,7 @@ namespace
 
 double outer_limit = 2.0;
 Cell cell;
-Particle_System sodium(100);
+Particle_System sodium(10000);
 
 void init_lighting()
 {
@@ -122,6 +122,8 @@ void keyboard(unsigned char key, int x, int y)
 
 void idle()
 {
+  sodium.random_walk(0.01);
+  glutPostRedisplay();
 }
 
 void go()
