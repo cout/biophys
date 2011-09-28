@@ -5,11 +5,11 @@ OBJS = \
 
 CFLAGS = -Wall -g
 
-LDFLAGS = -lGL -lGLU -lglut -o 
+LDFLAGS = -lGL -lGLU -lglut
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
 
 main: $(OBJS)
-	$(CXX) $< $(LDFLAGS) $@
+	$(CXX) $^ $(LDFLAGS) -o $@
 

@@ -1,3 +1,4 @@
+#include "Cell.hpp"
 #include "Particle_System.hpp"
 
 #include <GL/glut.h>
@@ -5,14 +6,14 @@
 namespace
 {
 
-void init()
-{
-  glClearColor (0.0, 0.0, 0.0, 0.0);
+Cell cell;
+Particle_System sodium(100);
 
+void init_lighting()
+{
   GLfloat global_ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f };
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
 
-  glShadeModel(GL_SMOOTH);
 
   GLfloat specular[] = {1.0f, 1.0f, 1.0f , 1.0f};
   glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
@@ -27,6 +28,30 @@ void init()
   glEnable(GL_LIGHT0);
 }
 
+void init_cell()
+{
+  cell.x = 0.0;
+  cell.y = 0.0;
+  cell.z = 0.0;
+  cell.radius = 1.0;
+}
+
+void init_ions()
+{
+  // Put sodium ions outside the cell
+}
+
+void init()
+{
+  glClearColor (0.0, 0.0, 0.0, 0.0);
+
+  glShadeModel(GL_SMOOTH);
+
+  init_lighting();
+  init_cell();
+  init_ions();
+}
+
 void display()
 {
   glClear (GL_COLOR_BUFFER_BIT);
@@ -35,19 +60,31 @@ void display()
   gluLookAt (0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
   glScalef (1.0, 2.0, 1.0);
 
+  // -- Cell --
+
   GLfloat mcolor[] = { 0.5f, 0.5f, 0.8f, 0.2f };
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mcolor);
 
-  glutSolidSphere(1.0, 50, 20);
+  glPushMatrix();
+  glTranslatef(cell.x, cell.y, cell.z);
+  glutSolidSphere(cell.radius, 50, 20);
+  glPopMatrix();
+
+  // -- Ions --
 
   GLfloat pcolor[] = { 0.3f, 0.3f, 1.0f, 1.0f };
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, pcolor);
 
   glPointSize(2.0);
 
+  Particle_System::Particles::const_iterator it(sodium.particles().begin());
+  Particle_System::Particles::const_iterator end(sodium.particles().end());
+
   glBegin(GL_POINTS);
-  glVertex3d(0, 0, 0);
-  glVertex3d(1.5, 0, 0);
+  for (; it != end; ++it)
+  {
+    glVertex3d(it->x, it->y, it->z);
+  }
   glEnd();
 
   glFlush ();
