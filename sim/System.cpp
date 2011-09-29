@@ -122,6 +122,16 @@ bool
 System::
 valid_walk(Particle p, Point dest, double cell_permeability) const
 {
+  if (ray_intersects_sphere(p, dest, cell_, cell_.radius))
+  {
+    return random_double() < cell_permeability;
+  }
+
+  if (ray_intersects_sphere(p, dest, outer_limit_, outer_limit_.radius))
+  {
+    return false;
+  }
+
   return true;
 }
 
