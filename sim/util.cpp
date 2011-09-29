@@ -39,6 +39,7 @@ Point random_insphere(double rmin, double rmax)
   return p;
 }
 
+// thanks, eiffel :)
 bool is_inside_sphere(Point p, Point sc, double r)
 {
   p.x -= sc.x;
