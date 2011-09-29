@@ -64,6 +64,7 @@ void display()
   the_system.draw();
 
   // -- Flush --
+  glutSwapBuffers();
   glFlush ();
 }
 
@@ -101,7 +102,7 @@ void go()
 int main(int argc, char** argv)
 {
    glutInit(&argc, argv);
-   glutInitDisplayMode (GLUT_SINGLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
+   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
    glutInitWindowSize (500, 500); 
    glutInitWindowPosition (100, 100);
    glutCreateWindow (argv[0]);
