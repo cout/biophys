@@ -4,6 +4,8 @@
 
 #include <GL/glut.h>
 
+#include <cmath>
+
 namespace
 {
 
@@ -16,8 +18,8 @@ System::
 System()
   : cell_()
   , outer_limit_()
-  , sodium_(10000)
-  , potassium_(1000)
+  , sodium_(10000, 1.0)
+  , potassium_(1000, 1.0)
 {
   reset();
 }
@@ -28,6 +30,7 @@ reset()
 {
   init_cell();
   init_ions();
+  init_temp();
 }
 
 void
@@ -38,11 +41,15 @@ init_cell()
   cell_.y = 0.0;
   cell_.z = 0.0;
   cell_.radius = 1.0;
+  cell_.sodium_permeability = 0.0;
+  cell_.potassium_permeability = 0.0;
 
   outer_limit_.x = 0.0;
   outer_limit_.y = 0.0;
   outer_limit_.z = 0.0;
   outer_limit_.radius = 2.0;
+  outer_limit_.sodium_permeability = 0.0;
+  outer_limit_.potassium_permeability = 0.0;
 }
 
 void
@@ -78,10 +85,21 @@ init_ions()
 
 void
 System::
+init_temp()
+{
+  temperature_ = 298; // K
+}
+
+void
+System::
 iterate()
 {
-  sodium_.random_walk(*this, 0.01, 0.0);
-  potassium_.random_walk(*this, 0.01, 0.0);
+  // TODO: Ideally we should use the Nernst-Planck equation to describe
+  // the movement of ions, rather than doing a random walk.  With the
+  // random walk the ions follow Fick's law of diffusion, but are not
+  // affected by the electrostatic force.
+  sodium_.random_walk(*this, 0.01, cell_.sodium_permeability);
+  potassium_.random_walk(*this, 0.01, cell_.potassium_permeability);
 }
 
 void
@@ -133,5 +151,29 @@ valid_walk(Particle p, Point dest, double cell_permeability) const
   }
 
   return true;
+}
+
+double
+System::
+voltage() const
+{
+  double sodium_in, sodium_out;
+  double potassium_in, potassium_out;
+
+  sodium_.charge_inout_sphere(cell_, cell_.radius, &sodium_in, &sodium_out);
+  potassium_.charge_inout_sphere(cell_, cell_.radius, &potassium_in, &potassium_out);
+
+  // TODO: is it acceptable to use probability here instead of measuring
+  // permeability in m/s?
+  double K = (sodium_out * cell_.sodium_permeability + potassium_out * cell_.potassium_permeability) /
+             (sodium_in * cell_.sodium_permeability + potassium_in * cell_.potassium_permeability);
+
+  // GHK voltage
+  double R = 8.31444621; // J/(mol*K)
+  double T = temperature_; // K
+  double F = 96485.3365; // C/mol
+  double E_m = (R * T / F) * std::log(K);
+
+  return E_m;
 }
 

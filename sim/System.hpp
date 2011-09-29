@@ -16,15 +16,19 @@ public:
 
   bool valid_walk(Particle p, Point dest, double cell_permeability) const;
 
+  double voltage() const;
+
 private:
   void init_cell();
   void init_ions();
+  void init_temp();
 
 private:
   Cell cell_;
   Cell outer_limit_;
   Particle_System sodium_;
   Particle_System potassium_;
+  double temperature_;
 };
 
 #endif // System__hpp_

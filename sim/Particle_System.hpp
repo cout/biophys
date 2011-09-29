@@ -8,7 +8,7 @@
 class Particle_System
 {
 public:
-  Particle_System(size_t n);
+  Particle_System(size_t n, double charge);
 
   void random_walk(
       System const & system,
@@ -22,7 +22,11 @@ public:
 
   void draw();
 
+  void charge_inout_sphere(Point sc, double r, double * in, double * out) const;
+
 private:
+  double n_;
+  double charge_;
   Particles particles_;
 };
 
