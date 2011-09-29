@@ -1,13 +1,26 @@
 #include "Particle.hpp"
+#include "System.hpp"
+#include "util.hpp"
 
 #include <cstdlib>
 
 void
 Particle::
-random_walk(double max)
+random_walk(
+    System const & system,
+    double max_movement,
+    double cell_permeability)
 {
-  x += (((2 * (double)std::rand()) / RAND_MAX) - 1.0) * max;
-  y += (((2 * (double)std::rand()) / RAND_MAX) - 1.0) * max;
-  z += (((2 * (double)std::rand()) / RAND_MAX) - 1.0) * max;
+  Point p = random_insphere(0, max_movement);
+  p.x += x;
+  p.y += y;
+  p.z += z;
+
+  if (system.valid_walk(*this, p, cell_permeability))
+  {
+    x = p.x;
+    y = p.y;
+    z = p.z;
+  }
 }
 

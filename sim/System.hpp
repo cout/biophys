@@ -3,6 +3,7 @@
 
 #include "Cell.hpp"
 #include "Particle_System.hpp"
+#include "Point.hpp"
 
 class System
 {
@@ -12,6 +13,8 @@ public:
   void reset();
   void iterate();
   void draw();
+
+  bool valid_walk(Particle p, Point dest, double cell_permeability) const;
 
 private:
   void init_cell();

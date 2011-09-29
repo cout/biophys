@@ -10,16 +10,18 @@ Particle_System(size_t n)
 
 void
 Particle_System::
-random_walk(double max)
+random_walk(
+    System const & system,
+    double max_movement,
+    double cell_permeability)
 {
   Particles::iterator it(particles_.begin());
   Particles::iterator end(particles_.end());
 
   for(; it != end; ++it)
   {
-    it->random_walk(max);
+    it->random_walk(system, max_movement, cell_permeability);
   }
-
 }
 
 void

@@ -9,7 +9,11 @@ class Particle_System
 {
 public:
   Particle_System(size_t n);
-  void random_walk(double max);
+
+  void random_walk(
+      System const & system,
+      double max_movement,
+      double cell_permeability);
 
   typedef std::vector<Particle> Particles;
 

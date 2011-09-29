@@ -80,8 +80,8 @@ void
 System::
 iterate()
 {
-  sodium_.random_walk(0.01);
-  potassium_.random_walk(0.01);
+  sodium_.random_walk(*this, 0.01, 0.0);
+  potassium_.random_walk(*this, 0.01, 0.0);
 }
 
 void
@@ -116,5 +116,12 @@ draw()
   glTranslatef(outer_limit_.x, outer_limit_.y, outer_limit_.z);
   glutWireSphere(outer_limit_.radius, 50, 20);
   glPopMatrix();
+}
+
+bool
+System::
+valid_walk(Particle p, Point dest, double cell_permeability) const
+{
+  return true;
 }
 
