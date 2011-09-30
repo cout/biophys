@@ -1,7 +1,7 @@
 OBJS = \
 	main.o \
-	Particle.o \
-	Particle_System.o \
+	Ion.o \
+	Ions.o \
 	Cell.o \
 	System.o \
 	util.o

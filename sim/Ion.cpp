@@ -1,11 +1,11 @@
-#include "Particle.hpp"
+#include "Ion.hpp"
 #include "System.hpp"
 #include "util.hpp"
 
 #include <cstdlib>
 
 void
-Particle::
+Ion::
 random_walk(
     System const & system,
     double max_movement,

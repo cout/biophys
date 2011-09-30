@@ -54,8 +54,8 @@ System::
 init_ions()
 {
   // Put sodium ions outside the cell
-  Particle_System::Particles::iterator it(sodium_.particles().begin());
-  Particle_System::Particles::iterator end(sodium_.particles().end());
+  Ions::iterator it(sodium_.begin());
+  Ions::iterator end(sodium_.end());
 
   for (; it != end; ++it)
   {
@@ -67,8 +67,8 @@ init_ions()
   }
 
   // Put potassium ions inside the cell
-  it = potassium_.particles().begin();
-  end = potassium_.particles().end();
+  it = potassium_.begin();
+  end = potassium_.end();
 
   for (; it != end; ++it)
   {
@@ -124,7 +124,7 @@ draw()
 
 bool
 System::
-valid_walk(Particle p, Point dest, double cell_permeability) const
+valid_walk(Ion p, Point dest, double cell_permeability) const
 {
   if (ray_intersects_sphere(p, dest, cell_, cell_.radius))
   {

@@ -1,22 +1,22 @@
-#include "Particle_System.hpp"
+#include "Ions.hpp"
 
 #include "GL/gl.h"
 
-Particle_System::
-Particle_System(size_t n)
-  : particles_(n)
+Ions::
+Ions(size_t n)
+  : ions_(n)
 {
 }
 
 void
-Particle_System::
+Ions::
 random_walk(
     System const & system,
     double max_movement,
     double cell_permeability)
 {
-  Particles::iterator it(particles_.begin());
-  Particles::iterator end(particles_.end());
+  iterator it(this->begin());
+  iterator end(this->end());
 
   for(; it != end; ++it)
   {
@@ -25,11 +25,11 @@ random_walk(
 }
 
 void
-Particle_System::
+Ions::
 draw()
 {
-  Particles::const_iterator it(particles().begin());
-  Particles::const_iterator end(particles().end());
+  iterator it(this->begin());
+  iterator end(this->end());
 
   glBegin(GL_POINTS);
   for (; it != end; ++it)

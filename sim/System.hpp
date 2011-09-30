@@ -2,7 +2,7 @@
 #define System__hpp_
 
 #include "Cell.hpp"
-#include "Particle_System.hpp"
+#include "Ions.hpp"
 #include "Point.hpp"
 
 class System
@@ -14,7 +14,7 @@ public:
   void iterate();
   void draw();
 
-  bool valid_walk(Particle p, Point dest, double cell_permeability) const;
+  bool valid_walk(Ion p, Point dest, double cell_permeability) const;
 
 private:
   void init_cell();
@@ -23,8 +23,8 @@ private:
 private:
   Cell cell_;
   Cell outer_limit_;
-  Particle_System sodium_;
-  Particle_System potassium_;
+  Ions sodium_;
+  Ions potassium_;
 };
 
 #endif // System__hpp_
