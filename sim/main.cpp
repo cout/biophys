@@ -62,12 +62,12 @@ void display()
   glColor3d (1.0, 1.0, 1.0);
   glLoadIdentity ();
   gluLookAt (
-      0.0, 0.0, 5.0, // camera position
+      0.0, 0.0, 3.0, // camera position
       0.0, 0.0, 0.0, // camera focal point
       0.0, 1.0, 0.0); // up vector
   glRotatef(rotate_x, 0, 1, 0);
   glRotatef(rotate_y, 1, 0, 0);
-  glScalef (1.0, 2.0, 1.0);
+  glScalef (1.0, 1.0, 1.0);
 
   the_system.draw();
 
@@ -78,11 +78,19 @@ void display()
 
 void reshape(int w, int h)
 {
+  /*
   glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
   glMatrixMode (GL_PROJECTION);
   glLoadIdentity ();
   glFrustum (-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
   glMatrixMode (GL_MODELVIEW);
+  */
+
+  glViewport(0, 0, w, h);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(65.0, (float)w / h, 1 /* nearplane */, 1000 /* farplane */);
+  glMatrixMode(GL_MODELVIEW);
 }
 
 void keyboard(unsigned char key, int x, int y)
