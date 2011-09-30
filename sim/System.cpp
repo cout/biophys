@@ -38,11 +38,15 @@ init_cell()
   cell_.y = 0.0;
   cell_.z = 0.0;
   cell_.radius = 1.0;
+  cell_.sodium_permeability = 0.0;
+  cell_.potassium_permeability = 0.0;
 
   outer_limit_.x = 0.0;
   outer_limit_.y = 0.0;
   outer_limit_.z = 0.0;
   outer_limit_.radius = 2.0;
+  outer_limit_.sodium_permeability = 0.0;
+  outer_limit_.potassium_permeability = 0.0;
 }
 
 void
@@ -80,8 +84,8 @@ void
 System::
 iterate()
 {
-  sodium_.random_walk(*this, 0.01, 0.0);
-  potassium_.random_walk(*this, 0.01, 0.0);
+  sodium_.random_walk(*this, 0.01, cell_.sodium_permeability);
+  potassium_.random_walk(*this, 0.01, cell_.potassium_permeability);
 }
 
 void

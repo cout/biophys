@@ -10,6 +10,8 @@ public:
   Cell();
 
   double radius;
+  double sodium_permeability;
+  double potassium_permeability;
 };
 
 #endif // Cell__hpp
