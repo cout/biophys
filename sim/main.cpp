@@ -11,7 +11,7 @@ namespace
 
 System the_system;
 double rotate_x = 0.0;
-double rotate_y = 0.0;
+double rotate_y = 90.0;
 
 void init_lighting()
 {

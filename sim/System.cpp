@@ -108,10 +108,13 @@ draw()
   GLfloat cell_color[] = { 0.5f, 0.5f, 0.8f, 0.5f };
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cell_color);
 
+  // glDisable(GL_DEPTH_TEST);
   glPushMatrix();
   glTranslatef(cell_.x, cell_.y, cell_.z);
-  glutSolidSphere(cell_.radius, 50, 20);
+  // glutSolidSphere(cell_.radius, 50, 20);
+  glutWireSphere(cell_.radius, 75, 50);
   glPopMatrix();
+  // glEnable(GL_DEPTH_TEST);
 
   // -- Outer limit --
   GLfloat outer_color[] = { 0.5f, 0.5f, 0.5f, 0.5f };
