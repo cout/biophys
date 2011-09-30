@@ -78,14 +78,6 @@ void display()
 
 void reshape(int w, int h)
 {
-  /*
-  glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity ();
-  glFrustum (-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
-  glMatrixMode (GL_MODELVIEW);
-  */
-
   glViewport(0, 0, w, h);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
