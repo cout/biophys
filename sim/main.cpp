@@ -2,6 +2,7 @@
 
 #include <GL/glut.h>
 
+#include <iostream>
 #include <cstdlib>
 #include <cmath>
 
@@ -9,6 +10,8 @@ namespace
 {
 
 System the_system;
+double rotate_x = 0.0;
+double rotate_y = 0.0;
 
 void init_lighting()
 {
@@ -62,6 +65,8 @@ void display()
       0.0, 0.0, 5.0, // camera position
       0.0, 0.0, 0.0, // camera focal point
       0.0, 1.0, 0.0); // up vector
+  glRotatef(rotate_x, 0, 1, 0);
+  glRotatef(rotate_y, 1, 0, 0);
   glScalef (1.0, 2.0, 1.0);
 
   the_system.draw();
@@ -89,8 +94,27 @@ void keyboard(unsigned char key, int x, int y)
   }
 }
 
+static int last_x = 0;
+static int last_y = 0;
+
 void mouse(int button, int state, int x, int y)
 {
+  if (button == GLUT_LEFT_BUTTON)
+  {
+    if (state == GLUT_DOWN)
+    {
+      last_x = x;
+      last_y = y;
+    }
+  }
+}
+
+void motion(int x, int y)
+{
+  rotate_x = std::fmod(rotate_x + x - last_x, 360.0);
+  rotate_y = std::fmod(rotate_y + y - last_y, 360.0);
+  last_x = x;
+  last_y = y;
 }
 
 void idle()
@@ -120,6 +144,7 @@ int main(int argc, char** argv)
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keyboard);
    glutMouseFunc(mouse);
+   glutMotionFunc(motion);
    glutIdleFunc(idle);
 
    go();
