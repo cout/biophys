@@ -4,6 +4,7 @@
 #include "Cell.hpp"
 #include "Ions.hpp"
 #include "Point.hpp"
+#include "Na_K_Pump.hpp"
 
 class System
 {
@@ -25,6 +26,7 @@ private:
   Cell outer_limit_;
   Ions sodium_;
   Ions potassium_;
+  Na_K_Pump na_k_pump_;
 };
 
 #endif // System__hpp_

@@ -18,6 +18,7 @@ System()
   , outer_limit_()
   , sodium_(10000)
   , potassium_(1000)
+  , na_k_pump_()
 {
   reset();
 }

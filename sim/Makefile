@@ -4,6 +4,7 @@ OBJS = \
 	Ions.o \
 	Cell.o \
 	System.o \
+	Na_K_Pump.o \
 	util.o
 
 CFLAGS = -Wall -g
