@@ -58,7 +58,10 @@ void display()
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glColor3d (1.0, 1.0, 1.0);
   glLoadIdentity ();
-  gluLookAt (0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  gluLookAt (
+      0.0, 0.0, 5.0, // camera position
+      0.0, 0.0, 0.0, // camera focal point
+      0.0, 1.0, 0.0); // up vector
   glScalef (1.0, 2.0, 1.0);
 
   the_system.draw();
@@ -84,6 +87,10 @@ void keyboard(unsigned char key, int x, int y)
       exit(0);
       break;
   }
+}
+
+void mouse(int button, int state, int x, int y)
+{
 }
 
 void idle()
@@ -112,6 +119,7 @@ int main(int argc, char** argv)
    glutDisplayFunc(display); 
    glutReshapeFunc(reshape);
    glutKeyboardFunc(keyboard);
+   glutMouseFunc(mouse);
    glutIdleFunc(idle);
 
    go();
