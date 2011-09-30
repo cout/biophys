@@ -47,10 +47,10 @@ void init()
   glDepthFunc(GL_LESS);
   glEnable(GL_DEPTH_TEST);
 
-  // glEnable(GL_POINT_SMOOTH);
-  // glEnable(GL_LINE_SMOOTH);
-  // glHint(GL_POINT_SMOOTH, GL_NICEST);
-  // glHint(GL_LINE_SMOOTH, GL_NICEST);
+  glEnable(GL_POINT_SMOOTH);
+  glEnable(GL_LINE_SMOOTH);
+  glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
   init_lighting();
   the_system.reset();
