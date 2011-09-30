@@ -1,5 +1,6 @@
 - Model leak current as movement of negative ions
   - model for chlorine concentration - Bazenhov, M.
+    - I = g(V_m - E)
 - Model Na+/K+ pump
 - Model ion leak channels
 - Model electric field

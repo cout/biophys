@@ -38,8 +38,8 @@ init_cell()
   cell_.y = 0.0;
   cell_.z = 0.0;
   cell_.radius = 1.0;
-  cell_.sodium_permeability = 0.0;
-  cell_.potassium_permeability = 0.0;
+  cell_.sodium_permeability = 0.4;
+  cell_.potassium_permeability = 0.4;
 
   outer_limit_.x = 0.0;
   outer_limit_.y = 0.0;
