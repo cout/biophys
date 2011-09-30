@@ -16,3 +16,10 @@ LDFLAGS = -lGL -lGLU -lglut -lm
 main: $(OBJS)
 	$(CXX) $^ $(LDFLAGS) -o $@
 
+clean:
+	$(RM) $(OBJS) main
+
+CFLAGS += -MMD -MP
+DEP_FILES = $(patsubst %.o,%.d,$(OBJS))
+-include $(DEP_FILES)
+
