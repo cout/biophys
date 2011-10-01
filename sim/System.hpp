@@ -1,6 +1,8 @@
 #ifndef System__hpp_
 #define System__hpp_
 
+#include "Texture_Loader.hpp"
+#include "Texture.hpp"
 #include "Cell.hpp"
 #include "Ions.hpp"
 #include "Point.hpp"
@@ -22,6 +24,8 @@ private:
   void init_ions();
 
 private:
+  Texture_Loader texture_loader_;
+  Texture particle_texture_;
   Cell cell_;
   Cell outer_limit_;
   Ions sodium_;

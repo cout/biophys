@@ -1,6 +1,7 @@
 #ifndef Ions__hpp_
 #define Ions__hpp_
 
+#include "Texture.hpp"
 #include "Ion.hpp"
 
 #include <vector>
@@ -8,7 +9,9 @@
 class Ions
 {
 public:
-  Ions(size_t n);
+  Ions(
+      Texture texture,
+      size_t n);
 
   void random_walk(
       System const & system,
@@ -28,6 +31,7 @@ public:
   void draw();
 
 private:
+  Texture texture_;
   Container ions_;
 };
 

@@ -5,11 +5,12 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
+#include <memory>
 
 namespace
 {
 
-System the_system;
+std::auto_ptr<System> the_system;
 double rotate_x = 0.0;
 double rotate_y = 90.0;
 
@@ -53,7 +54,8 @@ void init()
   glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
   init_lighting();
-  the_system.reset();
+  the_system.reset(new System);
+  the_system->reset();
 }
 
 void display()
@@ -69,7 +71,7 @@ void display()
   glRotatef(rotate_y, 1, 0, 0);
   glScalef (1.0, 1.0, 1.0);
 
-  the_system.draw();
+  the_system->draw();
 
   // -- Flush --
   glutSwapBuffers();
@@ -119,7 +121,7 @@ void motion(int x, int y)
 
 void idle()
 {
-  the_system.iterate();
+  the_system->iterate();
   glutPostRedisplay();
 }
 

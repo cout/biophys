@@ -3,8 +3,11 @@
 #include "GL/gl.h"
 
 Ions::
-Ions(size_t n)
-  : ions_(n)
+Ions(
+    Texture texture,
+    size_t n)
+  : texture_(texture)
+  , ions_(n)
 {
 }
 

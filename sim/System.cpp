@@ -14,10 +14,12 @@ GLfloat potassium_color[] = { 1.0f, 0.3f, 0.3f, 1.0f };
 
 System::
 System()
-  : cell_()
+  : texture_loader_()
+  , particle_texture_(texture_loader_.texture("particle.jpg"))
+  , cell_()
   , outer_limit_()
-  , sodium_(10000)
-  , potassium_(1000)
+  , sodium_(particle_texture_, 10000)
+  , potassium_(particle_texture_, 1000)
   , na_k_pump_()
 {
   reset();

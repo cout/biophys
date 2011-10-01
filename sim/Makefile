@@ -10,7 +10,7 @@ OBJS = \
 
 CFLAGS = -Wall -g
 
-LDFLAGS = -lGL -lGLU -lglut -lm -lSOIL
+LDFLAGS = -lSOIL -lGL -lGLU -lglut -lm
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
