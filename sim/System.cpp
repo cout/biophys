@@ -15,7 +15,7 @@ GLfloat potassium_color[] = { 1.0f, 0.3f, 0.3f, 1.0f };
 System::
 System()
   : texture_loader_()
-  , particle_texture_(texture_loader_.texture("particle.jpg"))
+  , particle_texture_(texture_loader_.texture("particle.png"))
   , cell_()
   , outer_limit_()
   , sodium_(particle_texture_, 10000)
@@ -96,8 +96,6 @@ System::
 draw()
 {
   // -- Ions --
-
-  glPointSize(2.0);
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sodium_color);
   sodium_.draw();

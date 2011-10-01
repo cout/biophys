@@ -8,7 +8,7 @@ OBJS = \
 	Texture_Loader.o \
 	util.o
 
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -DGL_GLEXT_PROTOTYPES
 
 LDFLAGS = -lSOIL -lGL -lGLU -lglut -lm
 
