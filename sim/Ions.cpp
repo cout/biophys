@@ -36,13 +36,14 @@ draw()
 
   GLfloat sizes[2];
   glGetFloatv(GL_ALIASED_POINT_SIZE_RANGE, sizes);
-  glEnable(GL_POINT_SPRITE_ARB);
   glPointParameterfARB(GL_POINT_SIZE_MAX_ARB, sizes[1]);
   glPointParameterfARB(GL_POINT_SIZE_MIN_ARB, sizes[0]);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+  glTexEnvf( GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE );
+  glEnable(GL_POINT_SPRITE_ARB);
 
-  // GLfloat quadratic[2] = { GL_QUADRATIC_ATTENUATION, GL_QUADRATIC_ATTENUATION };
-  // glPointParameterfvARB(GL_POINT_DISTANCE_ATTENUATION_ARB, quadratic); // TODO: slow
+  GLfloat quadratic[] = { 1.0, 0.0, 0.0 };
+  glPointParameterfvARB(GL_POINT_DISTANCE_ATTENUATION_ARB, quadratic); // TODO: slow
 
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture_.texture);

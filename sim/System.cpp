@@ -121,8 +121,8 @@ draw()
   // glDisable(GL_DEPTH_TEST);
   glPushMatrix();
   glTranslatef(cell_.x, cell_.y, cell_.z);
-  // glutSolidSphere(cell_.radius, 50, 20);
-  glutWireSphere(cell_.radius, 75, 50);
+  glutSolidSphere(cell_.radius, 75, 50);
+  // glutWireSphere(cell_.radius, 75, 50);
   glPopMatrix();
   // glEnable(GL_DEPTH_TEST);
 
