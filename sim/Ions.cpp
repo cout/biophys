@@ -48,11 +48,12 @@ draw()
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture_.texture);
 
-  glPointSize(4.0);
+  glPointSize(8.0);
 
   iterator it(this->begin());
   iterator end(this->end());
 
+  // glDepthMask(GL_FALSE);
   glBegin(GL_POINTS);
   for (; it != end; ++it)
   {
@@ -61,6 +62,8 @@ draw()
   glEnd();
 
   glDisable(GL_POINT_SPRITE_ARB);
+
+  // glDepthMask(GL_TRUE);
 
   glPopAttrib();
 }

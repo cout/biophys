@@ -105,13 +105,14 @@ void
 System::
 draw()
 {
-  // -- Ions --
+  // -- Outer limit --
+  GLfloat outer_color[] = { 0.5f, 0.5f, 0.5f, 0.5f };
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, outer_color);
 
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sodium_color);
-  sodium_.draw();
-
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, potassium_color);
-  potassium_.draw();
+  glPushMatrix();
+  glTranslatef(outer_limit_.x, outer_limit_.y, outer_limit_.z);
+  glutWireSphere(outer_limit_.radius, 50, 20);
+  glPopMatrix();
 
   // -- Cell --
 
@@ -121,19 +122,18 @@ draw()
   // glDisable(GL_DEPTH_TEST);
   glPushMatrix();
   glTranslatef(cell_.x, cell_.y, cell_.z);
-  glutSolidSphere(cell_.radius, 75, 50);
-  // glutWireSphere(cell_.radius, 75, 50);
+  // glutSolidSphere(cell_.radius, 75, 50);
+  glutWireSphere(cell_.radius, 75, 50);
   glPopMatrix();
   // glEnable(GL_DEPTH_TEST);
 
-  // -- Outer limit --
-  GLfloat outer_color[] = { 0.5f, 0.5f, 0.5f, 0.5f };
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, outer_color);
+  // -- Ions --
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sodium_color);
+  sodium_.draw();
 
-  glPushMatrix();
-  glTranslatef(outer_limit_.x, outer_limit_.y, outer_limit_.z);
-  glutWireSphere(outer_limit_.radius, 50, 20);
-  glPopMatrix();
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, potassium_color);
+  potassium_.draw();
+
 }
 
 bool
