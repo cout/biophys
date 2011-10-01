@@ -39,7 +39,7 @@ draw()
   glPointParameterfARB(GL_POINT_SIZE_MAX_ARB, sizes[1]);
   glPointParameterfARB(GL_POINT_SIZE_MIN_ARB, sizes[0]);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glTexEnvf( GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE );
+  glTexEnvf(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, GL_TRUE);
   glEnable(GL_POINT_SPRITE_ARB);
 
   GLfloat quadratic[] = { 1.0, 0.0, 0.0 };
