@@ -5,11 +5,12 @@ OBJS = \
 	Cell.o \
 	System.o \
 	Na_K_Pump.o \
+	Texture_Loader.o \
 	util.o
 
 CFLAGS = -Wall -g
 
-LDFLAGS = -lGL -lGLU -lglut -lm
+LDFLAGS = -lGL -lGLU -lglut -lm -lSOIL
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
