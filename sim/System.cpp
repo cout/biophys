@@ -16,10 +16,13 @@ GLfloat potassium_color[] = { 1.0f, 0.3f, 0.3f, 1.0f };
 
 System::
 System()
-  : cell_()
+  : texture_loader_()
+  , particle_texture_(texture_loader_.texture("particle.png"))
+  , cell_()
   , outer_limit_()
-  , sodium_(10000, 1.0)
-  , potassium_(1000, 1.0)
+  , sodium_(particle_texture_, 10000)
+  , potassium_(particle_texture_, 1000)
+  , na_k_pump_()
 {
   reset();
 }
@@ -41,8 +44,8 @@ init_cell()
   cell_.y = 0.0;
   cell_.z = 0.0;
   cell_.radius = 1.0;
-  cell_.sodium_permeability = 0.0;
-  cell_.potassium_permeability = 0.0;
+  cell_.sodium_permeability = 0.4;
+  cell_.potassium_permeability = 0.4;
 
   outer_limit_.x = 0.0;
   outer_limit_.y = 0.0;
@@ -57,8 +60,8 @@ System::
 init_ions()
 {
   // Put sodium ions outside the cell
-  Particle_System::Particles::iterator it(sodium_.particles().begin());
-  Particle_System::Particles::iterator end(sodium_.particles().end());
+  Ions::iterator it(sodium_.begin());
+  Ions::iterator end(sodium_.end());
 
   for (; it != end; ++it)
   {
@@ -70,8 +73,8 @@ init_ions()
   }
 
   // Put potassium ions inside the cell
-  it = potassium_.particles().begin();
-  end = potassium_.particles().end();
+  it = potassium_.begin();
+  end = potassium_.end();
 
   for (; it != end; ++it)
   {
@@ -94,10 +97,6 @@ void
 System::
 iterate()
 {
-  // TODO: Ideally we should use the Nernst-Planck equation to describe
-  // the movement of ions, rather than doing a random walk.  With the
-  // random walk the ions follow Fick's law of diffusion, but are not
-  // affected by the electrostatic force.
   sodium_.random_walk(*this, 0.01, cell_.sodium_permeability);
   potassium_.random_walk(*this, 0.01, cell_.potassium_permeability);
 }
@@ -107,8 +106,6 @@ System::
 draw()
 {
   // -- Ions --
-
-  glPointSize(2.0);
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sodium_color);
   sodium_.draw();
@@ -121,10 +118,13 @@ draw()
   GLfloat cell_color[] = { 0.5f, 0.5f, 0.8f, 0.5f };
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, cell_color);
 
+  // glDisable(GL_DEPTH_TEST);
   glPushMatrix();
   glTranslatef(cell_.x, cell_.y, cell_.z);
-  glutSolidSphere(cell_.radius, 50, 20);
+  // glutSolidSphere(cell_.radius, 50, 20);
+  glutWireSphere(cell_.radius, 75, 50);
   glPopMatrix();
+  // glEnable(GL_DEPTH_TEST);
 
   // -- Outer limit --
   GLfloat outer_color[] = { 0.5f, 0.5f, 0.5f, 0.5f };
@@ -138,7 +138,7 @@ draw()
 
 bool
 System::
-valid_walk(Particle p, Point dest, double cell_permeability) const
+valid_walk(Ion p, Point dest, double cell_permeability) const
 {
   if (ray_intersects_sphere(p, dest, cell_, cell_.radius))
   {
@@ -157,23 +157,6 @@ double
 System::
 voltage() const
 {
-  double sodium_in, sodium_out;
-  double potassium_in, potassium_out;
-
-  sodium_.charge_inout_sphere(cell_, cell_.radius, &sodium_in, &sodium_out);
-  potassium_.charge_inout_sphere(cell_, cell_.radius, &potassium_in, &potassium_out);
-
-  // TODO: is it acceptable to use probability here instead of measuring
-  // permeability in m/s?
-  double K = (sodium_out * cell_.sodium_permeability + potassium_out * cell_.potassium_permeability) /
-             (sodium_in * cell_.sodium_permeability + potassium_in * cell_.potassium_permeability);
-
-  // GHK voltage
-  double R = 8.31444621; // J/(mol*K)
-  double T = temperature_; // K
-  double F = 96485.3365; // C/mol
-  double E_m = (R * T / F) * std::log(K);
-
-  return E_m;
+  return 0.0; // TODO
 }
 

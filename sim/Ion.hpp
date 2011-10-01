@@ -1,15 +1,15 @@
-#ifndef Particle__hpp
-#define Particle__hpp
+#ifndef Ion__hpp
+#define Ion__hpp
 
 #include "Point.hpp"
 
 class System;
 
-class Particle
+class Ion
   : public Point
 {
 public:
-  Particle()
+  Ion()
     : Point(0, 0, 0)
   {
   }
@@ -20,4 +20,4 @@ public:
       double cell_permeability);
 };
 
-#endif // Particle__hpp
+#endif // Ion__hpp

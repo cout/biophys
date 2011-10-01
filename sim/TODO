@@ -1,0 +1,13 @@
+- Model leak current as movement of negative ions
+  - model for chlorine concentration - Bazenhov, M.
+    - I = g(V_m - E)
+- Model Na+/K+ pump
+- Model ion leak channels
+- Model electric field
+  - use Couloumb's law to calculate force to accelerate particles
+  - use Gauss's law to approximate field
+  - prof said something about Laplace?
+- Model membrane capacitance
+  - is this necessary?
+- Calculate ionic current
+- Calculate voltage across membrane
