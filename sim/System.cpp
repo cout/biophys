@@ -133,7 +133,6 @@ draw()
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, potassium_color);
   potassium_.draw();
-
 }
 
 bool

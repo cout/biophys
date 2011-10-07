@@ -1,6 +1,7 @@
 #include "System.hpp"
 
 #include <GL/glut.h>
+// #include <GL/glc.h>
 
 #include <iostream>
 #include <cstdlib>
@@ -11,8 +12,15 @@ namespace
 {
 
 std::auto_ptr<System> the_system;
+
+// GLint glc_context;
+// GLint glc_font;
+
 double rotate_x = 0.0;
 double rotate_y = 90.0;
+
+int width = 500;
+int height = 500;
 
 void init_lighting()
 {
@@ -30,6 +38,14 @@ void init_lighting()
 
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
+}
+
+void init_fonts()
+{
+  // glc_context = glcGenContext();
+  // glc_font = glcGenFontID();
+  // glcNewFontFromFamily(glc_font, "Palatino");
+  // glcFontFace(glc_font, "Normal");
 }
 
 void init()
@@ -56,13 +72,29 @@ void init()
   glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
   init_lighting();
+  init_fonts();
   the_system.reset(new System);
   the_system->reset();
 }
 
-void display()
+void render_stroke_text(void * font, char const * text)
 {
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  for(; *text != '\0'; ++text)
+  {
+    glutStrokeCharacter(font, *text);
+  }
+}
+
+void render_bitmap_text(void * font, char const * text)
+{
+  for(; *text != '\0'; ++text)
+  {
+    glutBitmapCharacter(font, *text);
+  }
+}
+
+void draw_world()
+{
   glColor3d (1.0, 1.0, 1.0);
   glLoadIdentity ();
   gluLookAt (
@@ -74,6 +106,57 @@ void display()
   glScalef (1.0, 1.0, 1.0);
 
   the_system->draw();
+}
+
+void draw_legend()
+{
+#if 0
+  glcContext(glc_context);
+  glcFont(glc_font);
+
+  glPushMatrix();
+  glcScale(12.0, 12.0);
+  glColor3f(1.0, 0.0, 1.0);
+  glRasterPos2f(50.0, 50.0);
+  glcRenderString("Hello");
+  glPopMatrix();
+#endif
+
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  gluOrtho2D(0, width, 0, height);
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+
+  glPushAttrib(GL_ENABLE_BIT);
+  glDisable(GL_LIGHTING);
+  glDisable(GL_DEPTH_TEST);
+  // glDisable(GL_BLEND);
+
+  glColor4f(1.0, 0.0, 1.0, 1.0);
+  glRasterPos2f(2, height-20);
+  render_bitmap_text(GLUT_BITMAP_HELVETICA_18, "Hello");
+
+  glPopAttrib();
+
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+
+  glMatrixMode(GL_MODELVIEW);
+}
+
+void display()
+{
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  draw_world();
+  draw_legend();
 
   // -- Flush --
   glutSwapBuffers();
@@ -82,6 +165,8 @@ void display()
 
 void reshape(int w, int h)
 {
+  width = w;
+  height = h;
   glViewport(0, 0, w, h);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -124,6 +209,8 @@ void motion(int x, int y)
 void idle()
 {
   the_system->iterate();
+  rotate_x += 0.1;
+  rotate_y += 0.05;
   glutPostRedisplay();
 }
 
@@ -138,7 +225,7 @@ int main(int argc, char** argv)
 {
    glutInit(&argc, argv);
    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
-   glutInitWindowSize (500, 500); 
+   glutInitWindowSize (width, height); 
    glutInitWindowPosition (100, 100);
    glutCreateWindow (argv[0]);
 
