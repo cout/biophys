@@ -16,11 +16,6 @@ random_walk(
   p.y += y;
   p.z += z;
 
-  if (system.valid_walk(*this, p, ion_characteristics))
-  {
-    x = p.x;
-    y = p.y;
-    z = p.z;
-  }
+  system.try_walk(*this, p, ion_characteristics);
 }
 

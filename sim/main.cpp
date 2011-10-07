@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <memory>
+#include <sstream>
 
 namespace
 {
@@ -134,11 +135,36 @@ void draw_legend()
   glPushAttrib(GL_ENABLE_BIT);
   glDisable(GL_LIGHTING);
   glDisable(GL_DEPTH_TEST);
-  // glDisable(GL_BLEND);
 
-  glColor4f(1.0, 0.0, 1.0, 1.0);
-  glRasterPos2f(2, height-20);
-  render_bitmap_text(GLUT_BITMAP_HELVETICA_18, "Hello");
+  glColor4f(0.8, 0.9, 0.9, 1.0);
+
+  {
+    glRasterPos2f(2, height-20);
+    std::stringstream strm;
+    strm << "Sodium inside: " << the_system->cell().sodium_characteristics.ions_inside_cell;
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
+  {
+    glRasterPos2f(2, height-40);
+    std::stringstream strm;
+    strm << "Sodium outside: " << the_system->cell().sodium_characteristics.ions_inside_cell;
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
+  {
+    glRasterPos2f(2, height-60);
+    std::stringstream strm;
+    strm << "Potassium inside: " << the_system->cell().potassium_characteristics.ions_inside_cell;
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
+  {
+    glRasterPos2f(2, height-80);
+    std::stringstream strm;
+    strm << "Potassium outside: " << the_system->cell().potassium_characteristics.ions_inside_cell;
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
 
   glPopAttrib();
 

@@ -45,15 +45,15 @@ init_cell()
   cell_.y = 0.0;
   cell_.z = 0.0;
   cell_.radius = 1.0;
-  cell_.sodium_permeability = 0.4;
-  cell_.potassium_permeability = 0.4;
+  cell_.sodium_characteristics.cell_permeability = 0.4;
+  cell_.potassium_characteristics.cell_permeability = 0.4;
 
   outer_limit_.x = 0.0;
   outer_limit_.y = 0.0;
   outer_limit_.z = 0.0;
   outer_limit_.radius = 2.0;
-  outer_limit_.sodium_permeability = 0.0;
-  outer_limit_.potassium_permeability = 0.0;
+  outer_limit_.sodium_characteristics.cell_permeability = 0.0;
+  outer_limit_.potassium_characteristics.cell_permeability = 0.0;
 }
 
 void
@@ -71,6 +71,8 @@ init_ions()
     it->x = cell_.x + p.x;
     it->y = cell_.y + p.y;
     it->z = cell_.z + p.z;
+
+    ++cell_.sodium_characteristics.ions_outside_cell;
   }
 
   // Put potassium ions inside the cell
@@ -84,6 +86,8 @@ init_ions()
     it->x = cell_.x + p.x;
     it->y = cell_.y + p.y;
     it->z = cell_.z + p.z;
+
+    ++cell_.sodium_characteristics.ions_inside_cell;
   }
 }
 
@@ -136,21 +140,41 @@ draw()
   potassium_.draw();
 }
 
-bool
+void
 System::
-valid_walk(Ion p, Point dest, Ion_Characteristics & ion_characteristics) const
+try_walk(Ion & ion, Point dest, Ion_Characteristics & ion_characteristics) const
 {
-  if (ray_intersects_sphere(p, dest, cell_, cell_.radius))
+  bool src_is_inside(is_inside_sphere(ion, cell_, cell_.radius));
+  bool dst_is_inside(is_inside_sphere(dest, cell_, cell_.radius));
+
+  // Crossing the cell membrane happens with a probability equal to the
+  // permeability
+  if (src_is_inside != dst_is_inside)
   {
-    return random_double() < ion_characteristics.cell_permeability;
+    if(random_double() < ion_characteristics.cell_permeability)
+    {
+      goto walk;
+    }
+    else
+    {
+      return;
+    }
   }
 
-  if (ray_intersects_sphere(p, dest, outer_limit_, outer_limit_.radius))
+  // Crossing the outer limit happens with zero probability
+  if (ray_intersects_sphere(ion, dest, outer_limit_, outer_limit_.radius))
   {
-    return false;
+    return;
   }
 
-  return true;
+walk:
+  ion_characteristics.ions_inside_cell -= (src_is_inside ? 1 : 0);
+  ion_characteristics.ions_outside_cell -= (src_is_inside ? 0 : 1);
+
+  ion.move_to(dest);
+
+  ion_characteristics.ions_inside_cell += (dst_is_inside ? 1 : 0);
+  ion_characteristics.ions_outside_cell += (dst_is_inside ? 0 : 1);
 }
 
 double

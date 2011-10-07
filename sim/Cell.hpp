@@ -14,9 +14,6 @@ public:
 
   Ion_Characteristics sodium_characteristics;
   Ion_Characteristics potassium_characteristics;
-
-  double sodium_permeability;    // measured as a probability
-  double potassium_permeability; // measured as a probability
 };
 
 #endif // Cell__hpp

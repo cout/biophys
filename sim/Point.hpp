@@ -11,6 +11,13 @@ public:
   {
   }
 
+  void move_to(Point p)
+  {
+    this->x = p.x;
+    this->y = p.y;
+    this->z = p.z;
+  }
+
   double x, y, z;
 
 private:

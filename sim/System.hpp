@@ -19,9 +19,11 @@ public:
   void iterate();
   void draw();
 
-  bool valid_walk(Ion p, Point dest, Ion_Characteristics & cell_permeability) const;
+  void try_walk(Ion & ion, Point dest, Ion_Characteristics & cell_permeability) const;
 
   double voltage() const;
+
+  Cell const & cell() const { return cell_; }
 
 private:
   void init_cell();
