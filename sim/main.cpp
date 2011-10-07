@@ -25,20 +25,20 @@ int height = 500;
 
 void init_lighting()
 {
-  GLfloat global_ambient[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+  GLfloat global_ambient[] = { 1.5f, 1.5f, 1.5f, 1.0f };
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
 
-  GLfloat specular[] = {1.0f, 1.0f, 1.0f , 1.0f};
-  glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+  // GLfloat specular[] = {1.0f, 1.0f, 1.0f , 1.0f};
+  // glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 
-  GLfloat ambient[] = { 1.0f, 1.0f, 1.0f };
-  glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+  // GLfloat ambient[] = { 1.0f, 1.0f, 1.0f };
+  // glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
 
-  GLfloat position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
-  glLightfv(GL_LIGHT0, GL_POSITION, position);
+  // GLfloat position[] = { -1.5f, 1.0f, -4.0f, 1.0f };
+  // glLightfv(GL_LIGHT0, GL_POSITION, position);
 
   glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
+  // glEnable(GL_LIGHT0);
 }
 
 void init_fonts()
