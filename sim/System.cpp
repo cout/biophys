@@ -1,6 +1,7 @@
 #include "System.hpp"
 #include "Point.hpp"
 #include "util.hpp"
+#include "Ion_Characteristics.hpp"
 
 #include <GL/glut.h>
 
@@ -97,8 +98,8 @@ void
 System::
 iterate()
 {
-  sodium_.random_walk(*this, 0.01, cell_.sodium_permeability);
-  potassium_.random_walk(*this, 0.01, cell_.potassium_permeability);
+  sodium_.random_walk(*this, 0.01, cell_.sodium_characteristics);
+  potassium_.random_walk(*this, 0.01, cell_.potassium_characteristics);
 }
 
 void
@@ -137,11 +138,11 @@ draw()
 
 bool
 System::
-valid_walk(Ion p, Point dest, double cell_permeability) const
+valid_walk(Ion p, Point dest, Ion_Characteristics & ion_characteristics) const
 {
   if (ray_intersects_sphere(p, dest, cell_, cell_.radius))
   {
-    return random_double() < cell_permeability;
+    return random_double() < ion_characteristics.cell_permeability;
   }
 
   if (ray_intersects_sphere(p, dest, outer_limit_, outer_limit_.radius))

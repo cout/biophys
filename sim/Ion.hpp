@@ -4,6 +4,7 @@
 #include "Point.hpp"
 
 class System;
+class Ion_Characteristics;
 
 class Ion
   : public Point
@@ -17,7 +18,7 @@ public:
   void random_walk(
       System const & system,
       double max_movement,
-      double cell_permeability);
+      Ion_Characteristics & ion_characteristics);
 };
 
 #endif // Ion__hpp

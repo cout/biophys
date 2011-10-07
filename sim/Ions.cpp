@@ -17,14 +17,14 @@ Ions::
 random_walk(
     System const & system,
     double max_movement,
-    double cell_permeability)
+    Ion_Characteristics & ion_characteristics)
 {
   iterator it(this->begin());
   iterator end(this->end());
 
   for(; it != end; ++it)
   {
-    it->random_walk(system, max_movement, cell_permeability);
+    it->random_walk(system, max_movement, ion_characteristics);
   }
 }
 

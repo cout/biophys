@@ -6,6 +6,8 @@
 
 #include <vector>
 
+class Ion_Characteristics;
+
 class Ions
 {
 public:
@@ -16,7 +18,7 @@ public:
   void random_walk(
       System const & system,
       double max_movement,
-      double cell_permeability);
+      Ion_Characteristics & ion_characteristics);
 
   typedef std::vector<Ion> Container;
   typedef Container::iterator iterator;

@@ -8,6 +8,8 @@
 #include "Point.hpp"
 #include "Na_K_Pump.hpp"
 
+class Ion_Characteristics;
+
 class System
 {
 public:
@@ -17,7 +19,7 @@ public:
   void iterate();
   void draw();
 
-  bool valid_walk(Ion p, Point dest, double cell_permeability) const;
+  bool valid_walk(Ion p, Point dest, Ion_Characteristics & cell_permeability) const;
 
   double voltage() const;
 
