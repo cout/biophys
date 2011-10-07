@@ -148,7 +148,7 @@ void draw_legend()
   {
     glRasterPos2f(2, height-40);
     std::stringstream strm;
-    strm << "Sodium outside: " << the_system->cell().sodium_characteristics.ions_inside_cell;
+    strm << "Sodium outside: " << the_system->cell().sodium_characteristics.ions_outside_cell;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
@@ -162,7 +162,7 @@ void draw_legend()
   {
     glRasterPos2f(2, height-80);
     std::stringstream strm;
-    strm << "Potassium outside: " << the_system->cell().potassium_characteristics.ions_inside_cell;
+    strm << "Potassium outside: " << the_system->cell().potassium_characteristics.ions_outside_cell;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 

@@ -87,7 +87,7 @@ init_ions()
     it->y = cell_.y + p.y;
     it->z = cell_.z + p.z;
 
-    ++cell_.sodium_characteristics.ions_inside_cell;
+    ++cell_.potassium_characteristics.ions_inside_cell;
   }
 }
 
