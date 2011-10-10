@@ -23,6 +23,8 @@ double rotate_y = 90.0;
 int width = 500;
 int height = 500;
 
+bool paused = true;
+
 void init_lighting()
 {
   GLfloat global_ambient[] = { 1.5f, 1.5f, 1.5f, 1.0f };
@@ -200,11 +202,36 @@ void reshape(int w, int h)
   glMatrixMode(GL_MODELVIEW);
 }
 
+void idle()
+{
+  the_system->iterate();
+  rotate_x += 0.1;
+  rotate_y += 0.05;
+  glutPostRedisplay();
+}
+
+void toggle_paused()
+{
+  paused = !paused;
+
+  if (paused)
+  {
+    glutIdleFunc(0);
+  }
+  else
+  {
+    glutIdleFunc(idle);
+  }
+}
+
 void keyboard(unsigned char key, int x, int y)
 {
   switch (key) {
     case 27:
       exit(0);
+      break;
+    case ' ':
+      toggle_paused();
       break;
   }
 }
@@ -232,14 +259,6 @@ void motion(int x, int y)
   last_y = y;
 }
 
-void idle()
-{
-  the_system->iterate();
-  rotate_x += 0.1;
-  rotate_y += 0.05;
-  glutPostRedisplay();
-}
-
 void go()
 {
   glutMainLoop();
@@ -249,21 +268,21 @@ void go()
 
 int main(int argc, char** argv)
 {
-   glutInit(&argc, argv);
-   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
-   glutInitWindowSize (width, height); 
-   glutInitWindowPosition (100, 100);
-   glutCreateWindow (argv[0]);
+  glutInit(&argc, argv);
+  glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
+  glutInitWindowSize (width, height); 
+  glutInitWindowPosition (100, 100);
+  glutCreateWindow (argv[0]);
 
-   init();
+  init();
 
-   glutDisplayFunc(display); 
-   glutReshapeFunc(reshape);
-   glutKeyboardFunc(keyboard);
-   glutMouseFunc(mouse);
-   glutMotionFunc(motion);
-   glutIdleFunc(idle);
+  glutDisplayFunc(display); 
+  glutReshapeFunc(reshape);
+  glutKeyboardFunc(keyboard);
+  glutMouseFunc(mouse);
+  glutMotionFunc(motion);
 
-   go();
-   return 0;
+  toggle_paused();
+  go();
+  return 0;
 }
