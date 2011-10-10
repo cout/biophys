@@ -24,6 +24,7 @@ int width = 500;
 int height = 500;
 
 bool paused = true;
+bool rotating = true;
 
 void init_lighting()
 {
@@ -205,8 +206,13 @@ void reshape(int w, int h)
 void idle()
 {
   the_system->iterate();
-  rotate_x += 0.1;
-  rotate_y += 0.05;
+
+  if (rotating)
+  {
+    rotate_x += 0.1;
+    rotate_y += 0.05;
+  }
+
   glutPostRedisplay();
 }
 
@@ -247,6 +253,11 @@ void mouse(int button, int state, int x, int y)
     {
       last_x = x;
       last_y = y;
+      rotating = false;
+    }
+    else
+    {
+      rotating = true;
     }
   }
 }
