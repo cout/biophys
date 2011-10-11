@@ -21,4 +21,14 @@ public:
       Ion_Characteristics & ion_characteristics);
 };
 
+class Sodium_Ion
+  : public Ion
+{
+};
+
+class Potassium_Ion
+  : public Ion
+{
+};
+
 #endif // Ion__hpp

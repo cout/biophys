@@ -36,8 +36,8 @@ private:
   Cell cell_;
   Cell outer_limit_;
   double temperature_;
-  Ions<Ion> sodium_;
-  Ions<Ion> potassium_;
+  Ions<Sodium_Ion> sodium_;
+  Ions<Potassium_Ion> potassium_;
   Na_K_Pump na_k_pump_;
 };
 
