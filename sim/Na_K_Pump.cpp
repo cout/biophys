@@ -2,24 +2,37 @@
 #include "Ions.hpp"
 #include "Cell.hpp"
 
+#include <cstdlib>
+
 Na_K_Pump::
-Na_K_Pump()
+Na_K_Pump(double ratio)
+  : ratio_(ratio)
+  , sodium_passed_in_(0)
+  , potassium_passed_out_(0)
 {
 }
 
 
-void
+bool
 Na_K_Pump::
-pump(
-    Ions & sodium,
-    Ions & potassium,
-    Cell const & cell)
+pass_sodium_in()
 {
-  // Pick a random point on the cell
-  // Find nearby 3 sodium ions
-  // Find nearby 2 potassium ions
-  // Swap positions of ions; 3rd sodium ion gets placed at the midpoint
-  // of the other 2
+  double sodium_expected = potassium_passed_out_ / ratio;
+  double r = log(sodium_expected - sodium_passed_in_);
+  bool passed = std::rand() < r;
+  sodium_passed_in_ += (passed ? 1 : 0);
+  return passed;
 }
 
+
+bool
+Na_K_Pump::
+pass_potassium_out()
+{
+  double potassium_expected = ratio * sodium_passed_in_;
+  double r = log(potassium_expected - potassium_passed_out_);
+  bool passed = std::rand() < r;
+  potassium_passed_out_ += (passed ? 1 : 0);
+  return passed;
+}
 
