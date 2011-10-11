@@ -1,7 +1,7 @@
 #include "System.hpp"
 #include "Point.hpp"
 #include "util.hpp"
-#include "Ion_Characteristics.hpp"
+#include "Ion_impl.hpp"
 
 #include <GL/glut.h>
 
@@ -47,15 +47,11 @@ init_cell()
   cell_.y = 0.0;
   cell_.z = 0.0;
   cell_.radius = 1.0;
-  cell_.sodium_characteristics.cell_permeability = 0.4;
-  cell_.potassium_characteristics.cell_permeability = 0.4;
 
   outer_limit_.x = 0.0;
   outer_limit_.y = 0.0;
   outer_limit_.z = 0.0;
   outer_limit_.radius = 2.0;
-  outer_limit_.sodium_characteristics.cell_permeability = 0.0;
-  outer_limit_.potassium_characteristics.cell_permeability = 0.0;
 }
 
 void
@@ -75,7 +71,7 @@ init_ions()
       it->y = cell_.y + p.y;
       it->z = cell_.z + p.z;
 
-      ++cell_.sodium_characteristics.ions_outside_cell;
+      // ++cell_.sodium_characteristics.ions_outside_cell;
     }
   }
 
@@ -92,7 +88,7 @@ init_ions()
       it->y = cell_.y + p.y;
       it->z = cell_.z + p.z;
 
-      ++cell_.potassium_characteristics.ions_inside_cell;
+      // ++cell_.potassium_characteristics.ions_inside_cell;
     }
   }
 }
@@ -108,8 +104,8 @@ void
 System::
 iterate()
 {
-  sodium_.random_walk(*this, 0.01, cell_.sodium_characteristics);
-  potassium_.random_walk(*this, 0.01, cell_.potassium_characteristics);
+  sodium_.random_walk(*this, 0.01);
+  potassium_.random_walk(*this, 0.01);
 }
 
 void
@@ -146,43 +142,6 @@ draw()
 
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, potassium_color);
   potassium_.draw();
-}
-
-void
-System::
-try_walk(Ion & ion, Point dest, Ion_Characteristics & ion_characteristics) const
-{
-  bool src_is_inside(is_inside_sphere(ion, cell_, cell_.radius));
-  bool dst_is_inside(is_inside_sphere(dest, cell_, cell_.radius));
-
-  // Crossing the cell membrane happens with a probability equal to the
-  // permeability
-  if (src_is_inside != dst_is_inside)
-  {
-    if(random_double() < ion_characteristics.cell_permeability)
-    {
-      goto walk;
-    }
-    else
-    {
-      return;
-    }
-  }
-
-  // Crossing the outer limit happens with zero probability
-  if (ray_intersects_sphere(ion, dest, outer_limit_, outer_limit_.radius))
-  {
-    return;
-  }
-
-walk:
-  ion_characteristics.ions_inside_cell -= (src_is_inside ? 1 : 0);
-  ion_characteristics.ions_outside_cell -= (src_is_inside ? 0 : 1);
-
-  ion.move_to(dest);
-
-  ion_characteristics.ions_inside_cell += (dst_is_inside ? 1 : 0);
-  ion_characteristics.ions_outside_cell += (dst_is_inside ? 0 : 1);
 }
 
 double

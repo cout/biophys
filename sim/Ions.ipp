@@ -18,15 +18,14 @@ void
 Ions<Ion_T>::
 random_walk(
     System const & system,
-    double max_movement,
-    Ion_Characteristics & ion_characteristics)
+    double max_movement)
 {
   iterator it(this->begin());
   iterator end(this->end());
 
   for(; it != end; ++it)
   {
-    it->random_walk(system, max_movement, ion_characteristics);
+    it->random_walk(system, max_movement);
   }
 }
 

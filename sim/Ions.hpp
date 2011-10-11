@@ -6,8 +6,6 @@
 
 #include <vector>
 
-class Ion_Characteristics;
-
 template <typename Ion_T>
 class Ions
 {
@@ -18,8 +16,7 @@ public:
 
   void random_walk(
       System const & system,
-      double max_movement,
-      Ion_Characteristics & ion_characteristics);
+      double max_movement);
 
   typedef std::vector<Ion_T> Container;
   typedef typename Container::iterator iterator;

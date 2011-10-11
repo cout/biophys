@@ -2,7 +2,7 @@
 #define Cell__hpp
 
 #include "Point.hpp"
-#include "Ion_Characteristics.hpp"
+#include "Ion.hpp"
 
 class Cell
   : public Point
@@ -12,8 +12,8 @@ public:
 
   double radius;
 
-  Ion_Characteristics sodium_characteristics;
-  Ion_Characteristics potassium_characteristics;
+  double permeability(Sodium_Ion const &) const { return 0.4; }
+  double permeability(Potassium_Ion const &) const { return 0.4; }
 };
 
 #endif // Cell__hpp

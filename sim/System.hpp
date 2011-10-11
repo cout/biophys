@@ -19,7 +19,8 @@ public:
   void iterate();
   void draw();
 
-  void try_walk(Ion & ion, Point dest, Ion_Characteristics & cell_permeability) const;
+  template<typename Ion_T>
+  void try_walk(Ion_T & ion, Point dest) const;
 
   double voltage() const;
 
@@ -41,5 +42,7 @@ private:
   Ions<Potassium_Ion> potassium_;
   Na_K_Pump na_k_pump_;
 };
+
+#include "System.ipp"
 
 #endif // System__hpp_
