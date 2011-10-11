@@ -43,17 +43,21 @@ draw()
   glEnable(GL_POINT_SPRITE_ARB);
 
   GLfloat quadratic[] = { 1.0, 0.0, 0.0 };
-  glPointParameterfvARB(GL_POINT_DISTANCE_ATTENUATION_ARB, quadratic); // TODO: slow
+  glPointParameterfvARB(GL_POINT_DISTANCE_ATTENUATION_ARB, quadratic); // TODO: slow?
 
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture_.texture);
 
   glPointSize(8.0);
+  // glPointSize(6.0);
 
   iterator it(this->begin());
   iterator end(this->end());
 
+  // glAlphaFunc(GL_GREATER, 0.1);
+  // glEnable(GL_ALPHA_TEST);
   // glDepthMask(GL_FALSE);
+
   glBegin(GL_POINTS);
   for (; it != end; ++it)
   {
@@ -64,6 +68,7 @@ draw()
   glDisable(GL_POINT_SPRITE_ARB);
 
   // glDepthMask(GL_TRUE);
+  // glDisable(GL_ALPHA_TEST);
 
   glPopAttrib();
 }
