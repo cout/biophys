@@ -22,7 +22,7 @@ class Ion_T
 {
 public:
   void random_walk(
-      System const & system,
+      System & system,
       double max_movement);
 };
 

@@ -15,7 +15,7 @@ public:
       size_t n);
 
   void random_walk(
-      System const & system,
+      System & system,
       double max_movement);
 
   typedef std::vector<Ion_T> Container;

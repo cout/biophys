@@ -20,7 +20,7 @@ public:
   void draw();
 
   template<typename Ion_T>
-  void try_walk(Ion_T & ion, Point dest) const;
+  void try_walk(Ion_T & ion, Point dest);
 
   double voltage() const;
 

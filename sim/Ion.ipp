@@ -5,7 +5,7 @@ template<typename Derived_T>
 void
 Ion_T<Derived_T>::
 random_walk(
-    System const & system,
+    System & system,
     double max_movement)
 {
   Point p = random_insphere(0, max_movement);

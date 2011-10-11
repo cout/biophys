@@ -17,7 +17,7 @@ template <typename Ion_T>
 void
 Ions<Ion_T>::
 random_walk(
-    System const & system,
+    System & system,
     double max_movement)
 {
   iterator it(this->begin());
