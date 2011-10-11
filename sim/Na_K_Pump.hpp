@@ -7,8 +7,10 @@ public:
   Na_K_Pump(double ratio = 2.0/3.0);
 
   bool pass_sodium_in();
-
   bool pass_potassium_out();
+
+  double sodium_pumped() const { return sodium_passed_in_; }
+  double potassium_pumped() const { return potassium_passed_out_; }
 
 private:
   double ratio_;

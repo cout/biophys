@@ -169,6 +169,20 @@ void draw_legend()
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
+  {
+    glRasterPos2f(2, height-100);
+    std::stringstream strm;
+    strm << "Sodium pumped: " << the_system->na_k_pump().sodium_pumped();
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
+  {
+    glRasterPos2f(2, height-120);
+    std::stringstream strm;
+    strm << "Potassium pumped: " << the_system->na_k_pump().potassium_pumped();
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
   glPopAttrib();
 
   glMatrixMode(GL_MODELVIEW);

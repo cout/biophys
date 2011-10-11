@@ -24,6 +24,7 @@ public:
   double voltage() const;
 
   Cell const & cell() const { return cell_; }
+  Na_K_Pump const & na_k_pump() const { return na_k_pump_; }
 
 private:
   void init_cell();
