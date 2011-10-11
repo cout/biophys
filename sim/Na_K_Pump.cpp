@@ -1,6 +1,7 @@
 #include "Na_K_Pump.hpp"
 #include "Ions.hpp"
 #include "Cell.hpp"
+#include "util.hpp"
 
 #include <cstdlib>
 #include <cmath>
@@ -17,9 +18,7 @@ Na_K_Pump(double ratio)
 bool
 Na_K_Pump::
 pass_ion(Sodium_Ion const & ion, bool dst_is_inside)
-{
-  if (!dst_is_inside)
-  {
+{ if (!dst_is_inside) {
     return pass_sodium_out();
   }
   else
@@ -42,15 +41,15 @@ pass_ion(Potassium_Ion const & ion, bool dst_is_inside)
   }
 }
 
-bool pass_ion(Potassium_Ion const & ion, bool dst_is_inside);
+#include <iostream>
 
 bool
 Na_K_Pump::
 pass_sodium_out()
 {
   double sodium_expected = potassium_passed_in_ / ratio_;
-  double r = std::log(sodium_expected - sodium_passed_out_);
-  bool passed = std::rand() < r;
+  double r = std::log(2 + sodium_expected - sodium_passed_out_);
+  bool passed = random_double() < r;
   sodium_passed_out_ += (passed ? 1 : 0);
   return passed;
 }
@@ -61,8 +60,8 @@ Na_K_Pump::
 pass_potassium_in()
 {
   double potassium_expected = ratio_ * sodium_passed_out_;
-  double r = std::log(potassium_expected - potassium_passed_in_);
-  bool passed = std::rand() < r;
+  double r = std::log(2 + potassium_expected - potassium_passed_in_);
+  bool passed = random_double() < r;
   potassium_passed_in_ += (passed ? 1 : 0);
   return passed;
 }
