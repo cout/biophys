@@ -16,6 +16,10 @@ try_walk(Ion_T & ion, Point dest)
     {
       goto walk;
     }
+    else if (na_k_pump_.pass_ion(ion, dst_is_inside))
+    {
+      goto walk;
+    }
     else
     {
       return;
