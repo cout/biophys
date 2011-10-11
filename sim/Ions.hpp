@@ -8,6 +8,7 @@
 
 class Ion_Characteristics;
 
+template <typename Ion_T>
 class Ions
 {
 public:
@@ -20,9 +21,9 @@ public:
       double max_movement,
       Ion_Characteristics & ion_characteristics);
 
-  typedef std::vector<Ion> Container;
-  typedef Container::iterator iterator;
-  typedef Container::const_iterator const_iterator;
+  typedef std::vector<Ion_T> Container;
+  typedef typename Container::iterator iterator;
+  typedef typename Container::const_iterator const_iterator;
 
   iterator begin() { return ions_.begin(); }
   const_iterator begin() const { return ions_.begin(); }
@@ -36,6 +37,8 @@ private:
   Texture texture_;
   Container ions_;
 };
+
+#include "Ions.ipp"
 
 #endif // Ions__hpp_
 

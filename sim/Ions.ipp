@@ -3,7 +3,8 @@
 #include "GL/gl.h"
 #include "GL/glext.h"
 
-Ions::
+template <typename Ion_T>
+Ions<Ion_T>::
 Ions(
     Texture texture,
     size_t n)
@@ -12,8 +13,9 @@ Ions(
 {
 }
 
+template <typename Ion_T>
 void
-Ions::
+Ions<Ion_T>::
 random_walk(
     System const & system,
     double max_movement,
@@ -28,8 +30,9 @@ random_walk(
   }
 }
 
+template <typename Ion_T>
 void
-Ions::
+Ions<Ion_T>::
 draw()
 {
   glPushAttrib(GL_TEXTURE_BIT | GL_ENABLE_BIT);

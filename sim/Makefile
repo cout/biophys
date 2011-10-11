@@ -1,7 +1,6 @@
 OBJS = \
 	main.o \
 	Ion.o \
-	Ions.o \
 	Cell.o \
 	System.o \
 	Na_K_Pump.o \
@@ -9,6 +8,8 @@ OBJS = \
 	util.o
 
 CFLAGS = -Wall -g -DGL_GLEXT_PROTOTYPES
+
+CXXFLAGS = -std=c++0x
 
 LDFLAGS = -lSOIL -lGL -lGLU -lglut -lm
 

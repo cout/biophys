@@ -62,34 +62,38 @@ void
 System::
 init_ions()
 {
-  // Put sodium ions outside the cell
-  Ions::iterator it(sodium_.begin());
-  Ions::iterator end(sodium_.end());
-
-  for (; it != end; ++it)
   {
-    Point p = random_insphere(cell_.radius, outer_limit_.radius);
+    // Put sodium ions outside the cell
+    auto it(sodium_.begin());
+    auto end(sodium_.end());
 
-    it->x = cell_.x + p.x;
-    it->y = cell_.y + p.y;
-    it->z = cell_.z + p.z;
+    for (; it != end; ++it)
+    {
+      Point p = random_insphere(cell_.radius, outer_limit_.radius);
 
-    ++cell_.sodium_characteristics.ions_outside_cell;
+      it->x = cell_.x + p.x;
+      it->y = cell_.y + p.y;
+      it->z = cell_.z + p.z;
+
+      ++cell_.sodium_characteristics.ions_outside_cell;
+    }
   }
 
-  // Put potassium ions inside the cell
-  it = potassium_.begin();
-  end = potassium_.end();
-
-  for (; it != end; ++it)
   {
-    Point p = random_insphere(0, cell_.radius);
+    // Put potassium ions inside the cell
+    auto it = potassium_.begin();
+    auto end = potassium_.end();
 
-    it->x = cell_.x + p.x;
-    it->y = cell_.y + p.y;
-    it->z = cell_.z + p.z;
+    for (; it != end; ++it)
+    {
+      Point p = random_insphere(0, cell_.radius);
 
-    ++cell_.potassium_characteristics.ions_inside_cell;
+      it->x = cell_.x + p.x;
+      it->y = cell_.y + p.y;
+      it->z = cell_.z + p.z;
+
+      ++cell_.potassium_characteristics.ions_inside_cell;
+    }
   }
 }
 
