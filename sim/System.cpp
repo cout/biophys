@@ -53,6 +53,10 @@ init_cell()
   cell_.potassium_inside = 0;
   cell_.potassium_outside = 0;
   cell_.membrane_voltage = -70e-3; // volts
+
+  // TODO: normally membrane capacitance is measured in uF/cm².  But we
+  // want farads instead.  I'm not sure if this is the right value for
+  // the capacitance of our cell.
   cell_.membrane_capacitance = 1e-6; // farads
 }
 
