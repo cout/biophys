@@ -40,6 +40,15 @@ reset()
   init_temp();
 }
 
+//                                      Interstitial     Glial
+//                            Neuron      Fluid       Compartment
+// Membrane potential, mV      -69.1         0.0        -87.7
+// Na+ concentration, mM        10.0       140.0         30.0
+// K+ concentration, mM        133.5         3.5        113.5
+// Cl- concentration, mM        10.4       143.5          4.8
+// A- concentration, mM        133.1         0.0        138.7
+// Relative volume               1.0         0.15        10.0
+
 void
 System::
 init_cell()
