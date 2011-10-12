@@ -25,9 +25,11 @@ public:
       System & system,
       double max_movement);
 
+  static double const ELEMENTARY_CHARGE = 1.602176565e-19;
+
   double charge() const
   {
-    return double(Charge);
+    return Charge * ELEMENTARY_CHARGE;
   }
 };
 
