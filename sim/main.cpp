@@ -200,7 +200,7 @@ void draw_legend()
   {
     glRasterPos2f(2, height-180);
     std::stringstream strm;
-    strm << "Charge outside cell: " << the_system->cell().charge_inside;
+    strm << "Charge outside cell: " << the_system->cell().charge_outside;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
