@@ -52,8 +52,8 @@ init_cell()
   cell_.sodium_outside = 0;
   cell_.potassium_inside = 0;
   cell_.potassium_outside = 0;
-  cell_.membrane_voltage = -0.070; // volts
-  cell_.membrane_capacitance = 0.00001; // farads
+  cell_.membrane_voltage = -70e-3; // volts
+  cell_.membrane_capacitance = 1e-6; // farads
 }
 
 void
