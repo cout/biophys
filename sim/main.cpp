@@ -193,14 +193,7 @@ void draw_legend()
   {
     glRasterPos2f(2, height-160);
     std::stringstream strm;
-    strm << "Charge inside cell: " << the_system->cell().charge_inside;
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
-  }
-
-  {
-    glRasterPos2f(2, height-180);
-    std::stringstream strm;
-    strm << "Charge outside cell: " << the_system->cell().charge_outside;
+    strm << "Cell net charge: " << the_system->cell().net_charge;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
