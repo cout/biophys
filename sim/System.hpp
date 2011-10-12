@@ -29,6 +29,7 @@ public:
 
 private:
   void init_cell();
+  void init_outer_limit();
   void init_ions();
   void init_temp();
 

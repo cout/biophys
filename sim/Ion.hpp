@@ -16,7 +16,7 @@ public:
   }
 };
 
-template<typename Derived_T>
+template<typename Derived_T, int Charge>
 class Ion_T
   : public Ion
 {
@@ -24,15 +24,20 @@ public:
   void random_walk(
       System & system,
       double max_movement);
+
+  double charge() const
+  {
+    return double(Charge);
+  }
 };
 
 class Sodium_Ion
-  : public Ion_T<Sodium_Ion>
+  : public Ion_T<Sodium_Ion, 1>
 {
 };
 
 class Potassium_Ion
-  : public Ion_T<Potassium_Ion>
+  : public Ion_T<Potassium_Ion, 1>
 {
 };
 

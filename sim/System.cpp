@@ -35,6 +35,7 @@ System::
 reset()
 {
   init_cell();
+  init_outer_limit();
   init_ions();
   init_temp();
 }
@@ -47,7 +48,18 @@ init_cell()
   cell_.y = 0.0;
   cell_.z = 0.0;
   cell_.radius = 1.0;
+  cell_.sodium_inside = 0;
+  cell_.sodium_outside = 0;
+  cell_.potassium_inside = 0;
+  cell_.potassium_outside = 0;
+  cell_.membrane_voltage = -0.070; // volts
+  cell_.membrane_capacitance = 0.00001; // farads
+}
 
+void
+System::
+init_outer_limit()
+{
   outer_limit_.x = 0.0;
   outer_limit_.y = 0.0;
   outer_limit_.z = 0.0;
@@ -71,7 +83,7 @@ init_ions()
       it->y = cell_.y + p.y;
       it->z = cell_.z + p.z;
 
-      ++cell_.sodium_outside;
+      cell_.put_outside(*it);
     }
   }
 
@@ -88,7 +100,7 @@ init_ions()
       it->y = cell_.y + p.y;
       it->z = cell_.z + p.z;
 
-      ++cell_.potassium_inside;
+      cell_.put_inside(*it);
     }
   }
 }

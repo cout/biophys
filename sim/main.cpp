@@ -144,42 +144,63 @@ void draw_legend()
   {
     glRasterPos2f(2, height-20);
     std::stringstream strm;
-    strm << "Sodium inside: " << the_system->cell().sodium_inside;
+    strm << "Membrane voltage: " << the_system->cell().membrane_voltage * 1000;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
   {
     glRasterPos2f(2, height-40);
     std::stringstream strm;
-    strm << "Sodium outside: " << the_system->cell().sodium_outside;
+    strm << "Sodium inside: " << the_system->cell().sodium_inside;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
   {
     glRasterPos2f(2, height-60);
     std::stringstream strm;
-    strm << "Potassium inside: " << the_system->cell().potassium_inside;
+    strm << "Sodium outside: " << the_system->cell().sodium_outside;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
   {
     glRasterPos2f(2, height-80);
     std::stringstream strm;
-    strm << "Potassium outside: " << the_system->cell().potassium_outside;
+    strm << "Potassium inside: " << the_system->cell().potassium_inside;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
   {
     glRasterPos2f(2, height-100);
     std::stringstream strm;
-    strm << "Sodium pumped: " << the_system->na_k_pump().sodium_pumped();
+    strm << "Potassium outside: " << the_system->cell().potassium_outside;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
   {
     glRasterPos2f(2, height-120);
     std::stringstream strm;
+    strm << "Sodium pumped: " << the_system->na_k_pump().sodium_pumped();
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
+  {
+    glRasterPos2f(2, height-140);
+    std::stringstream strm;
     strm << "Potassium pumped: " << the_system->na_k_pump().potassium_pumped();
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
+  {
+    glRasterPos2f(2, height-160);
+    std::stringstream strm;
+    strm << "Charge inside cell: " << the_system->cell().charge_inside;
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
+  {
+    glRasterPos2f(2, height-180);
+    std::stringstream strm;
+    strm << "Charge outside cell: " << the_system->cell().charge_inside;
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 

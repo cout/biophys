@@ -26,7 +26,7 @@ texture(std::string const & filename)
           filename.c_str(),
           SOIL_LOAD_RGBA,
           SOIL_CREATE_NEW_ID,
-          SOIL_FLAG_MIPMAPS | SOIL_FLAG_POWER_OF_TWO));
+          SOIL_FLAG_POWER_OF_TWO));
 
   if (texture.texture == 0)
   {
