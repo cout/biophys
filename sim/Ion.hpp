@@ -29,7 +29,7 @@ public:
 
   double charge() const
   {
-    return Charge * ELEMENTARY_CHARGE;
+    return 10 * Charge * ELEMENTARY_CHARGE;
   }
 };
 

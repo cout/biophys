@@ -12,6 +12,7 @@ CFLAGS += -Wall
 CFLAGS += -g
 CFLAGS += -DGL_GLEXT_PROTOTYPES
 CFLAGS += -O3
+# CFLAGS += -fno-inline
 CFLAGS += -msse
 CFLAGS += -msse2
 CFLAGS += -mfpmath=sse

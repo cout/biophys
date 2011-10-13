@@ -18,8 +18,8 @@ public:
   double membrane_voltage;
   double membrane_capacitance;
 
-  double permeability(Sodium_Ion const &) const { return 0.4; }
-  double permeability(Potassium_Ion const &) const { return 0.4; }
+  double permeability(Sodium_Ion const &) const { return 0.1; }
+  double permeability(Potassium_Ion const &) const { return 0.1; }
 
   void charge_changed(double delta)
   {
