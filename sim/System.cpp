@@ -24,7 +24,7 @@ System()
   , cell_()
   , outer_limit_()
   , sodium_(particle_texture_, 10000)
-  , potassium_(particle_texture_, 1000)
+  , potassium_(particle_texture_, 10000)
   , na_k_pump_()
 {
   reset();

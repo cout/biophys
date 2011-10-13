@@ -31,49 +31,41 @@ public:
   void put_inside(Sodium_Ion const & ion)
   {
     ++sodium_inside;
-    charge_changed(ion.charge());
   }
 
   void remove_inside(Sodium_Ion const & ion)
   {
     --sodium_inside;
-    charge_changed(-ion.charge());
   }
 
   void put_inside(Potassium_Ion const & ion)
   {
     ++potassium_inside;
-    charge_changed(ion.charge());
   }
 
   void remove_inside(Potassium_Ion const & ion)
   {
     --potassium_inside;
-    charge_changed(-ion.charge());
   }
 
   void put_outside(Sodium_Ion const & ion)
   {
     ++sodium_outside;
-    charge_changed(ion.charge());
   }
 
   void remove_outside(Sodium_Ion const & ion)
   {
     --sodium_outside;
-    charge_changed(-ion.charge());
   }
 
   void put_outside(Potassium_Ion const & ion)
   {
     ++potassium_outside;
-    charge_changed(ion.charge());
   }
 
   void remove_outside(Potassium_Ion const & ion)
   {
     --potassium_outside;
-    charge_changed(ion.charge());
   }
 
   template<typename Ion_T>
@@ -81,6 +73,7 @@ public:
   {
     this->remove_outside(ion);
     this->put_inside(ion);
+    charge_changed(ion.charge());
   }
 
   template<typename Ion_T>
@@ -88,6 +81,7 @@ public:
   {
     this->remove_inside(ion);
     this->put_outside(ion);
+    charge_changed(-ion.charge());
   }
 };
 
