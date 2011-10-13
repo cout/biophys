@@ -8,6 +8,7 @@ try_walk(Ion_T & ion, Point dest)
   bool src_is_inside(is_inside_sphere(ion, cell_));
   bool dst_is_inside(is_inside_sphere(dest, cell_));
 
+  // Optimization for intracellular movement
   if (src_is_inside && dst_is_inside)
   {
     goto walk;

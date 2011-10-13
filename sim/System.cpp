@@ -23,8 +23,8 @@ System()
   , particle_texture_(texture_loader_.texture("particle.png"))
   , cell_()
   , outer_limit_()
-  , sodium_(particle_texture_, 20000)
-  , potassium_(particle_texture_, 20000)
+  , sodium_(particle_texture_, 30000)
+  , potassium_(particle_texture_, 30000)
   , na_k_pump_()
 {
   reset();

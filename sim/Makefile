@@ -7,6 +7,7 @@ OBJS = \
 	Texture_Loader.o \
 	util.o
 
+CFLAGS += -I/usr/include/freetype2
 CFLAGS += -Wall
 CFLAGS += -g
 CFLAGS += -DGL_GLEXT_PROTOTYPES
@@ -19,6 +20,7 @@ CFLAGS += -mfpmath=sse
 CXXFLAGS = -std=c++0x
 
 LDFLAGS += -lSOIL
+LDFLAGS += -lftgl
 LDFLAGS += -lGL
 LDFLAGS += -lGLU
 LDFLAGS += -lglut

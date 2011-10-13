@@ -1,6 +1,7 @@
 #include "System.hpp"
 
 #include <GL/glut.h>
+#include <FTGL/ftgl.h>
 // #include <GL/glc.h>
 
 #include <iostream>
@@ -8,6 +9,7 @@
 #include <cmath>
 #include <memory>
 #include <sstream>
+#include <stdexcept>
 
 #include <sys/time.h>
 
@@ -18,6 +20,8 @@ std::auto_ptr<System> the_system;
 
 // GLint glc_context;
 // GLint glc_font;
+
+std::auto_ptr<FTFont> font;
 
 double rotate_x = 0.0;
 double rotate_y = 90.0;
@@ -54,6 +58,12 @@ void init_fonts()
   // glc_font = glcGenFontID();
   // glcNewFontFromFamily(glc_font, "Palatino");
   // glcFontFace(glc_font, "Normal");
+  font.reset(new FTGLTextureFont("/usr/share/fonts/truetype/msttcorefonts/Arial.ttf"));
+  if (font->Error())
+  {
+    throw std::runtime_error("could not load font");
+  }
+  font->FaceSize(18);
 }
 
 void init()
@@ -83,22 +93,6 @@ void init()
   init_fonts();
   the_system.reset(new System);
   the_system->reset();
-}
-
-void render_stroke_text(void * font, char const * text)
-{
-  for(; *text != '\0'; ++text)
-  {
-    glutStrokeCharacter(font, *text);
-  }
-}
-
-void render_bitmap_text(void * font, char const * text)
-{
-  for(; *text != '\0'; ++text)
-  {
-    glutBitmapCharacter(font, *text);
-  }
 }
 
 void draw_world()
@@ -150,67 +144,69 @@ void draw_legend()
 
   glColor4f(0.8, 0.9, 0.9, 1.0);
 
+  glTranslatef(2, height, 0);
+
   {
-    glRasterPos2f(2, height-20);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "Membrane voltage: " << the_system->cell().membrane_voltage * 1000;
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   {
-    glRasterPos2f(2, height-40);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "Sodium inside: " << the_system->cell().sodium_inside;
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   {
-    glRasterPos2f(2, height-60);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "Sodium outside: " << the_system->cell().sodium_outside;
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   {
-    glRasterPos2f(2, height-80);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "Potassium inside: " << the_system->cell().potassium_inside;
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   {
-    glRasterPos2f(2, height-100);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "Potassium outside: " << the_system->cell().potassium_outside;
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   {
-    glRasterPos2f(2, height-120);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "Sodium pumped: " << the_system->na_k_pump().sodium_pumped();
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   {
-    glRasterPos2f(2, height-140);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "Potassium pumped: " << the_system->na_k_pump().potassium_pumped();
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   {
-    glRasterPos2f(2, height-160);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "Cell net charge: " << the_system->cell().net_charge;
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   {
-    glRasterPos2f(2, height-180);
+    glTranslatef(0, -20, 0);
     std::stringstream strm;
     strm << "FPS: " << (1.0 / t);
-    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+    ::font->Render(strm.str().c_str());
   }
 
   glPopAttrib();
