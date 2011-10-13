@@ -64,6 +64,7 @@ void init_fonts()
     throw std::runtime_error("could not load font");
   }
   font->FaceSize(18);
+  font->UseDisplayList(true);
 }
 
 void init()
