@@ -5,8 +5,8 @@ void
 System::
 try_walk(Ion_T & ion, Point dest)
 {
-  bool src_is_inside(is_inside_sphere(ion, cell_, cell_.radius));
-  bool dst_is_inside(is_inside_sphere(dest, cell_, cell_.radius));
+  bool src_is_inside(is_inside_sphere(ion, cell_));
+  bool dst_is_inside(is_inside_sphere(dest, cell_));
 
   if (src_is_inside && dst_is_inside)
   {
@@ -32,7 +32,7 @@ try_walk(Ion_T & ion, Point dest)
   }
 
   // Crossing the outer limit happens with zero probability
-  if (ray_intersects_sphere(ion, dest, outer_limit_, outer_limit_.radius))
+  if (ray_intersects_sphere(ion, dest, outer_limit_))
   {
     return;
   }

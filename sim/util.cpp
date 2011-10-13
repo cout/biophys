@@ -86,19 +86,19 @@ Point random_insphere(double rmin, double rmax)
 }
 
 // thanks, eiffel :)
-bool is_inside_sphere(Point p, Point sc, double r)
+bool is_inside_sphere(Point p, Sphere s)
 {
-  p.x -= sc.x;
-  p.y -= sc.y;
-  p.z -= sc.z;
+  p.x -= s.x;
+  p.y -= s.y;
+  p.z -= s.z;
 
-  return p.x*p.x + p.y*p.y + p.z*p.z < r*r;
+  return p.x*p.x + p.y*p.y + p.z*p.z < s.radius*s.radius;
 }
 
-bool ray_intersects_sphere(Point p1, Point p2, Point sc, double r)
+bool ray_intersects_sphere(Point p1, Point p2, Sphere s)
 {
-  bool p1_inside = is_inside_sphere(p1, sc, r);
-  bool p2_inside = is_inside_sphere(p2, sc, r);
+  bool p1_inside = is_inside_sphere(p1, s);
+  bool p2_inside = is_inside_sphere(p2, s);
 
   return (p1_inside != p2_inside);
 }
