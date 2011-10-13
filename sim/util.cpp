@@ -47,11 +47,18 @@ double random_double()
   return double(xor128()) / (0xffffffff);
 }
 
+// http://stackoverflow.com/questions/3380628/fast-arc-cos-algorithm
+double fast_acos(double x)
+{
+  return (-0.69813170079773212 * x * x - 0.87266462599716477) * x + 1.5707963267948966;
+}
+
 // http://permalink.gmane.org/gmane.games.devel.algorithms/19227
 Point random_onsphere(double r)
 {
   double theta = M_PI * 2 * random_double();
-  double phi = std::acos(1.0 - 2 * random_double());
+  // double phi = std::acos(1.0 - 2 * random_double());
+  double phi = fast_acos(1.0 - 2 * random_double());
 
   double sp = std::sin(phi) * r;
   double x = std::cos(theta) * sp * r;
