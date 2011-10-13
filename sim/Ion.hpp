@@ -14,6 +14,8 @@ public:
     : Point(0, 0, 0)
   {
   }
+
+  bool is_inside_cell;
 };
 
 template<typename Derived_T, int Charge>

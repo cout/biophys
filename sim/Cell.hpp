@@ -28,48 +28,52 @@ public:
     membrane_voltage += delta / membrane_capacitance / surface_area_in_cm2;
   }
 
-  void put_inside(Sodium_Ion const & ion)
+  void put_inside(Sodium_Ion & ion)
   {
     ++sodium_inside;
+    ion.is_inside_cell = true;
   }
 
-  void remove_inside(Sodium_Ion const & ion)
+  void remove_inside(Sodium_Ion & ion)
   {
     --sodium_inside;
   }
 
-  void put_inside(Potassium_Ion const & ion)
+  void put_inside(Potassium_Ion & ion)
   {
     ++potassium_inside;
+    ion.is_inside_cell = true;
   }
 
-  void remove_inside(Potassium_Ion const & ion)
+  void remove_inside(Potassium_Ion & ion)
   {
     --potassium_inside;
   }
 
-  void put_outside(Sodium_Ion const & ion)
+  void put_outside(Sodium_Ion & ion)
   {
     ++sodium_outside;
+    ion.is_inside_cell = false;
   }
 
-  void remove_outside(Sodium_Ion const & ion)
+  void remove_outside(Sodium_Ion & ion)
   {
     --sodium_outside;
   }
 
-  void put_outside(Potassium_Ion const & ion)
+  void put_outside(Potassium_Ion & ion)
   {
     ++potassium_outside;
+    ion.is_inside_cell = false;
   }
 
-  void remove_outside(Potassium_Ion const & ion)
+  void remove_outside(Potassium_Ion & ion)
   {
     --potassium_outside;
   }
 
   template<typename Ion_T>
-  void move_inside(Ion_T const & ion)
+  void move_inside(Ion_T & ion)
   {
     this->remove_outside(ion);
     this->put_inside(ion);
@@ -77,7 +81,7 @@ public:
   }
 
   template<typename Ion_T>
-  void move_outside(Ion_T const & ion)
+  void move_outside(Ion_T & ion)
   {
     this->remove_inside(ion);
     this->put_outside(ion);

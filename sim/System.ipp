@@ -5,7 +5,7 @@ void
 System::
 try_walk(Ion_T & ion, Point dest)
 {
-  bool src_is_inside(is_inside_sphere(ion, cell_));
+  bool src_is_inside(ion.is_inside_cell);
   bool dst_is_inside(is_inside_sphere(dest, cell_));
 
   // Optimization for intracellular movement
