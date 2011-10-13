@@ -9,6 +9,8 @@
 #include <memory>
 #include <sstream>
 
+#include <sys/time.h>
+
 namespace
 {
 
@@ -25,6 +27,8 @@ int height = 500;
 
 bool paused = true;
 bool rotating = true;
+
+struct timeval last_time;
 
 void init_lighting()
 {
@@ -126,6 +130,11 @@ void draw_legend()
   glPopMatrix();
 #endif
 
+  struct timeval tv;
+  gettimeofday(&tv, 0);
+  double t = (tv.tv_sec - last_time.tv_sec) + (tv.tv_usec - last_time.tv_usec) / 1000000.0;
+  last_time = tv;
+
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
@@ -194,6 +203,13 @@ void draw_legend()
     glRasterPos2f(2, height-160);
     std::stringstream strm;
     strm << "Cell net charge: " << the_system->cell().net_charge;
+    render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
+  }
+
+  {
+    glRasterPos2f(2, height-180);
+    std::stringstream strm;
+    strm << "FPS: " << (1.0 / t);
     render_bitmap_text(GLUT_BITMAP_HELVETICA_18, strm.str().c_str());
   }
 
