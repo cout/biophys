@@ -5,6 +5,7 @@
 #include <limits>
 #include <cstdint>
 
+// I have not been able to find a suitable RNG faster than this one:
 // http://en.wikipedia.org/wiki/Xorshift
 uint32_t xor128(void) {
   static uint32_t x = 123456789;
@@ -16,6 +17,12 @@ uint32_t xor128(void) {
   t = x ^ (x << 11);
   x = y; y = z; z = w;
   return w = w ^ (w >> 19) ^ (t ^ (t >> 8));
+}
+
+double random_double()
+{
+  // return double(std::rand()) / RAND_MAX;
+  return double(xor128()) / (0xffffffff);
 }
 
 // http://metamerist.com/cbrt/cbrt.htm
@@ -39,12 +46,6 @@ double cbrt_5d(double d)
   ut.d = 0.0;
   ut.p.p1 = (ud.p.p1 / 3) + B1;
   return ut.d;
-}
-
-double random_double()
-{
-  // return double(std::rand()) / RAND_MAX;
-  return double(xor128()) / (0xffffffff);
 }
 
 // http://stackoverflow.com/questions/3380628/fast-arc-cos-algorithm

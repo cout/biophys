@@ -16,6 +16,11 @@ CFLAGS += -msse
 CFLAGS += -msse2
 CFLAGS += -mfpmath=sse
 # CFLAGS += -flto
+# CFLAGS += -ffast-math
+CFLAGS += -funsafe-math-optimizations
+CFLAGS += -ffinite-math-only
+CFLAGS += -fno-trapping-math
+CFLAGS += -mrecip
 
 CXXFLAGS = -std=c++0x
 
