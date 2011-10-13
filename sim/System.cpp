@@ -72,7 +72,7 @@ init_outer_limit()
   outer_limit_.x = 0.0;
   outer_limit_.y = 0.0;
   outer_limit_.z = 0.0;
-  outer_limit_.radius = 2.0;
+  outer_limit_.radius = 1.25;
 }
 
 void
