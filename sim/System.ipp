@@ -19,11 +19,11 @@ try_walk(Ion_T & ion, Point dest)
   {
     if(random_double() < cell_.permeability(ion))
     {
-      goto walk;
+      goto crosswalk;
     }
     else if (na_k_pump_.pass_ion(ion, dst_is_inside))
     {
-      goto walk;
+      goto crosswalk;
     }
     else
     {
@@ -37,19 +37,19 @@ try_walk(Ion_T & ion, Point dest)
     return;
   }
 
+  goto walk;
+
+crosswalk:
+  if (dst_is_inside)
+  {
+    cell_.move_inside(ion);
+  }
+  else
+  {
+    cell_.move_outside(ion);
+  }
+
 walk:
   ion.move_to(dest);
-
-  if (src_is_inside != dst_is_inside)
-  {
-    if (dst_is_inside)
-    {
-      cell_.move_inside(ion);
-    }
-    else
-    {
-      cell_.move_outside(ion);
-    }
-  }
 }
 
