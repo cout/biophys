@@ -8,6 +8,11 @@ try_walk(Ion_T & ion, Point dest)
   bool src_is_inside(is_inside_sphere(ion, cell_, cell_.radius));
   bool dst_is_inside(is_inside_sphere(dest, cell_, cell_.radius));
 
+  if (src_is_inside && dst_is_inside)
+  {
+    goto walk;
+  }
+
   // Crossing the cell membrane happens with a probability equal to the
   // permeability
   if (src_is_inside != dst_is_inside)
