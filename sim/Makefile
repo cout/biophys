@@ -7,7 +7,7 @@ OBJS = \
 	Texture_Loader.o \
 	util.o
 
-CFLAGS = -Wall -g -DGL_GLEXT_PROTOTYPES
+CFLAGS = -Wall -g -DGL_GLEXT_PROTOTYPES -O3
 
 CXXFLAGS = -std=c++0x
 
