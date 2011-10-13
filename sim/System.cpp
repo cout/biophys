@@ -23,8 +23,8 @@ System()
   , particle_texture_(texture_loader_.texture("particle.png"))
   , cell_()
   , outer_limit_()
-  , sodium_(particle_texture_, 10000)
-  , potassium_(particle_texture_, 10000)
+  , sodium_(particle_texture_, 20000)
+  , potassium_(particle_texture_, 20000)
   , na_k_pump_()
 {
   reset();
@@ -140,7 +140,7 @@ draw()
 
   glPushMatrix();
   glTranslatef(outer_limit_.x, outer_limit_.y, outer_limit_.z);
-  glutWireSphere(outer_limit_.radius, 50, 20);
+  // glutWireSphere(outer_limit_.radius, 40, 15);
   glPopMatrix();
 
   // -- Cell --
@@ -153,7 +153,7 @@ draw()
   glPushMatrix();
   glTranslatef(cell_.x, cell_.y, cell_.z);
   // glutSolidSphere(cell_.radius, 75, 50);
-  glutWireSphere(cell_.radius, 75, 50);
+  glutWireSphere(cell_.radius, 50, 25);
   glPopMatrix();
   // glEnable(GL_DEPTH_TEST);
 
