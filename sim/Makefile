@@ -7,11 +7,22 @@ OBJS = \
 	Texture_Loader.o \
 	util.o
 
-CFLAGS = -Wall -g -DGL_GLEXT_PROTOTYPES -O3 -msse -msse2 -mfpmath=sse
+CFLAGS += -Wall
+CFLAGS += -g
+CFLAGS += -DGL_GLEXT_PROTOTYPES
+CFLAGS += -O3
+CFLAGS += -msse
+CFLAGS += -msse2
+CFLAGS += -mfpmath=sse
+# CFLAGS += -flto
 
 CXXFLAGS = -std=c++0x
 
-LDFLAGS = -lSOIL -lGL -lGLU -lglut -lm
+LDFLAGS += -lSOIL
+LDFLAGS += -lGL
+LDFLAGS += -lGLU
+LDFLAGS += -lglut
+LDFLAGS += -lm
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CFLAGS) $(CXXFLAGS) -c $< -o $@
