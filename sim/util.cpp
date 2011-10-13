@@ -5,6 +5,7 @@
 #include <limits>
 #include <cstdint>
 
+// http://en.wikipedia.org/wiki/Xorshift
 uint32_t xor128(void) {
   static uint32_t x = 123456789;
   static uint32_t y = 362436069;
@@ -15,6 +16,29 @@ uint32_t xor128(void) {
   t = x ^ (x << 11);
   x = y; y = z; z = w;
   return w = w ^ (w >> 19) ^ (t ^ (t >> 8));
+}
+
+// http://metamerist.com/cbrt/cbrt.htm
+double cbrt_5d(double d)
+{
+  // const unsigned int B1 = 715094163;
+  // double t = 0.0;
+  // unsigned int* pt = (unsigned int*) &t;
+  // unsigned int* px = (unsigned int*) &d;
+  // pt[1] = px[1]/3 + B1;
+  // return t;
+  const unsigned int B1 = 715094163;
+  union U {
+    double d;
+    struct P {
+      unsigned int p0;
+      unsigned int p1;
+    } p;
+  } ud, ut;
+  ud.d = d;
+  ut.d = 0.0;
+  ut.p.p1 = (ud.p.p1 / 3) + B1;
+  return ut.d;
 }
 
 double random_double()
@@ -43,7 +67,8 @@ Point random_insphere(double rmin, double rmax)
 {
   Point p = random_onsphere(1.0);
 
-  double u = std::pow(random_double(), 1.0/3.0);
+  // double u = std::pow(random_double(), 1.0/3.0);
+  double u = cbrt_5d(random_double());
   double r = (rmax - rmin) * u + rmin;
 
   p.x *= r;
