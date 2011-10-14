@@ -186,7 +186,7 @@ void draw_graph()
 
   glColor4f(0.9, 0.9, 0.9, 1.0);
 
-  glScalef(1000, 1000, 1);
+  glScalef(2000, 1000, 1);
 
   voltage_graph->draw();
 
