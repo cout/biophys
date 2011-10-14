@@ -120,6 +120,14 @@ void draw_world(Time dt)
   the_system->draw();
 }
 
+#define WRITE_LINE(x) \
+{ \
+  glTranslatef(0, -20, 0); \
+  std::stringstream strm; \
+  strm << x; \
+  ::font->Render(strm.str().c_str()); \
+}
+
 void draw_legend(Time dt)
 {
   glMatrixMode(GL_PROJECTION);
@@ -139,68 +147,16 @@ void draw_legend(Time dt)
 
   glTranslatef(2, height, 0);
 
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "Membrane voltage: " << the_system->cell().membrane_voltage * 1000;
-    ::font->Render(strm.str().c_str());
-  }
-
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "Sodium inside: " << the_system->cell().sodium_inside;
-    ::font->Render(strm.str().c_str());
-  }
-
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "Sodium outside: " << the_system->cell().sodium_outside;
-    ::font->Render(strm.str().c_str());
-  }
-
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "Potassium inside: " << the_system->cell().potassium_inside;
-    ::font->Render(strm.str().c_str());
-  }
-
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "Potassium outside: " << the_system->cell().potassium_outside;
-    ::font->Render(strm.str().c_str());
-  }
-
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "Sodium pumped: " << the_system->na_k_pump().sodium_pumped();
-    ::font->Render(strm.str().c_str());
-  }
-
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "Potassium pumped: " << the_system->na_k_pump().potassium_pumped();
-    ::font->Render(strm.str().c_str());
-  }
-
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "Cell net charge: " << the_system->cell().net_charge;
-    ::font->Render(strm.str().c_str());
-  }
-
-  {
-    glTranslatef(0, -20, 0);
-    std::stringstream strm;
-    strm << "FPS: " << (1.0 / dt);
-    ::font->Render(strm.str().c_str());
-  }
+  WRITE_LINE("Time (ms): " << sim_time * 1000.0);
+  WRITE_LINE("Membrane voltage: " << the_system->cell().membrane_voltage * 1000);
+  WRITE_LINE("Sodium inside: " << the_system->cell().sodium_inside);
+  WRITE_LINE("Sodium outside: " << the_system->cell().sodium_outside);
+  WRITE_LINE("Potassium inside: " << the_system->cell().potassium_inside);
+  WRITE_LINE("Potassium outside: " << the_system->cell().potassium_outside);
+  WRITE_LINE("Sodium pumped: " << the_system->na_k_pump().sodium_pumped());
+  WRITE_LINE("Potassium pumped: " << the_system->na_k_pump().potassium_pumped());
+  WRITE_LINE("Cell net charge: " << the_system->cell().net_charge);
+  WRITE_LINE("FPS: " << (1.0 / dt));
 
   glPopAttrib();
 
@@ -231,14 +187,6 @@ void draw_graph()
   glColor4f(0.9, 0.9, 0.9, 1.0);
 
   glScalef(1000, 1000, 1);
-  // glTranslatef(2, 0, 0);
-
-  // {
-    // glTranslatef(0, -20, 0);
-    // std::stringstream strm;
-    // strm << "Potassium pumped: " << the_system->na_k_pump().potassium_pumped();
-    // ::font->Render(strm.str().c_str());
-  // }
 
   voltage_graph->draw();
 
