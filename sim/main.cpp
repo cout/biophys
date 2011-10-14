@@ -255,7 +255,7 @@ void reshape(int w, int h)
 void idle()
 {
   Time now(Time::now());
-  Time dt(now - last_run_time);
+  Time dt((now - last_run_time) / params.time_stretch);
   last_run_time = now;
 
   the_system->iterate(dt);

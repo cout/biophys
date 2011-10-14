@@ -16,7 +16,8 @@ class Parameters
 {
 public:
   Parameters()
-    : cell_center(0, 0, 0)
+    : time_stretch(1000.0)
+    , cell_center(0, 0, 0)
     , cell_radius(1.0)
     , outer_radius(1.25)
     , initial_membrane_voltage(-70e-3)
@@ -26,10 +27,12 @@ public:
     , initial_sodium_out(30000)
     , initial_potassium_in(30000)
     , initial_potassium_out(0)
-    , sodium_velocity(0.1)
-    , potassium_velocity(0.1)
+    , sodium_velocity(100.0)
+    , potassium_velocity(100.0)
   {
   }
+
+  double time_stretch;
 
   Point cell_center; // micrometers
   double cell_radius; // micrometers
