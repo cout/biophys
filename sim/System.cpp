@@ -55,10 +55,10 @@ init_cell()
   cell_.y = params_.cell_center.y;
   cell_.z = params_.cell_center.z;
   cell_.radius = params_.cell_radius;
-  cell_.sodium_inside = params_.initial_sodium_in;
-  cell_.sodium_outside = params_.initial_sodium_out;
-  cell_.potassium_inside = params_.initial_potassium_in;
-  cell_.potassium_outside = params_.initial_potassium_out;
+  cell_.sodium_inside = 0;
+  cell_.sodium_outside = 0;
+  cell_.potassium_inside = 0;
+  cell_.potassium_outside = 0;
   cell_.membrane_voltage = params_.initial_membrane_voltage;
   cell_.membrane_capacitance = params_.membrane_capacitance;
 }
