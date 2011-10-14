@@ -1,6 +1,7 @@
 #include "System.hpp"
 #include "Time.hpp"
 #include "Parameters.hpp"
+#include "Graph.hpp"
 
 #include <GL/glut.h>
 #include <FTGL/ftgl.h>
@@ -19,6 +20,8 @@ namespace
 Parameters params;
 std::auto_ptr<System> the_system;
 
+std::auto_ptr<Graph> voltage_graph;
+
 // GLint glc_context;
 // GLint glc_font;
 
@@ -35,6 +38,7 @@ bool rotating = true;
 
 Time last_display_time;
 Time last_run_time;
+Time sim_time;
 
 void init_lighting()
 {
@@ -97,6 +101,8 @@ void init()
 
   the_system.reset(new System(params));
   the_system->reset();
+
+  voltage_graph.reset(new Graph);
 }
 
 void draw_world(Time dt)
@@ -253,6 +259,9 @@ void idle()
   last_run_time = now;
 
   the_system->iterate(dt);
+
+  sim_time = sim_time + dt;
+  voltage_graph->add_point(sim_time, the_system->cell().membrane_voltage);
 
   if (rotating)
   {

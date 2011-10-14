@@ -5,6 +5,7 @@ OBJS = \
 	System.o \
 	Na_K_Pump.o \
 	Texture_Loader.o \
+	Graph.o \
 	util.o
 
 CFLAGS += -I/usr/include/freetype2
