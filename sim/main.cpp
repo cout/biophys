@@ -16,6 +16,7 @@
 namespace
 {
 
+Parameters params;
 std::auto_ptr<System> the_system;
 
 // GLint glc_context;
@@ -92,7 +93,8 @@ void init()
 
   init_lighting();
   init_fonts();
-  the_system.reset(new System);
+
+  the_system.reset(new System(params));
   the_system->reset();
 }
 

@@ -1,6 +1,7 @@
 #ifndef System__hpp_
 #define System__hpp_
 
+#include "Parameters.hpp"
 #include "Texture_Loader.hpp"
 #include "Texture.hpp"
 #include "Cell.hpp"
@@ -8,12 +9,10 @@
 #include "Point.hpp"
 #include "Na_K_Pump.hpp"
 
-class Ion_Characteristics;
-
 class System
 {
 public:
-  System();
+  System(Parameters const & params);
 
   void reset();
   void iterate();
@@ -21,8 +20,6 @@ public:
 
   template<typename Ion_T>
   void try_walk(Ion_T & ion, Point dest);
-
-  double voltage() const;
 
   Cell const & cell() const { return cell_; }
   Na_K_Pump const & na_k_pump() const { return na_k_pump_; }
@@ -34,6 +31,7 @@ private:
   void init_temp();
 
 private:
+  Parameters params_;
   Texture_Loader texture_loader_;
   Texture particle_texture_;
   Cell cell_;

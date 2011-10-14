@@ -2,6 +2,7 @@
 #include "Point.hpp"
 #include "util.hpp"
 #include "Ion_impl.hpp"
+#include "Parameters.hpp"
 
 #include <GL/glut.h>
 
@@ -16,13 +17,20 @@ Color potassium_color(1.0, 0.5, 0.5, 1.0);
 }
 
 System::
-System()
-  : texture_loader_()
+System(Parameters const & params)
+  : params_(params)
+  , texture_loader_()
   , particle_texture_(texture_loader_.texture("particle.png"))
   , cell_()
   , outer_limit_()
-  , sodium_(sodium_color, particle_texture_, 30000)
-  , potassium_(potassium_color, particle_texture_, 30000)
+  , sodium_(
+      sodium_color,
+      particle_texture_,
+      params_.initial_sodium_in + params_.initial_sodium_out)
+  , potassium_(
+      potassium_color,
+      particle_texture_,
+      params_.initial_potassium_in + params_.initial_potassium_out)
   , na_k_pump_()
 {
   reset();
@@ -38,39 +46,30 @@ reset()
   init_temp();
 }
 
-//                                      Interstitial     Glial
-//                            Neuron      Fluid       Compartment
-// Membrane potential, mV      -69.1         0.0        -87.7
-// Na+ concentration, mM        10.0       140.0         30.0
-// K+ concentration, mM        133.5         3.5        113.5
-// Cl- concentration, mM        10.4       143.5          4.8
-// A- concentration, mM        133.1         0.0        138.7
-// Relative volume               1.0         0.15        10.0
-
 void
 System::
 init_cell()
 {
-  cell_.x = 0.0;
-  cell_.y = 0.0;
-  cell_.z = 0.0;
-  cell_.radius = 1.0; // micrometers
-  cell_.sodium_inside = 0;
-  cell_.sodium_outside = 0;
-  cell_.potassium_inside = 0;
-  cell_.potassium_outside = 0;
-  cell_.membrane_voltage = -70e-3; // volts
-  cell_.membrane_capacitance = 1e-6; // farads / cm²
+  cell_.x = params_.cell_center.x;
+  cell_.y = params_.cell_center.y;
+  cell_.z = params_.cell_center.z;
+  cell_.radius = params_.cell_radius;
+  cell_.sodium_inside = params_.initial_sodium_in;
+  cell_.sodium_outside = params_.initial_sodium_out;
+  cell_.potassium_inside = params_.initial_potassium_in;
+  cell_.potassium_outside = params_.initial_potassium_out;
+  cell_.membrane_voltage = params_.initial_membrane_voltage;
+  cell_.membrane_capacitance = params_.membrane_capacitance;
 }
 
 void
 System::
 init_outer_limit()
 {
-  outer_limit_.x = 0.0;
-  outer_limit_.y = 0.0;
-  outer_limit_.z = 0.0;
-  outer_limit_.radius = 1.25;
+  outer_limit_.x = params_.cell_center.x;
+  outer_limit_.y = params_.cell_center.y;
+  outer_limit_.z = params_.cell_center.z;
+  outer_limit_.radius = params_.outer_radius;
 }
 
 void
@@ -116,7 +115,7 @@ void
 System::
 init_temp()
 {
-  temperature_ = 298; // K
+  temperature_ = params_.temperature;
 }
 
 void
@@ -158,12 +157,5 @@ draw()
   // -- Ions --
   sodium_.draw();
   potassium_.draw();
-}
-
-double
-System::
-voltage() const
-{
-  return 0.0; // TODO
 }
 
