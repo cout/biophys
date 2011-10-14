@@ -3,6 +3,7 @@
 #include "util.hpp"
 #include "Ion_impl.hpp"
 #include "Parameters.hpp"
+#include "Time.hpp"
 
 #include <GL/glut.h>
 
@@ -120,7 +121,7 @@ init_temp()
 
 void
 System::
-iterate()
+iterate(Time const & /* tv */)
 {
   sodium_.random_walk(*this, 0.01);
   potassium_.random_walk(*this, 0.01);

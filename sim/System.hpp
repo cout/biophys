@@ -9,13 +9,15 @@
 #include "Point.hpp"
 #include "Na_K_Pump.hpp"
 
+class Time;
+
 class System
 {
 public:
   System(Parameters const & params);
 
   void reset();
-  void iterate();
+  void iterate(Time const & tv);
   void draw();
 
   template<typename Ion_T>

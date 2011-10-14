@@ -33,7 +33,8 @@ int height = 500;
 bool paused = true;
 bool rotating = true;
 
-Time last_time;
+Time last_display_time;
+Time last_run_time;
 
 void init_lighting()
 {
@@ -221,8 +222,8 @@ void draw_legend(Time dt)
 void display()
 {
   Time now(Time::now());
-  Time dt(now - last_time);
-  last_time = now;
+  Time dt(now - last_display_time);
+  last_display_time = now;
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -231,7 +232,7 @@ void display()
 
   // -- Flush --
   glutSwapBuffers();
-  glFlush ();
+  glFlush();
 }
 
 void reshape(int w, int h)
@@ -247,7 +248,11 @@ void reshape(int w, int h)
 
 void idle()
 {
-  the_system->iterate();
+  Time now(Time::now());
+  Time dt(now - last_run_time);
+  last_run_time = now;
+
+  the_system->iterate(dt);
 
   if (rotating)
   {
