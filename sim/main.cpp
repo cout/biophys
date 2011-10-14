@@ -328,6 +328,8 @@ void motion(int x, int y)
 
 void go()
 {
+  last_run_time = Time::now();
+  last_display_time = Time::now();
   glutMainLoop();
 }
 
