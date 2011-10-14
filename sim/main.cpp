@@ -122,18 +122,6 @@ void draw_world(Time dt)
 
 void draw_legend(Time dt)
 {
-#if 0
-  glcContext(glc_context);
-  glcFont(glc_font);
-
-  glPushMatrix();
-  glcScale(12.0, 12.0);
-  glColor3f(1.0, 0.0, 1.0);
-  glRasterPos2f(50.0, 50.0);
-  glcRenderString("Hello");
-  glPopMatrix();
-#endif
-
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
@@ -225,6 +213,46 @@ void draw_legend(Time dt)
   glMatrixMode(GL_MODELVIEW);
 }
 
+void draw_graph()
+{
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  gluOrtho2D(0, width, -height, height);
+
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+
+  glPushAttrib(GL_ENABLE_BIT);
+  glDisable(GL_LIGHTING);
+  glDisable(GL_DEPTH_TEST);
+
+  glColor4f(0.9, 0.9, 0.9, 1.0);
+
+  glScalef(1000, 1000, 1);
+  // glTranslatef(2, 0, 0);
+
+  // {
+    // glTranslatef(0, -20, 0);
+    // std::stringstream strm;
+    // strm << "Potassium pumped: " << the_system->na_k_pump().potassium_pumped();
+    // ::font->Render(strm.str().c_str());
+  // }
+
+  voltage_graph->draw();
+
+  glPopAttrib();
+
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+
+  glMatrixMode(GL_MODELVIEW);
+}
+
 void display()
 {
   Time now(Time::now());
@@ -235,6 +263,7 @@ void display()
 
   draw_world(dt);
   draw_legend(dt);
+  draw_graph();
 
   // -- Flush --
   glutSwapBuffers();

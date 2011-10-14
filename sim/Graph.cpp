@@ -22,7 +22,8 @@ draw()
   auto it(values_.begin());
   auto end(values_.end());
 
-  glBegin(GL_LINES);
+  glPointSize(1.0);
+  glBegin(GL_POINTS);
   for(; it != end; ++it)
   {
     glVertex3d(it->first, it->second, 0);
