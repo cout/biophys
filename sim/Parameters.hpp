@@ -44,6 +44,9 @@ public:
   double initial_sodium_out;
   double initial_potassium_in;
   double initial_potassium_out;
+
+  double sodium_velocity;
+  double potassium_velocity;
 };
 
 #endif // Parameters__hpp

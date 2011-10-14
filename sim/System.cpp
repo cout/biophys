@@ -121,10 +121,10 @@ init_temp()
 
 void
 System::
-iterate(Time const & /* tv */)
+iterate(Time const & dt)
 {
-  sodium_.random_walk(*this, 0.01);
-  potassium_.random_walk(*this, 0.01);
+  sodium_.random_walk(*this, dt * 0.3);
+  potassium_.random_walk(*this, dt * 0.3);
 }
 
 void

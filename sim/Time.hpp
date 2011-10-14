@@ -21,7 +21,7 @@ public:
   {
   }
 
-  operator double() { return d_; }
+  operator double() const { return d_; }
 
   static Time now() {
     struct timeval tv;
