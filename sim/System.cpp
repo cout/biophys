@@ -123,8 +123,8 @@ void
 System::
 iterate(Time const & dt)
 {
-  sodium_.random_walk(*this, dt * 0.3);
-  potassium_.random_walk(*this, dt * 0.3);
+  sodium_.random_walk(*this, dt * params_.sodium_velocity);
+  potassium_.random_walk(*this, dt * params_.potassium_velocity);
 }
 
 void

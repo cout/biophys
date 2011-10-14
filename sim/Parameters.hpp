@@ -26,6 +26,8 @@ public:
     , initial_sodium_out(30000)
     , initial_potassium_in(30000)
     , initial_potassium_out(0)
+    , sodium_velocity(0.3)
+    , potassium_velocity(0.3)
   {
   }
 
