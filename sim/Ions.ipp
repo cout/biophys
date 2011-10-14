@@ -6,9 +6,11 @@
 template <typename Ion_T>
 Ions<Ion_T>::
 Ions(
+    Color color,
     Texture texture,
     size_t n)
-  : texture_(texture)
+  : color_(color)
+  , texture_(texture)
   , ions_(n)
 {
 }
@@ -46,6 +48,9 @@ draw()
 
   GLfloat quadratic[] = { 1.0, 0.0, 0.0 };
   glPointParameterfvARB(GL_POINT_DISTANCE_ATTENUATION_ARB, quadratic); // TODO: slow?
+
+  glDisable(GL_LIGHTING);
+  glColor4d(color_.r, color_.g, color_.b, color_.a);
 
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture_.texture);

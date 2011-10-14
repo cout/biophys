@@ -1,6 +1,7 @@
 #ifndef Ions__hpp_
 #define Ions__hpp_
 
+#include "Color.hpp"
 #include "Texture.hpp"
 #include "Ion.hpp"
 
@@ -11,6 +12,7 @@ class Ions
 {
 public:
   Ions(
+      Color color,
       Texture texture,
       size_t n);
 
@@ -31,6 +33,7 @@ public:
   void draw();
 
 private:
+  Color color_;
   Texture texture_;
   Container ions_;
 };

@@ -10,10 +10,8 @@
 namespace
 {
 
-GLfloat sodium_color[] = { 0.3f, 0.3f, 1.0f, 1.0f };
-GLfloat potassium_color[] = { 1.0f, 0.3f, 0.3f, 1.0f };
-// GLfloat sodium_color[] = { 0.3f, 0.3f, 1.0f, 1.0f };
-// GLfloat potassium_color[] = { 1.0f, 0.3f, 0.3f, 1.0f };
+Color sodium_color(0.5, 0.5, 1.0, 1.0);
+Color potassium_color(1.0, 0.5, 0.5, 1.0);
 
 }
 
@@ -23,8 +21,8 @@ System()
   , particle_texture_(texture_loader_.texture("particle.png"))
   , cell_()
   , outer_limit_()
-  , sodium_(particle_texture_, 30000)
-  , potassium_(particle_texture_, 30000)
+  , sodium_(sodium_color, particle_texture_, 30000)
+  , potassium_(potassium_color, particle_texture_, 30000)
   , na_k_pump_()
 {
   reset();
@@ -158,10 +156,7 @@ draw()
   // glEnable(GL_DEPTH_TEST);
 
   // -- Ions --
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, sodium_color);
   sodium_.draw();
-
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, potassium_color);
   potassium_.draw();
 }
 
