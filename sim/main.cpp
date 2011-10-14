@@ -1,4 +1,6 @@
 #include "System.hpp"
+#include "Time.hpp"
+#include "Parameters.hpp"
 
 #include <GL/glut.h>
 #include <FTGL/ftgl.h>
@@ -10,8 +12,6 @@
 #include <memory>
 #include <sstream>
 #include <stdexcept>
-
-#include <sys/time.h>
 
 namespace
 {
@@ -33,7 +33,7 @@ int height = 500;
 bool paused = true;
 bool rotating = true;
 
-struct timeval last_time;
+Time last_time;
 
 void init_lighting()
 {
@@ -98,7 +98,7 @@ void init()
   the_system->reset();
 }
 
-void draw_world()
+void draw_world(Time dt)
 {
   glColor3d (1.0, 1.0, 1.0);
   glLoadIdentity ();
@@ -113,7 +113,7 @@ void draw_world()
   the_system->draw();
 }
 
-void draw_legend()
+void draw_legend(Time dt)
 {
 #if 0
   glcContext(glc_context);
@@ -126,11 +126,6 @@ void draw_legend()
   glcRenderString("Hello");
   glPopMatrix();
 #endif
-
-  struct timeval tv;
-  gettimeofday(&tv, 0);
-  double t = (tv.tv_sec - last_time.tv_sec) + (tv.tv_usec - last_time.tv_usec) / 1000000.0;
-  last_time = tv;
 
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
@@ -208,7 +203,7 @@ void draw_legend()
   {
     glTranslatef(0, -20, 0);
     std::stringstream strm;
-    strm << "FPS: " << (1.0 / t);
+    strm << "FPS: " << (1.0 / dt);
     ::font->Render(strm.str().c_str());
   }
 
@@ -225,10 +220,14 @@ void draw_legend()
 
 void display()
 {
+  Time now(Time::now());
+  Time dt(now - last_time);
+  last_time = now;
+
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  draw_world();
-  draw_legend();
+  draw_world(dt);
+  draw_legend(dt);
 
   // -- Flush --
   glutSwapBuffers();
