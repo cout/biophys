@@ -50,7 +50,6 @@ draw()
   glPointParameterfvARB(GL_POINT_DISTANCE_ATTENUATION_ARB, quadratic); // TODO: slow?
 
   glDisable(GL_LIGHTING);
-  glColor4d(color_.r, color_.g, color_.b, color_.a);
 
   glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D, texture_.texture);
@@ -68,6 +67,15 @@ draw()
   glBegin(GL_POINTS);
   for (; it != end; ++it)
   {
+    if (it->is_inside_cell)
+    {
+      glColor4d(color_.r * 0.4, color_.g * 0.4, color_.b * 0.4, color_.a);
+    }
+    else
+    {
+      glColor4d(color_.r, color_.g, color_.b, color_.a);
+    }
+
     glVertex3d(it->x, it->y, it->z);
   }
   glEnd();
