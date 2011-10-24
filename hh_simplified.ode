@@ -1,0 +1,87 @@
+#PHYS296/BIOL396 Fall 2009
+#Created by Dr. S.A. Oprisan
+
+# Replate HH code
+# with: m_inf(v)
+#       tau(v)
+#
+# Step 1:
+# alpha_m(v) -> fit 
+# beta_m(v)
+#
+# m_inf = alpha_m(v) / (alpha_m(v) + beta_n(v))
+# tau = 1 / (alpha_n(v) + beta_n(v)
+#
+# 1. activations (sigmoidal)
+#    1 / (1 + exp(-(v-v_half/v_s))
+# 2. time constant
+#    tau = a + b * exp(-(v - v_half/v_s)**2)
+#
+# m_inf = 1 / (1 + exp(-(v + 40.0246)/10))
+
+# UNITS
+# capacitance -> microF/cm^2 
+# currents -> microA/cm^2
+# durations -> ms
+# conductances -> mS/cm^2
+# voltages -> mV 
+# area -> cm^2
+
+#Experiment 3: Hodgkin-Huxley model
+
+# Membrane parameters
+cm=1
+
+# Stimulus current parameters
+p ton=10,duration=10,amplitude=0
+istim(t)=amplitude*heav(t-ton)*heav(ton+duration-t)
+
+# Membrane currents
+# Leak current
+p gl=0.3,El=-54.4
+il(v)=gl*(v-El)
+
+# Potassium current
+#p ko=5,ki=124
+#Ek=25*ln(ko/ki)
+p gkbar=36
+Ek=-77
+phi=1
+an(v)=phi*.01*(v+55)/(1-exp(-(v+55)/10))
+bn(v)=phi*.125*exp(-(v+65)/80)
+ninf(v)=an(v)/(an(v)+bn(v))
+taun(v)=1/(an(v)+bn(v))
+n'=(ninf(v)-n)/taun(v)
+ik(v)=gkbar*n^4*(v-Ek)
+
+# Sodium current
+#p nai=14,nao=140
+#Ena=25*ln(nao/nai)
+p gnabar=120
+Ena=50
+# am(v)=phi*.1*(v+40)/(1-exp(-(v+40)/10))
+# bm(v)=phi*4*exp(-(v+65)/18)
+# minf(v)=am(v)/(am(v)+bm(v))
+v_half = 40.0246
+v_s = 10
+minf(v) = 1 / (1 + exp(-(v + v_half) / v_s))
+# taum(v)=1/(am(v)+bm(v))
+taum(v)=0 + 0.5*exp(-((v + 39)/35)^2)
+m'=(minf(v)-m)/taum(v)
+ah(v)=phi*.07*exp(-(v+65)/20)
+bh(v)=phi*1/(1+exp(-(v+35)/10))
+hinf(v)=ah(v)/(ah(v)+bh(v))
+tauh(v)=1/(ah(v)+bh(v))
+h'=(hinf(v)-h)/tauh(v)
+ina(v)=gnabar*(m^3)*h*(v-Ena)
+
+# The initial data
+init v=-65,n=1e-3,m=1e-3,h=1e-3
+
+# Voltage memberane equation
+v'=(-ina(v)-ik(v)-il(v)+istim(t))/cm
+
+# Optional graphic parameters
+@ dt=0.01,total=50,method=runge-kutta,xplot=t,yplot=v,axes=2d
+@ xlo=0.0,xhi=50,ylo=-100,yhi=40 
+done
