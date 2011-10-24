@@ -36,12 +36,15 @@ class Annealer
         end
 
         if new_energy < best_energy then
-          best_state = state
-          best_energy = energy
+          best_state = new_state
+          best_energy = new_energy
         end
 
         n += 1
       end
+
+      state = best_state
+      energy = best_energy
 
       k += 1
       temp = temp(k)
@@ -86,8 +89,8 @@ class Fitter < Annealer
     p temp, m
     return State.new(
         state.a + 0.01 * m * (rand()-0.5),
-        state.b + m * (rand()-0.5),
-        state.c + m * (rand()-0.5))
+        state.b + m * 1 * (rand()-0.5),
+        state.c + m * 1 * (rand()-0.5))
   end
 
   def f(v)
