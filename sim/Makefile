@@ -24,7 +24,7 @@ CFLAGS += -ffinite-math-only
 CFLAGS += -fno-trapping-math
 CFLAGS += -mrecip
 
-CXXFLAGS = -std=c++0x
+CXXFLAGS += -std=c++0x
 
 LDFLAGS += -lSOIL
 LDFLAGS += -lftgl
