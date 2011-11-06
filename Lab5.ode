@@ -1,0 +1,54 @@
+#http://www.cnbc.cmu.edu/~bard/
+# Synapse exercises
+# presynaptic cell
+v'=-(gna*h*m^3*(v-ena)+gk*n^4*(v-ek)+gl*(v-el) -i-ip*heav(t-ton)*heav(toff-t))/c
+m'=am(v)*(1-m)-bm(v)*m
+h'=ah(v)*(1-h)-bh(v)*h
+n'=an(v)*(1-n)-bn(v)*n
+# post synaptic cell
+vpost'=-.2*(vpost-vp0)-iampa-igaba-inmda-igabb-idep
+# transmitter released
+trans=tmax/(1+exp(-(v-2)/5))
+# synaptic types
+s_ampa'=al_ampa*trans*(1-s_ampa) -s_ampa*bet_ampa
+s_nmda'=al_nmda*trans*(1-s_nmda) -s_nmda*bet_nmda
+s_gaba'=al_gaba*trans*(1-s_gaba) -s_gaba*bet_gaba
+r'=al_gabb*trans*(1-r) -r*bet_gabb
+s_gabb'=k3*r-k4*s_gabb
+# depressed AMPA synapse
+s_dep'=al_ampa*trans*(1-s_dep-xx) -s_dep*bet_ampa
+xx'=s_dep*bet_ampa-beta2*xx
+# synaptic currents
+idep=g_dep*s_dep*(vpost-vex)
+iampa=g_ampa*s_ampa*(vpost-vex)
+inmda=g_nmda*s_nmda*(vpost-vex)/(1+exp(-.062*vpost)*(mg/3.57))
+igaba=g_gaba*s_gaba*(vpost-vin)
+igabb=g_gabb*(s_gabb^4/(s_gaba^4+kd))*(vpost-ek)
+# make them plottable
+aux i_ampa=iampa
+aux i_nmda=inmda
+aux i_gaba=igaba
+aux i_gabb=igabb
+aux i_dep=idep
+# functions
+am(v)=.32*(54+v)/(1-exp(-(v+54)/4))
+bm(v)=.28*(v+27)/(exp((v+27)/5)-1)
+ah(v)=.128*exp(-(50+v)/18)
+bh(v)=4/(1+exp(-(v+27)/5))
+an(v)=.032*(v+52)/(1-exp(-(v+52)/5))
+bn(v)=.5*exp(-(57+v)/40)
+# parameters
+par ek=-100,ena=50,el=-67,vp0=-70
+par gl=.1,gk=80,gna=100
+par c=1,i=0
+par bet_ampa=.19,al_ampa=1.1, g_ampa=.038
+par bet_nmda=.0066,al_nmda=.072, g_nmda=.0,mg=0
+par bet_gaba=.18,al_gaba=5, g_gaba=.0
+par bet_gabb=.0012,al_gabb=.09, k3=.18,k4=.034,kd=4,g_gabb=.0
+par g_dep=0.0,beta2=.01
+par tmax=3.2, vex=0,vin=-80
+par ton=0,toff=10,ip=1
+init v=-67.68,m=.0128,h=1,n=.0332,vpost=-70
+@ method=qualrk,toler=.0001,total=40,dt=.25
+@ xhi=40,yp=vpost,ylo=-72,yhi=-62
+done
