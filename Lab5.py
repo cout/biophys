@@ -2,12 +2,14 @@ import xppy
 import pylab
 
 ode_file = 'Lab5.ode'
+plot_ext = 'ps'
 
 # ----------------------------------------------------------------------
 # Problem 1a
 # ----------------------------------------------------------------------
 
 pylab.cla()
+pylab.title('1a: AMPA vs. GABA-A vs. depressed AMPA')
 
 xppy.createTmp(ode_file)
 
@@ -46,13 +48,14 @@ pylab.plot(o['t'], o['vpost'], '-.', label='AMPA DEP')
 
 pylab.legend()
 
-pylab.savefig('1a.png')
+pylab.savefig('1a.%s' % plot_ext)
 
 # ----------------------------------------------------------------------
 # Problem 1d
 # ----------------------------------------------------------------------
 
 pylab.cla()
+pylab.title('1d: AMPA/depressed AMBA, spike vs. burst')
 
 xppy.createTmp(ode_file)
 
@@ -108,13 +111,14 @@ pylab.plot(o['t'], o['vpost'], '-.', label='AMPA DEP burst')
 
 pylab.legend()
 
-pylab.savefig('1d.png')
+pylab.savefig('1d.%s' % plot_ext)
 
 # ----------------------------------------------------------------------
 # Problem 2a
 # ----------------------------------------------------------------------
 
 pylab.cla()
+pylab.title('2a: excitatory (NMDA) vs. slow inhibitory (GABA-B)')
 
 xppy.createTmp(ode_file)
 
@@ -144,13 +148,14 @@ pylab.plot(o['t'], o['vpost'], '--', label='GABB')
 
 pylab.legend()
 
-pylab.savefig('2a.png')
+pylab.savefig('2a.%s' % plot_ext)
 
 # ----------------------------------------------------------------------
 # Problem 2b
 # ----------------------------------------------------------------------
 
 pylab.cla()
+pylab.title('2b: NMDA/GABA-B, spike vs. burst')
 
 xppy.createTmp(ode_file)
 
@@ -214,13 +219,14 @@ pylab.plot(o['t'], o['vpost'], '-.', label='GABB burst')
 
 pylab.legend()
 
-pylab.savefig('2b.png')
+pylab.savefig('2b.%s' % plot_ext)
 
 # ----------------------------------------------------------------------
 # Problem 2c
 # ----------------------------------------------------------------------
 
 pylab.cla()
+pylab.title('2c: NMDA, mg=0')
 
 xppy.createTmp(ode_file)
 
@@ -237,17 +243,18 @@ for vp0 in [ -70, -60, -50, -30, -10, 0 ]:
   ]
   xppy.changeOde(params)
   o = xppy.run()
-  pylab.plot(o['t'], o['vpost'], '-', label='NMDA vp0=%s'% (vp0))
+  pylab.plot(o['t'], o['vpost'], '-', label='NMDA vp0=%s, max=%.2f'% (vp0, max(o['vpost'])))
 
 pylab.legend()
 
-pylab.savefig('2c.png')
+pylab.savefig('2c.%s' % plot_ext)
 
 # ----------------------------------------------------------------------
 # Problem 2d
 # ----------------------------------------------------------------------
 
 pylab.cla()
+pylab.title('2d: NMDA, mg=1')
 
 xppy.createTmp(ode_file)
 
@@ -264,9 +271,9 @@ for vp0 in [ -70, -60, -50, -30, -10, 0 ]:
   ]
   xppy.changeOde(params)
   o = xppy.run()
-  pylab.plot(o['t'], o['vpost'], '-', label='NMDA vp0=%s'% (vp0))
+  pylab.plot(o['t'], o['vpost'], '-', label='NMDA vp0=%s, max=%.2f'% (vp0, max(o['vpost'])))
 
 pylab.legend()
 
-pylab.savefig('2d.png')
+pylab.savefig('2d.%s' % plot_ext)
 
