@@ -246,8 +246,9 @@ for vp0 in [ -70, -60, -50, -30, -10, 0 ]:
   ]
   xppy.changeOde(params)
   o = xppy.run()
-  pylab.plot(o['t'], o['vpost'], '-', label='NMDA vp0=%s, max=%.2f'% (vp0, max(o['vpost'])))
-  peak_mg0.append([vp0, max(o['vpost'])])
+  pylab.plot(o['t'], o['i_nmda'], '-', label='NMDA vp0=%s, max=%.2f'%
+  (vp0, max(o['i_nmda'])))
+  peak_mg0.append([vp0, max(o['i_nmda'])])
 
 pylab.legend()
 
@@ -277,8 +278,9 @@ for vp0 in [ -70, -60, -50, -30, -10, 0 ]:
   ]
   xppy.changeOde(params)
   o = xppy.run()
-  pylab.plot(o['t'], o['vpost'], '-', label='NMDA vp0=%s, max=%.2f'% (vp0, max(o['vpost'])))
-  peak_mg1.append([vp0, max(o['vpost'])])
+  pylab.plot(o['t'], o['i_nmda'], '-', label='NMDA vp0=%s, max=%.2f'%
+  (vp0, max(o['i_nmda'])))
+  peak_mg1.append([vp0, max(o['i_nmda'])])
 
 pylab.legend()
 
@@ -289,7 +291,7 @@ pylab.savefig('2d.%s' % plot_ext)
 # ----------------------------------------------------------------------
 
 pylab.cla()
-pylab.title('2c/2d: peak vpost')
+pylab.title('2c/2d: peak i_nmda')
 
 pylab.plot(
     [ vp0 for vp0, max in peak_mg0 ],
