@@ -1,5 +1,6 @@
 import xppy
 import pylab
+import numpy
 
 ode_file = 'Lab5.ode'
 plot_ext = 'ps'
@@ -225,6 +226,8 @@ pylab.savefig('2b.%s' % plot_ext)
 # Problem 2c
 # ----------------------------------------------------------------------
 
+peak_mg0 = [ ]
+
 pylab.cla()
 pylab.title('2c: NMDA, mg=0')
 
@@ -244,6 +247,7 @@ for vp0 in [ -70, -60, -50, -30, -10, 0 ]:
   xppy.changeOde(params)
   o = xppy.run()
   pylab.plot(o['t'], o['vpost'], '-', label='NMDA vp0=%s, max=%.2f'% (vp0, max(o['vpost'])))
+  peak_mg0.append([vp0, max(o['vpost'])])
 
 pylab.legend()
 
@@ -252,6 +256,8 @@ pylab.savefig('2c.%s' % plot_ext)
 # ----------------------------------------------------------------------
 # Problem 2d
 # ----------------------------------------------------------------------
+
+peak_mg1 = [ ]
 
 pylab.cla()
 pylab.title('2d: NMDA, mg=1')
@@ -272,8 +278,34 @@ for vp0 in [ -70, -60, -50, -30, -10, 0 ]:
   xppy.changeOde(params)
   o = xppy.run()
   pylab.plot(o['t'], o['vpost'], '-', label='NMDA vp0=%s, max=%.2f'% (vp0, max(o['vpost'])))
+  peak_mg1.append([vp0, max(o['vpost'])])
 
 pylab.legend()
 
 pylab.savefig('2d.%s' % plot_ext)
+
+# ----------------------------------------------------------------------
+# Problem 2c/d
+# ----------------------------------------------------------------------
+
+pylab.cla()
+pylab.title('2c/2d: peak vpost')
+
+pylab.plot(
+    [ vp0 for vp0, max in peak_mg0 ],
+    [ max for vp0, max in peak_mg0 ],
+    '-',
+    label='mg=0',
+    )
+
+pylab.plot(
+    [ vp0 for vp0, max in peak_mg1 ],
+    [ max for vp0, max in peak_mg1 ],
+    '--',
+    label='mg=1',
+    )
+
+pylab.legend()
+
+pylab.savefig('2c_2d_peaks.%s' % plot_ext)
 
