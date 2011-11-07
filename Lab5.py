@@ -9,6 +9,8 @@ plot_ext = 'ps'
 # Problem 1a
 # ----------------------------------------------------------------------
 
+print "Problem 1a..."
+
 pylab.cla()
 pylab.title('1a: AMPA vs. GABA-A vs. depressed AMPA')
 
@@ -54,6 +56,8 @@ pylab.savefig('1a.%s' % plot_ext)
 # ----------------------------------------------------------------------
 # Problem 1d
 # ----------------------------------------------------------------------
+
+print "Problem 1d..."
 
 pylab.cla()
 pylab.title('1d: AMPA/depressed AMBA, spike vs. burst')
@@ -118,6 +122,8 @@ pylab.savefig('1d.%s' % plot_ext)
 # Problem 2a
 # ----------------------------------------------------------------------
 
+print "Problem 2a..."
+
 pylab.cla()
 pylab.title('2a: excitatory (NMDA) vs. slow inhibitory (GABA-B)')
 
@@ -154,6 +160,8 @@ pylab.savefig('2a.%s' % plot_ext)
 # ----------------------------------------------------------------------
 # Problem 2b
 # ----------------------------------------------------------------------
+
+print "Problem 2b..."
 
 pylab.cla()
 pylab.title('2b: NMDA/GABA-B, spike vs. burst')
@@ -226,6 +234,8 @@ pylab.savefig('2b.%s' % plot_ext)
 # Problem 2c
 # ----------------------------------------------------------------------
 
+print "Problem 2c..."
+
 peak_mg0 = [ ]
 
 pylab.cla()
@@ -257,6 +267,8 @@ pylab.savefig('2c.%s' % plot_ext)
 # ----------------------------------------------------------------------
 # Problem 2d
 # ----------------------------------------------------------------------
+
+print "Problem 2d..."
 
 peak_mg1 = [ ]
 
