@@ -39,7 +39,7 @@ o = xppy.run()
 pylab.plot(o['t'], o['vpost'], '--', label='GABA')
 
 params = [
-  ['par', 'g_ampa', 0.038],
+  ['par', 'g_ampa', 0.000],
   ['par', 'g_nmda', 0.000],
   ['par', 'g_gaba', 0.000],
   ['par', 'g_gabb', 0.000],
@@ -77,7 +77,7 @@ o = xppy.run()
 pylab.plot(o['t'], o['vpost'], '-', label='AMPA')
 
 params = [
-  ['par', 'g_ampa', 0.038],
+  ['par', 'g_ampa', 0.000],
   ['par', 'g_nmda', 0.000],
   ['par', 'g_gaba', 0.000],
   ['par', 'g_gabb', 0.000],
@@ -103,7 +103,7 @@ o = xppy.run()
 pylab.plot(o['t'], o['vpost'], '--', label='AMPA burst')
 
 params = [
-  ['par', 'g_ampa', 0.038],
+  ['par', 'g_ampa', 0.000],
   ['par', 'g_nmda', 0.000],
   ['par', 'g_gaba', 0.000],
   ['par', 'g_gabb', 0.000],
@@ -290,9 +290,9 @@ for vp0 in [ -70, -60, -50, -30, -10, 0 ]:
   ]
   xppy.changeOde(params)
   o = xppy.run()
-  pylab.plot(o['t'], o['i_nmda'], '-', label='NMDA vp0=%s, max=%.2f'%
-  (vp0, max(o['i_nmda'])))
-  peak_mg1.append([vp0, max(o['i_nmda'])])
+  pylab.plot(o['t'], o['i_nmda'], '-', label='NMDA vp0=%s, min=%.2f'%
+  (vp0, min(o['i_nmda'])))
+  peak_mg1.append([vp0, min(o['i_nmda'])])
 
 pylab.legend()
 
@@ -306,15 +306,15 @@ pylab.cla()
 pylab.title('2c/2d: peak i_nmda')
 
 pylab.plot(
-    [ vp0 for vp0, max in peak_mg0 ],
-    [ max for vp0, max in peak_mg0 ],
+    [ vp0 for vp0, min in peak_mg0 ],
+    [ min for vp0, min in peak_mg0 ],
     '-',
     label='mg=0',
     )
 
 pylab.plot(
-    [ vp0 for vp0, max in peak_mg1 ],
-    [ max for vp0, max in peak_mg1 ],
+    [ vp0 for vp0, min in peak_mg1 ],
+    [ min for vp0, min in peak_mg1 ],
     '--',
     label='mg=1',
     )
