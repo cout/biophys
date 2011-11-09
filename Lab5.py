@@ -256,9 +256,9 @@ for vp0 in [ -70, -60, -50, -30, -10, 0 ]:
   ]
   xppy.changeOde(params)
   o = xppy.run()
-  pylab.plot(o['t'], o['i_nmda'], '-', label='NMDA vp0=%s, max=%.2f'%
-  (vp0, max(o['i_nmda'])))
-  peak_mg0.append([vp0, max(o['i_nmda'])])
+  pylab.plot(o['t'], o['i_nmda'], '-', label='NMDA vp0=%s, min=%.2f'%
+  (vp0, min(o['i_nmda'])))
+  peak_mg0.append([vp0, min(o['i_nmda'])])
 
 pylab.legend()
 
