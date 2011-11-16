@@ -12,9 +12,9 @@
 # m_inf = alpha_m(v) / (alpha_m(v) + beta_n(v))
 # tau = 1 / (alpha_n(v) + beta_n(v)
 #
-# 1. activations (sigmoidal)
+# 1. activations (sigmoidal) _/¯
 #    1 / (1 + exp(-(v-v_half/v_s))
-# 2. time constant
+# 2. time constant (gaussian) _/¯\_
 #    tau = a + b * exp(-(v - v_half/v_s)**2)
 #
 # m_inf = 1 / (1 + exp(-(v + 40.0246)/10))
@@ -47,6 +47,7 @@ il(v)=gl*(v-El)
 p gkbar=36
 Ek=-77
 phi=1
+# TODO: replace the potassium functions with approximations
 an(v)=phi*.01*(v+55)/(1-exp(-(v+55)/10))
 bn(v)=phi*.125*exp(-(v+65)/80)
 ninf(v)=an(v)/(an(v)+bn(v))
@@ -68,6 +69,7 @@ minf(v) = 1 / (1 + exp(-(v + v_half) / v_s))
 # taum(v)=1/(am(v)+bm(v))
 taum(v)=0 + 0.5*exp(-((v + 39)/35)^2)
 m'=(minf(v)-m)/taum(v)
+# TODO: replace the inactivation functions with approximations
 ah(v)=phi*.07*exp(-(v+65)/20)
 bh(v)=phi*1/(1+exp(-(v+35)/10))
 hinf(v)=ah(v)/(ah(v)+bh(v))
