@@ -104,3 +104,13 @@ bool ray_intersects_sphere(Point p1, Point p2, Sphere s)
   return (p1_inside != p2_inside);
 }
 
+double ipow(double b, int x)
+{
+  if(x == 0) return 1.0;
+  if(x == 1) return b;
+  if(x < 0) return 1.0 / ipow(b, -x);
+
+  double t = ipow(b, x/2);
+  return t * t * ((x&1) ? x : 1);
+}
+

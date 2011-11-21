@@ -4,6 +4,8 @@
 #include "Sphere.hpp"
 #include "Particle.hpp"
 
+class Time;
+
 class Cell
   : public Sphere
 {
@@ -18,15 +20,18 @@ public:
   double membrane_voltage;
   double membrane_capacitance;
 
-  double permeability(Sodium_Particle const &) const { return 0.1; }
-  double permeability(Potassium_Particle const &) const { return 0.1; }
+  double n, m, h;
+  double sodium_permeability;
+  double potassium_permeability;
 
-  void charge_changed(double delta)
-  {
-    net_charge += delta;
-    double surface_area_in_cm2 = surface_area() / 1e8;
-    membrane_voltage += delta / membrane_capacitance / surface_area_in_cm2;
-  }
+  double permeability(Sodium_Particle const &) const { return sodium_permeability; }
+  double permeability(Potassium_Particle const &) const { return potassium_permeability; }
+
+  void update_permeabilities(Time const & dt);
+
+  void charge_changed(double delta);
+
+  // TODO: the following is ugly, but it works
 
   void put_inside(Sodium_Particle & particle)
   {

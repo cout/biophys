@@ -124,6 +124,7 @@ iterate(Time const & dt)
 {
   sodium_.random_walk(*this, dt * params_.sodium_velocity);
   potassium_.random_walk(*this, dt * params_.potassium_velocity);
+  cell_.update_permeabilities(dt);
 }
 
 void
