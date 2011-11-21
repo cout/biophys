@@ -5,7 +5,7 @@
 #include <limits>
 #include <cstdint>
 
-// I have not been able to find a suitable RNG faster than this one:
+// I have not been able to find a suitable PRNG faster than this one:
 // http://en.wikipedia.org/wiki/Xorshift
 uint32_t xor128(void) {
   static uint32_t x = 123456789;
