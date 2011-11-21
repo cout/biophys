@@ -5,7 +5,7 @@
 #include "Texture_Loader.hpp"
 #include "Texture.hpp"
 #include "Cell.hpp"
-#include "Ions.hpp"
+#include "Particles.hpp"
 #include "Point.hpp"
 #include "Na_K_Pump.hpp"
 
@@ -20,8 +20,8 @@ public:
   void iterate(Time const & tv);
   void draw();
 
-  template<typename Ion_T>
-  void try_walk(Ion_T & ion, Point dest);
+  template<typename Particle_T>
+  void try_walk(Particle_T & particle, Point dest);
 
   Cell const & cell() const { return cell_; }
   Na_K_Pump const & na_k_pump() const { return na_k_pump_; }
@@ -29,7 +29,15 @@ public:
 private:
   void init_cell();
   void init_outer_limit();
-  void init_ions();
+
+  template<typename Particle_T>
+  void init_particles(
+      Particles<Particle_T> & particles,
+      size_t in,
+      size_t out);
+
+  void init_particles();
+
   void init_temp();
 
 private:
@@ -39,8 +47,8 @@ private:
   Cell cell_;
   Cell outer_limit_;
   double temperature_;
-  Ions<Sodium_Ion> sodium_;
-  Ions<Potassium_Ion> potassium_;
+  Particles<Sodium_Particle> sodium_;
+  Particles<Potassium_Particle> potassium_;
   Na_K_Pump na_k_pump_;
 };
 

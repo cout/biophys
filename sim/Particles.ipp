@@ -1,23 +1,23 @@
-#include "Ions.hpp"
+#include "Particles.hpp"
 
 #include "GL/gl.h"
 #include "GL/glext.h"
 
-template <typename Ion_T>
-Ions<Ion_T>::
-Ions(
+template <typename Particle_T>
+Particles<Particle_T>::
+Particles(
     Color color,
     Texture texture,
     size_t n)
   : color_(color)
   , texture_(texture)
-  , ions_(n)
+  , particles_(n)
 {
 }
 
-template <typename Ion_T>
+template <typename Particle_T>
 void
-Ions<Ion_T>::
+Particles<Particle_T>::
 random_walk(
     System & system,
     double max_movement)
@@ -31,9 +31,9 @@ random_walk(
   }
 }
 
-template <typename Ion_T>
+template <typename Particle_T>
 void
-Ions<Ion_T>::
+Particles<Particle_T>::
 draw()
 {
   glPushAttrib(GL_TEXTURE_BIT | GL_ENABLE_BIT);

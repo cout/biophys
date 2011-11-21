@@ -149,6 +149,8 @@ void draw_legend(Time dt)
 
   WRITE_LINE("Time (ms): " << sim_time * 1000.0);
   WRITE_LINE("Membrane voltage: " << the_system->cell().membrane_voltage * 1000);
+  WRITE_LINE("Sodium permeability: " << the_system->cell().sodium_permeability);
+  WRITE_LINE("Potassium permeability: " << the_system->cell().potassium_permeability);
   WRITE_LINE("Sodium inside: " << the_system->cell().sodium_inside);
   WRITE_LINE("Sodium outside: " << the_system->cell().sodium_outside);
   WRITE_LINE("Potassium inside: " << the_system->cell().potassium_inside);

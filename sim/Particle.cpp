@@ -1,4 +1,4 @@
-#include "Ion.hpp"
+#include "Particle.hpp"
 #include "System.hpp"
 #include "util.hpp"
 

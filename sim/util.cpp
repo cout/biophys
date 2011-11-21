@@ -5,7 +5,7 @@
 #include <limits>
 #include <cstdint>
 
-// I have not been able to find a suitable RNG faster than this one:
+// I have not been able to find a suitable PRNG faster than this one:
 // http://en.wikipedia.org/wiki/Xorshift
 uint32_t xor128(void) {
   static uint32_t x = 123456789;
@@ -102,5 +102,15 @@ bool ray_intersects_sphere(Point p1, Point p2, Sphere s)
   bool p2_inside = is_inside_sphere(p2, s);
 
   return (p1_inside != p2_inside);
+}
+
+double ipow(double b, int x)
+{
+  if(x == 0) return 1.0;
+  if(x == 1) return b;
+  if(x < 0) return 1.0 / ipow(b, -x);
+
+  double t = ipow(b, x/2);
+  return t * t * ((x&1) ? x : 1);
 }
 

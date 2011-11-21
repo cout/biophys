@@ -1,7 +1,6 @@
 #include "System.hpp"
 #include "Point.hpp"
 #include "util.hpp"
-#include "Ion_impl.hpp"
 #include "Parameters.hpp"
 #include "Time.hpp"
 
@@ -43,7 +42,7 @@ reset()
 {
   init_cell();
   init_outer_limit();
-  init_ions();
+  init_particles();
   init_temp();
 }
 
@@ -73,43 +72,54 @@ init_outer_limit()
   outer_limit_.radius = params_.outer_radius;
 }
 
+
+template<typename Particle_T>
 void
 System::
-init_ions()
+init_particles(
+    Particles<Particle_T> & particles,
+    size_t in,
+    size_t out)
 {
+  auto it(particles.begin());
+  auto end(particles.end());
+
+  for (size_t i = 0; it != end && i < in; ++it, ++i)
   {
-    // Put sodium ions outside the cell
-    auto it(sodium_.begin());
-    auto end(sodium_.end());
+    Point p = random_insphere(0, cell_.radius);
 
-    for (; it != end; ++it)
-    {
-      Point p = random_insphere(cell_.radius, outer_limit_.radius);
+    it->x = cell_.x + p.x;
+    it->y = cell_.y + p.y;
+    it->z = cell_.z + p.z;
 
-      it->x = cell_.x + p.x;
-      it->y = cell_.y + p.y;
-      it->z = cell_.z + p.z;
-
-      cell_.put_outside(*it);
-    }
+    cell_.put_inside(*it);
   }
 
+  for (size_t i = 0; it != end && i < out; ++it, ++i)
   {
-    // Put potassium ions inside the cell
-    auto it = potassium_.begin();
-    auto end = potassium_.end();
+    Point p = random_insphere(cell_.radius, outer_limit_.radius);
 
-    for (; it != end; ++it)
-    {
-      Point p = random_insphere(0, cell_.radius);
+    it->x = cell_.x + p.x;
+    it->y = cell_.y + p.y;
+    it->z = cell_.z + p.z;
 
-      it->x = cell_.x + p.x;
-      it->y = cell_.y + p.y;
-      it->z = cell_.z + p.z;
-
-      cell_.put_inside(*it);
-    }
+    cell_.put_outside(*it);
   }
+}
+
+void
+System::
+init_particles()
+{
+  init_particles(
+      sodium_,
+      params_.initial_sodium_in,
+      params_.initial_sodium_out);
+
+  init_particles(
+      potassium_,
+      params_.initial_potassium_in,
+      params_.initial_potassium_out);
 }
 
 void
@@ -125,6 +135,7 @@ iterate(Time const & dt)
 {
   sodium_.random_walk(*this, dt * params_.sodium_velocity);
   potassium_.random_walk(*this, dt * params_.potassium_velocity);
+  cell_.update_permeabilities(dt);
 }
 
 void
@@ -155,7 +166,7 @@ draw()
   glPopMatrix();
   // glEnable(GL_DEPTH_TEST);
 
-  // -- Ions --
+  // -- Particles --
   sodium_.draw();
   potassium_.draw();
 }

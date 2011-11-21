@@ -9,5 +9,6 @@ Point random_onsphere(double r);
 Point random_insphere(double rmin, double rmax);
 bool ray_intersects_sphere(Point p1, Point p2, Sphere s);
 bool is_inside_sphere(Point p, Sphere s);
+double ipow(double d, int x);
 
 #endif // util__hpp

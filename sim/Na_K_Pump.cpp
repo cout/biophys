@@ -1,5 +1,5 @@
 #include "Na_K_Pump.hpp"
-#include "Ions.hpp"
+#include "Particles.hpp"
 #include "Cell.hpp"
 #include "util.hpp"
 
@@ -17,7 +17,7 @@ Na_K_Pump(double ratio)
 
 bool
 Na_K_Pump::
-pass_ion(Sodium_Ion const & ion, bool dst_is_inside)
+pass_particle(Sodium_Particle const & particle, bool dst_is_inside)
 { if (!dst_is_inside) {
     return pass_sodium_out();
   }
@@ -29,7 +29,7 @@ pass_ion(Sodium_Ion const & ion, bool dst_is_inside)
 
 bool
 Na_K_Pump::
-pass_ion(Potassium_Ion const & ion, bool dst_is_inside)
+pass_particle(Potassium_Particle const & particle, bool dst_is_inside)
 {
   if (dst_is_inside)
   {

@@ -1,6 +1,6 @@
 OBJS = \
 	main.o \
-	Ion.o \
+	Particle.o \
 	Cell.o \
 	System.o \
 	Na_K_Pump.o \
