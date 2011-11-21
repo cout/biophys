@@ -22,10 +22,10 @@ update_permeabilities(Time const & dt)
 {
   double const phi = 1;
 
-  double const v = membrane_voltage;
+  double const v = membrane_voltage * 1000.0; // v is in mV
 
-  double const gnabar = 120.0;
-  double const gkbar = 36.0;
+  double const gnabar = 120.0; // mS/cm²
+  double const gkbar = 36.0; // mS/cm²
 
   int const steps = 10000;
 
@@ -48,12 +48,12 @@ update_permeabilities(Time const & dt)
     n += dn;
   }
 
-  double gna = gnabar * ipow(m, 3) * h;
-  double gk = gkbar * ipow(n, 4);
+  double gna = gnabar * ipow(m, 3) * h; // mS/cm²
+  double gk = gkbar * ipow(n, 4); // mS/cm²
 
   // TODO: conductance and permeability aren't quite the same
-  sodium_permeability = gna;
-  potassium_permeability = gk;
+  sodium_permeability = gna / 1000.0;
+  potassium_permeability = gk / 1000.0;
 }
 
 void
