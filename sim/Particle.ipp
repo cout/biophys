@@ -1,11 +1,11 @@
-#include "System.hpp"
 #include "util.hpp"
 
 template<typename Derived_T, int Charge>
+template<typename System_T>
 void
-Ion_T<Derived_T, Charge>::
+Particle_T<Derived_T, Charge>::
 random_walk(
-    System & system,
+    System_T & system,
     double max_movement)
 {
   Point p = random_insphere(0, max_movement);

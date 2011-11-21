@@ -1,7 +1,6 @@
 #include "System.hpp"
 #include "Point.hpp"
 #include "util.hpp"
-#include "Ion_impl.hpp"
 #include "Parameters.hpp"
 #include "Time.hpp"
 
@@ -43,7 +42,7 @@ reset()
 {
   init_cell();
   init_outer_limit();
-  init_ions();
+  init_particles();
   init_temp();
 }
 
@@ -75,10 +74,10 @@ init_outer_limit()
 
 void
 System::
-init_ions()
+init_particles()
 {
   {
-    // Put sodium ions outside the cell
+    // Put sodium particles outside the cell
     auto it(sodium_.begin());
     auto end(sodium_.end());
 
@@ -95,7 +94,7 @@ init_ions()
   }
 
   {
-    // Put potassium ions inside the cell
+    // Put potassium particles inside the cell
     auto it = potassium_.begin();
     auto end = potassium_.end();
 
@@ -155,7 +154,7 @@ draw()
   glPopMatrix();
   // glEnable(GL_DEPTH_TEST);
 
-  // -- Ions --
+  // -- Particles --
   sodium_.draw();
   potassium_.draw();
 }

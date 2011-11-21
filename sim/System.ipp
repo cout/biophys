@@ -1,11 +1,11 @@
 #include "util.hpp"
 
-template<typename Ion_T>
+template<typename Particle_T>
 void
 System::
-try_walk(Ion_T & ion, Point dest)
+try_walk(Particle_T & particle, Point dest)
 {
-  bool src_is_inside(ion.is_inside_cell);
+  bool src_is_inside(particle.is_inside_cell);
   bool dst_is_inside(is_inside_sphere(dest, cell_));
 
   // Optimization for intracellular movement
@@ -18,11 +18,11 @@ try_walk(Ion_T & ion, Point dest)
   // permeability
   if (src_is_inside != dst_is_inside)
   {
-    if(random_double() < cell_.permeability(ion))
+    if(random_double() < cell_.permeability(particle))
     {
       goto crosswalk;
     }
-    else if (na_k_pump_.pass_ion(ion, dst_is_inside))
+    else if (na_k_pump_.pass_particle(particle, dst_is_inside))
     {
       goto crosswalk;
     }
@@ -33,7 +33,7 @@ try_walk(Ion_T & ion, Point dest)
   }
 
   // Crossing the outer limit happens with zero probability
-  if (ray_intersects_sphere(ion, dest, outer_limit_))
+  if (ray_intersects_sphere(particle, dest, outer_limit_))
   {
     return;
   }
@@ -43,14 +43,14 @@ try_walk(Ion_T & ion, Point dest)
 crosswalk:
   if (dst_is_inside)
   {
-    cell_.move_inside(ion);
+    cell_.move_inside(particle);
   }
   else
   {
-    cell_.move_outside(ion);
+    cell_.move_outside(particle);
   }
 
 walk:
-  ion.move_to(dest);
+  particle.move_to(dest);
 }
 
