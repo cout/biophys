@@ -8,8 +8,7 @@
 #include "Particles.hpp"
 #include "Point.hpp"
 #include "Na_K_Pump.hpp"
-
-class Time;
+#include "Time.hpp"
 
 class System
 {
@@ -40,8 +39,11 @@ private:
 
   void init_temp();
 
+  void apply_stimulus_current(Time const & dt);
+
 private:
   Parameters params_;
+  Time now_;
   Texture_Loader texture_loader_;
   Texture particle_texture_;
   Cell cell_;

@@ -29,6 +29,9 @@ public:
     , initial_potassium_out(3500)
     , sodium_velocity(100.0)
     , potassium_velocity(100.0)
+    , stim_delay(0.005)
+    , stim_duration(0.010)
+    , stim_current(1e-5) // TODO: should be 1e-8, but that's too small to get a result
   {
   }
 
@@ -52,6 +55,11 @@ public:
 
   double sodium_velocity;
   double potassium_velocity;
+
+  // stimulus current
+  double stim_delay;    // seconds
+  double stim_duration; // seconds
+  double stim_current;  // amps / cm² ?
 };
 
 #endif // Parameters__hpp

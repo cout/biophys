@@ -20,28 +20,33 @@ void
 Cell::
 update_permeabilities(Time const & dt)
 {
-  double phi = 1;
+  double const phi = 1;
 
-  double v = membrane_voltage;
+  double const v = membrane_voltage;
 
-  double gnabar = 120.0;
-  double gkbar = 36.0;
+  double const gnabar = 120.0;
+  double const gkbar = 36.0;
 
-  double am = phi * 0.1 * (v+40) / (1-exp(-(v+40)/10));
-  double bm = phi * 4 * exp(-(v+65)/18);
-  double dm = dt * (am*(1-m) - bm*m);
+  int const steps = 10000;
 
-  double ah = phi * 0.07 * exp(-(v+65)/20);
-  double bh = phi * 1.0 / (1+exp(-(v+35)/10));
-  double dh = dt * (ah*(1-h) - bh*h);
+  for (int j = 0; j < steps; ++j)
+  {
+    double am = phi * 0.1 * (v+40) / (1-exp(-(v+40)/10));
+    double bm = phi * 4 * exp(-(v+65)/18);
+    double dm = (dt / steps) * (am*(1-m) - bm*m);
 
-  double an = phi * 0.01 * (v+55) / (1-exp(-(v+55)/10));
-  double bn = phi * 0.125 * exp(-(v+65)/80);
-  double dn = dt * (an*(1-n) - bn*n);
+    double ah = phi * 0.07 * exp(-(v+65)/20);
+    double bh = phi * 1.0 / (1+exp(-(v+35)/10));
+    double dh = (dt / steps) * (ah*(1-h) - bh*h);
 
-  m += dm;
-  h += dh;
-  n += dn;
+    double an = phi * 0.01 * (v+55) / (1-exp(-(v+55)/10));
+    double bn = phi * 0.125 * exp(-(v+65)/80);
+    double dn = (dt / steps) * (an*(1-n) - bn*n);
+
+    m += dm;
+    h += dh;
+    n += dn;
+  }
 
   double gna = gnabar * ipow(m, 3) * h;
   double gk = gkbar * ipow(n, 4);
@@ -53,13 +58,23 @@ update_permeabilities(Time const & dt)
 
 void
 Cell::
-charge_changed(double delta)
+charge_changed(double charge_delta)
 {
-  net_charge += delta;
+  net_charge += charge_delta;
+
   double surface_area_in_cm2 = surface_area() / 1e8;
-  double voltage_delta = delta / membrane_capacitance / surface_area_in_cm2;
+  double voltage_delta = charge_delta / membrane_capacitance / surface_area_in_cm2;
 
   // TODO: repeated addition like this will result in numerical error
   membrane_voltage += voltage_delta;
 }
 
+void
+Cell::
+apply_stimulus_current(
+    double current,
+    Time const & dt)
+{
+  double voltage_delta = dt * current / membrane_capacitance;
+  membrane_voltage += voltage_delta;
+}

@@ -29,7 +29,11 @@ public:
 
   void update_permeabilities(Time const & dt);
 
-  void charge_changed(double delta);
+  void charge_changed(double charge_delta);
+
+  void apply_stimulus_current(
+      double current, 
+      Time const & dt);
 
   // TODO: the following is ugly, but it works
 

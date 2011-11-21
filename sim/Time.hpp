@@ -23,6 +23,8 @@ public:
 
   operator double() const { return d_; }
 
+  Time operator+=(Time dt) { d_ += dt.d_; return *this; }
+
   static Time now() {
     struct timeval tv;
     gettimeofday(&tv, 0);

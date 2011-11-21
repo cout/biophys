@@ -19,6 +19,7 @@ Color potassium_color(1.0, 0.5, 0.5, 1.0);
 System::
 System(Parameters const & params)
   : params_(params)
+  , now_(0)
   , texture_loader_()
   , particle_texture_(texture_loader_.texture("particle.png"))
   , cell_()
@@ -133,9 +134,23 @@ void
 System::
 iterate(Time const & dt)
 {
+  now_ += dt;
+  apply_stimulus_current(dt);
   sodium_.random_walk(*this, dt * params_.sodium_velocity);
   potassium_.random_walk(*this, dt * params_.potassium_velocity);
   cell_.update_permeabilities(dt);
+}
+
+void
+System::
+apply_stimulus_current(Time const & dt)
+{
+  if(now_ > params_.stim_delay && now_ < params_.stim_delay + params_.stim_duration)
+  {
+    cell_.apply_stimulus_current(
+        params_.stim_current,
+        dt);
+  }
 }
 
 void
