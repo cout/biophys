@@ -72,43 +72,54 @@ init_outer_limit()
   outer_limit_.radius = params_.outer_radius;
 }
 
+
+template<typename Particle_T>
+void
+System::
+init_particles(
+    Particles<Particle_T> & particles,
+    size_t in,
+    size_t out)
+{
+  auto it(particles.begin());
+  auto end(particles.end());
+
+  for (size_t i = 0; it != end && i < in; ++it, ++i)
+  {
+    Point p = random_insphere(0, cell_.radius);
+
+    it->x = cell_.x + p.x;
+    it->y = cell_.y + p.y;
+    it->z = cell_.z + p.z;
+
+    cell_.put_inside(*it);
+  }
+
+  for (size_t i = 0; it != end && i < out; ++it, ++i)
+  {
+    Point p = random_insphere(cell_.radius, outer_limit_.radius);
+
+    it->x = cell_.x + p.x;
+    it->y = cell_.y + p.y;
+    it->z = cell_.z + p.z;
+
+    cell_.put_outside(*it);
+  }
+}
+
 void
 System::
 init_particles()
 {
-  {
-    // Put sodium particles outside the cell
-    auto it(sodium_.begin());
-    auto end(sodium_.end());
+  init_particles(
+      sodium_,
+      params_.initial_sodium_in,
+      params_.initial_sodium_out);
 
-    for (; it != end; ++it)
-    {
-      Point p = random_insphere(cell_.radius, outer_limit_.radius);
-
-      it->x = cell_.x + p.x;
-      it->y = cell_.y + p.y;
-      it->z = cell_.z + p.z;
-
-      cell_.put_outside(*it);
-    }
-  }
-
-  {
-    // Put potassium particles inside the cell
-    auto it = potassium_.begin();
-    auto end = potassium_.end();
-
-    for (; it != end; ++it)
-    {
-      Point p = random_insphere(0, cell_.radius);
-
-      it->x = cell_.x + p.x;
-      it->y = cell_.y + p.y;
-      it->z = cell_.z + p.z;
-
-      cell_.put_inside(*it);
-    }
-  }
+  init_particles(
+      potassium_,
+      params_.initial_potassium_in,
+      params_.initial_potassium_out);
 }
 
 void

@@ -29,7 +29,15 @@ public:
 private:
   void init_cell();
   void init_outer_limit();
+
+  template<typename Particle_T>
+  void init_particles(
+      Particles<Particle_T> & particles,
+      size_t in,
+      size_t out);
+
   void init_particles();
+
   void init_temp();
 
 private:
