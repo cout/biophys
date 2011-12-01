@@ -182,9 +182,9 @@ void draw_graph()
   glMatrixMode(GL_MODELVIEW);
 }
 
-void on_glarea_expose(GtkWidget * widget, GdkEvent * /* event */, gpointer /* data */)
+gint on_glarea_expose(GtkWidget * widget, GdkEvent * /* event */, gpointer /* data */)
 {
-  if (!gtk_gl_area_make_current(glarea)) return;
+  if (!gtk_gl_area_make_current(glarea)) return false;
 
   Time now(Time::now());
   Time dt(now - last_display_time);
@@ -199,14 +199,16 @@ void on_glarea_expose(GtkWidget * widget, GdkEvent * /* event */, gpointer /* da
   // -- Flush --
   gtk_gl_area_swapbuffers(glarea);
   glFlush();
+
+  return true;
 }
 
-void on_glarea_configure(GtkWidget * widget, GdkEvent * event, gpointer /* data */)
+gint on_glarea_configure(GtkWidget * widget, GdkEvent * event, gpointer /* data */)
 {
   width = event->configure.width;
   height = event->configure.height;
 
-  if (!gtk_gl_area_make_current(GTK_GL_AREA(widget))) return;
+  if (!gtk_gl_area_make_current(GTK_GL_AREA(widget))) return false;
 
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
@@ -214,6 +216,7 @@ void on_glarea_configure(GtkWidget * widget, GdkEvent * event, gpointer /* data 
   gluPerspective(65.0, (float)width / height, 1 /* nearplane */, 1000 /* farplane */);
   glMatrixMode(GL_MODELVIEW);
 
+  return true;
 }
 
 static gint idle(gpointer /* data */)
@@ -270,29 +273,33 @@ void keyboard(unsigned char key, int x, int y)
 static int last_x = 0;
 static int last_y = 0;
 
-void mouse(int button, int state, int x, int y)
+gint on_event_box_button_press(GtkWidget * /* widget */, GdkEvent * event, gpointer /* data */)
 {
-  if (button == GLUT_LEFT_BUTTON)
-  {
-    if (state == GLUT_DOWN)
-    {
-      last_x = x;
-      last_y = y;
-      rotating = false;
-    }
-    else
-    {
-      rotating = true;
-    }
-  }
+  last_x = event->button.x;
+  last_y = event->button.y;
+  rotating = false;
+
+  return true;
 }
 
-void motion(int x, int y)
+gint on_event_box_button_release(GtkWidget * /* widget */, GdkEvent * /* event */, gpointer /* data */)
 {
+  rotating = true;
+
+  return true;
+}
+
+gint on_event_box_motion_notify(GtkWidget * /* widget */, GdkEvent * event, gpointer /* data */)
+{
+  double x = event->motion.x;
+  double y = event->motion.y;
+
   rotate_x = std::fmod(rotate_x + x - last_x, 360.0);
   rotate_y = std::fmod(rotate_y + y - last_y, 360.0);
   last_x = x;
   last_y = y;
+
+  return true;
 }
 
 int go()
@@ -356,6 +363,9 @@ int main(int argc, char** argv)
 
   event_box = gtk_event_box_new();
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(event_box));
+  g_signal_connect(event_box, "button-press-event", G_CALLBACK(on_event_box_button_press), 0);
+  g_signal_connect(event_box, "button-release-event", G_CALLBACK(on_event_box_button_release), 0);
+  g_signal_connect(event_box, "motion-notify-event", G_CALLBACK(on_event_box_motion_notify), 0);
   gtk_widget_show(GTK_WIDGET(event_box));
 
   int attrlist[] = { GDK_GL_RGBA, GDK_GL_DOUBLEBUFFER, GDK_GL_DEPTH_SIZE, 1, GDK_GL_NONE };
