@@ -258,18 +258,6 @@ void toggle_paused()
   }
 }
 
-void keyboard(unsigned char key, int x, int y)
-{
-  switch (key) {
-    case 27:
-      exit(0);
-      break;
-    case ' ':
-      toggle_paused();
-      break;
-  }
-}
-
 static int last_x = 0;
 static int last_y = 0;
 
@@ -358,11 +346,20 @@ int main(int argc, char** argv)
   glutInit(&argc, argv);
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_default_size(GTK_WINDOW(window), 512, 512);
   gtk_widget_show(window);
   g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), 0);
 
+  GtkWidget * hbox = gtk_hbox_new(false, 0);
+  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(hbox));
+  gtk_widget_show(hbox);
+
+  GtkWidget * vbox = gtk_hbox_new(false, 0);
+  gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(vbox), false, false, 0);
+  gtk_widget_show(vbox);
+
   event_box = gtk_event_box_new();
-  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(event_box));
+  gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(event_box), true, true, 0);
   g_signal_connect(event_box, "button-press-event", G_CALLBACK(on_event_box_button_press), 0);
   g_signal_connect(event_box, "button-release-event", G_CALLBACK(on_event_box_button_release), 0);
   g_signal_connect(event_box, "motion-notify-event", G_CALLBACK(on_event_box_motion_notify), 0);
