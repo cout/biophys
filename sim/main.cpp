@@ -181,7 +181,7 @@ void draw_graph()
   glMatrixMode(GL_MODELVIEW);
 }
 
-void display()
+void on_glarea_expose(GtkWidget * widget, GdkEvent * /* event */, gpointer /* data */)
 {
   if (!gtk_gl_area_make_current(glarea)) return;
 
@@ -206,8 +206,6 @@ void on_glarea_configure(GtkWidget * widget, GdkEvent * event, gpointer /* data 
   height = event->configure.height;
 
   if (!gtk_gl_area_make_current(GTK_GL_AREA(widget))) return;
-
-  std::cout << width << ' ' << height << std::endl;
 
   glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
@@ -234,7 +232,8 @@ static gint idle(gpointer /* data */)
     rotate_y += 0.05;
   }
 
-  display();
+  gtk_widget_queue_draw(GTK_WIDGET(glarea));
+
   return true;
 }
 
@@ -247,12 +246,10 @@ void toggle_paused()
 
   if (paused)
   {
-    std::cout << "idle_remove" << std::endl;
     gtk_idle_remove(idle_tag);
   }
   else
   {
-    std::cout << "idle_add" << std::endl;
     idle_tag = gtk_idle_add(idle, 0);
   }
 }
@@ -312,9 +309,7 @@ void on_window_destroy(GtkWidget * widget, gpointer data)
 
 void on_glarea_realize(GtkWidget * widget, gpointer data)
 {
-  std::cout << "realize" << std::endl;
   if (!gtk_gl_area_make_current(glarea)) return;
-  std::cout << "realize 2" << std::endl;
 
   glClearColor (0.0, 0.0, 0.0, 0.0);
 
@@ -352,6 +347,7 @@ void on_glarea_realize(GtkWidget * widget, gpointer data)
 int main(int argc, char** argv)
 {
   gtk_init(&argc, &argv);
+  glutInit(&argc, argv);
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_widget_show(window);
@@ -361,6 +357,7 @@ int main(int argc, char** argv)
   glarea = GTK_GL_AREA(gtk_gl_area_new(attrlist));
   g_signal_connect(glarea, "realize", G_CALLBACK(on_glarea_realize), 0);
   g_signal_connect(glarea, "configure-event", G_CALLBACK(on_glarea_configure), 0);
+  g_signal_connect(glarea, "expose-event", G_CALLBACK(on_glarea_expose), 0);
   gtk_widget_show(GTK_WIDGET(glarea));
 
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(glarea));
