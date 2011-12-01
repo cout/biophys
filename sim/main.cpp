@@ -23,6 +23,7 @@ namespace
 {
 
 GtkWidget * window;
+GtkWidget * event_box;
 GtkGLArea * glarea;
 
 Parameters params;
@@ -353,14 +354,17 @@ int main(int argc, char** argv)
   gtk_widget_show(window);
   g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), 0);
 
+  event_box = gtk_event_box_new();
+  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(event_box));
+  gtk_widget_show(GTK_WIDGET(event_box));
+
   int attrlist[] = { GDK_GL_RGBA, GDK_GL_DOUBLEBUFFER, GDK_GL_DEPTH_SIZE, 1, GDK_GL_NONE };
   glarea = GTK_GL_AREA(gtk_gl_area_new(attrlist));
   g_signal_connect(glarea, "realize", G_CALLBACK(on_glarea_realize), 0);
   g_signal_connect(glarea, "configure-event", G_CALLBACK(on_glarea_configure), 0);
   g_signal_connect(glarea, "expose-event", G_CALLBACK(on_glarea_expose), 0);
+  gtk_container_add(GTK_CONTAINER(event_box), GTK_WIDGET(glarea));
   gtk_widget_show(GTK_WIDGET(glarea));
-
-  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(glarea));
 
   voltage_graph.reset(new Graph);
 
