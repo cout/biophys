@@ -23,6 +23,8 @@ CFLAGS += -funsafe-math-optimizations
 CFLAGS += -ffinite-math-only
 CFLAGS += -fno-trapping-math
 CFLAGS += -mrecip
+CFLAGS += `pkg-config gtk+-2.0 --cflags`
+CFLAGS += `pkg-config gtkgl-2.0 --cflags`
 
 CXXFLAGS += -std=c++0x
 
@@ -31,9 +33,9 @@ LDFLAGS += -lftgl
 LDFLAGS += -lGL
 LDFLAGS += -lGLU
 # LDFLAGS += -lglut
-LDFLAGS += -lfltk
-LDFLAGS += -lfltk_gl
 LDFLAGS += -lm
+LDFLAGS += `pkg-config gtk+-2.0 --libs`
+LDFLAGS += `pkg-config gtkgl-2.0 --libs`
 
 %.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CFLAGS) $(CXXFLAGS) -c $< -o $@

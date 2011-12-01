@@ -3,13 +3,14 @@
 #include "Parameters.hpp"
 #include "Graph.hpp"
 
-#include <FL/glut.H>
-#include <FL/Fl_Pack.H>
-
 #include <FTGL/ftgl.h>
 
 // #include <GL/glc.h>
 #include <GL/glu.h>
+#include <GL/glut.h>
+
+#include <gtk/gtk.h>
+#include <gtkgl/gtkglarea.h>
 
 #include <iostream>
 #include <cstdlib>
@@ -20,6 +21,9 @@
 
 namespace
 {
+
+GtkWidget * window;
+GtkGLArea * glarea;
 
 Parameters params;
 std::auto_ptr<System> the_system;
@@ -37,7 +41,6 @@ double rotate_y = 90.0;
 int width = 500;
 int height = 500;
 
-bool paused = true;
 bool rotating = true;
 
 Time last_display_time;
@@ -75,38 +78,6 @@ void init_fonts()
   }
   font->FaceSize(18);
   font->UseDisplayList(true);
-}
-
-void init_gl()
-{
-  glClearColor (0.0, 0.0, 0.0, 0.0);
-
-  glShadeModel(GL_SMOOTH);
-
-  glEnable(GL_BLEND);
-  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  // glBlendFunc (GL_ONE_MINUS_DST_COLOR, GL_ONE);
-  // glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_COLOR);
-
-  // glAlphaFunc(GL_GREATER, 0);
-  // glEnable(GL_ALPHA_TEST);
-
-  glClearDepth(1.0f);
-  glDepthFunc(GL_LESS);
-  glEnable(GL_DEPTH_TEST);
-
-  glEnable(GL_POINT_SMOOTH);
-  glEnable(GL_LINE_SMOOTH);
-  glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-
-  init_lighting();
-  init_fonts();
-
-  the_system.reset(new System(params));
-  the_system->reset();
-
-  voltage_graph.reset(new Graph);
 }
 
 void draw_world(Time dt)
@@ -212,6 +183,8 @@ void draw_graph()
 
 void display()
 {
+  if (!gtk_gl_area_make_current(glarea)) return;
+
   Time now(Time::now());
   Time dt(now - last_display_time);
   last_display_time = now;
@@ -223,22 +196,28 @@ void display()
   draw_graph();
 
   // -- Flush --
-  glutSwapBuffers();
+  gtk_gl_area_swapbuffers(glarea);
   glFlush();
 }
 
-void reshape(int w, int h)
+void on_glarea_configure(GtkWidget * widget, GdkEvent * event, gpointer /* data */)
 {
-  width = w;
-  height = h;
-  glViewport(0, 0, w, h);
+  width = event->configure.width;
+  height = event->configure.height;
+
+  if (!gtk_gl_area_make_current(GTK_GL_AREA(widget))) return;
+
+  std::cout << width << ' ' << height << std::endl;
+
+  glViewport(0, 0, width, height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(65.0, (float)w / h, 1 /* nearplane */, 1000 /* farplane */);
+  gluPerspective(65.0, (float)width / height, 1 /* nearplane */, 1000 /* farplane */);
   glMatrixMode(GL_MODELVIEW);
+
 }
 
-void idle()
+static gint idle(gpointer /* data */)
 {
   Time now(Time::now());
   Time dt((now - last_run_time) / params.time_stretch);
@@ -255,20 +234,26 @@ void idle()
     rotate_y += 0.05;
   }
 
-  glutPostRedisplay();
+  display();
+  return true;
 }
 
 void toggle_paused()
 {
+  static gint idle_tag;
+  static bool paused = true;
+
   paused = !paused;
 
   if (paused)
   {
-    glutIdleFunc(0);
+    std::cout << "idle_remove" << std::endl;
+    gtk_idle_remove(idle_tag);
   }
   else
   {
-    glutIdleFunc(idle);
+    std::cout << "idle_add" << std::endl;
+    idle_tag = gtk_idle_add(idle, 0);
   }
 }
 
@@ -316,46 +301,72 @@ int go()
 {
   last_run_time = Time::now();
   last_display_time = Time::now();
-  return Fl::run();
+  gtk_main();
+  return 0;
 }
 
-void init_glut()
+void on_window_destroy(GtkWidget * widget, gpointer data)
 {
-  glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
-  glutInitWindowSize (width, height); 
-  glutInitWindowPosition (0, 0);
-  glutCreateWindow("");
+  gtk_main_quit();
+}
 
-  init_gl();
+void on_glarea_realize(GtkWidget * widget, gpointer data)
+{
+  std::cout << "realize" << std::endl;
+  if (!gtk_gl_area_make_current(glarea)) return;
+  std::cout << "realize 2" << std::endl;
 
-  glutDisplayFunc(display); 
-  glutReshapeFunc(reshape);
-  glutKeyboardFunc(keyboard);
-  glutMouseFunc(mouse);
-  glutMotionFunc(motion);
+  glClearColor (0.0, 0.0, 0.0, 0.0);
+
+  glShadeModel(GL_SMOOTH);
+
+  glEnable(GL_BLEND);
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // glBlendFunc (GL_ONE_MINUS_DST_COLOR, GL_ONE);
+  // glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_CONSTANT_COLOR);
+
+  // glAlphaFunc(GL_GREATER, 0);
+  // glEnable(GL_ALPHA_TEST);
+
+  glClearDepth(1.0f);
+  glDepthFunc(GL_LESS);
+  glEnable(GL_DEPTH_TEST);
+
+  glEnable(GL_POINT_SMOOTH);
+  glEnable(GL_LINE_SMOOTH);
+  glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+  init_lighting();
+  init_fonts();
+
+  // TODO: shouldn't be calling GL stuff in here
+  the_system.reset(new System(params));
+  the_system->reset();
+
+  toggle_paused();
 }
 
 } // namespace
 
 int main(int argc, char** argv)
 {
-  // glutInit(&argc, argv);
-  Fl_Window * window = new Fl_Window(width, height);
-  window->show(argc, argv);
+  gtk_init(&argc, &argv);
 
-  window->begin();
-  {
-    Fl_Pack * pack = new Fl_Pack(0, 0, window->w(), window->h());
-    pack->type(Fl_Pack::HORIZONTAL);
-    pack->begin();
-    {
-      init_glut();
-    }
-    pack->end();
-  }
-  window->end();
+  window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  gtk_widget_show(window);
+  g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), 0);
 
-  toggle_paused();
+  int attrlist[] = { GDK_GL_RGBA, GDK_GL_DOUBLEBUFFER, GDK_GL_DEPTH_SIZE, 1, GDK_GL_NONE };
+  glarea = GTK_GL_AREA(gtk_gl_area_new(attrlist));
+  g_signal_connect(glarea, "realize", G_CALLBACK(on_glarea_realize), 0);
+  g_signal_connect(glarea, "configure-event", G_CALLBACK(on_glarea_configure), 0);
+  gtk_widget_show(GTK_WIDGET(glarea));
+
+  gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(glarea));
+
+  voltage_graph.reset(new Graph);
+
   return go();
 }
 
