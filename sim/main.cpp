@@ -309,21 +309,25 @@ void motion(int x, int y)
   last_y = y;
 }
 
-void go()
+int go()
 {
   last_run_time = Time::now();
   last_display_time = Time::now();
-  glutMainLoop();
+  return Fl::run();
 }
 
 } // namespace
 
 int main(int argc, char** argv)
 {
-  glutInit(&argc, argv);
+  // glutInit(&argc, argv);
+  Fl_Window *window = new Fl_Window(width, height);
+  window->show(argc, argv);
+  window->begin();
+
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
   glutInitWindowSize (width, height); 
-  glutInitWindowPosition (100, 100);
+  glutInitWindowPosition (0, 0);
   glutCreateWindow (argv[0]);
 
   init();
@@ -335,6 +339,5 @@ int main(int argc, char** argv)
   glutMotionFunc(motion);
 
   toggle_paused();
-  go();
-  return 0;
+  return go();
 }
