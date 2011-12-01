@@ -346,7 +346,7 @@ int main(int argc, char** argv)
   glutInit(&argc, argv);
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_default_size(GTK_WINDOW(window), 512, 512);
+  gtk_window_set_default_size(GTK_WINDOW(window), 800, 512);
   gtk_widget_show(window);
   g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), 0);
 
@@ -354,9 +354,21 @@ int main(int argc, char** argv)
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(hbox));
   gtk_widget_show(hbox);
 
-  GtkWidget * vbox = gtk_hbox_new(false, 0);
+  GtkWidget * vbox = gtk_vbox_new(false, 0);
   gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(vbox), false, false, 0);
   gtk_widget_show(vbox);
+
+  GtkWidget * buttons = gtk_hbox_new(false, 0);
+  gtk_box_pack_end(GTK_BOX(vbox), GTK_WIDGET(buttons), false, false, 0);
+  gtk_widget_show(buttons);
+
+  GtkWidget * play_pause_button = gtk_button_new_with_label("Play/Pause");
+  gtk_box_pack_start(GTK_BOX(buttons), GTK_WIDGET(play_pause_button), false, false, 0);
+  gtk_widget_show(play_pause_button);
+
+  GtkWidget * reset_button = gtk_button_new_with_label("Reset");
+  gtk_box_pack_start(GTK_BOX(buttons), GTK_WIDGET(reset_button), false, false, 0);
+  gtk_widget_show(reset_button);
 
   event_box = gtk_event_box_new();
   gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(event_box), true, true, 0);
