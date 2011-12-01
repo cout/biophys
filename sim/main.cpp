@@ -4,9 +4,12 @@
 #include "Graph.hpp"
 
 #include <FL/glut.H>
-#include "GL/glu.h"
+#include <FL/Fl_Pack.H>
+
 #include <FTGL/ftgl.h>
+
 // #include <GL/glc.h>
+#include <GL/glu.h>
 
 #include <iostream>
 #include <cstdlib>
@@ -74,7 +77,7 @@ void init_fonts()
   font->UseDisplayList(true);
 }
 
-void init()
+void init_gl()
 {
   glClearColor (0.0, 0.0, 0.0, 0.0);
 
@@ -316,28 +319,43 @@ int go()
   return Fl::run();
 }
 
-} // namespace
-
-int main(int argc, char** argv)
+void init_glut()
 {
-  // glutInit(&argc, argv);
-  Fl_Window *window = new Fl_Window(width, height);
-  window->show(argc, argv);
-  window->begin();
-
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA | GLUT_DEPTH);
   glutInitWindowSize (width, height); 
   glutInitWindowPosition (0, 0);
-  glutCreateWindow (argv[0]);
+  glutCreateWindow("");
 
-  init();
+  init_gl();
 
   glutDisplayFunc(display); 
   glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
   glutMouseFunc(mouse);
   glutMotionFunc(motion);
+}
+
+} // namespace
+
+int main(int argc, char** argv)
+{
+  // glutInit(&argc, argv);
+  Fl_Window * window = new Fl_Window(width, height);
+  window->show(argc, argv);
+
+  window->begin();
+  {
+    Fl_Pack * pack = new Fl_Pack(0, 0, window->w(), window->h());
+    pack->type(Fl_Pack::HORIZONTAL);
+    pack->begin();
+    {
+      init_glut();
+    }
+    pack->end();
+  }
+  window->end();
 
   toggle_paused();
   return go();
 }
+
