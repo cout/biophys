@@ -4,7 +4,7 @@
 #include "Parameters.hpp"
 #include "Time.hpp"
 
-#include <GL/glut.h>
+#include <FL/glut.H>
 
 #include <cmath>
 

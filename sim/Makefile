@@ -30,7 +30,9 @@ LDFLAGS += -lSOIL
 LDFLAGS += -lftgl
 LDFLAGS += -lGL
 LDFLAGS += -lGLU
-LDFLAGS += -lglut
+# LDFLAGS += -lglut
+LDFLAGS += -lfltk
+LDFLAGS += -lfltk_gl
 LDFLAGS += -lm
 
 %.o: %.cpp

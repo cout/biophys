@@ -10,9 +10,9 @@ Cell::Cell()
   , net_charge(0)
   , membrane_voltage(0)
   , membrane_capacitance(0)
-  , n(0)
-  , m(0)
-  , h(0)
+  , n(1e-3)
+  , m(1e-3)
+  , h(1e-3)
 {
 }
 
@@ -27,7 +27,7 @@ update_permeabilities(Time const & dt)
   double const gnabar = 120.0; // mS/cm²
   double const gkbar = 36.0; // mS/cm²
 
-  int const steps = 10000;
+  int const steps = 16384;
 
   for (int j = 0; j < steps; ++j)
   {
@@ -52,8 +52,8 @@ update_permeabilities(Time const & dt)
   double gk = gkbar * ipow(n, 4); // mS/cm²
 
   // TODO: conductance and permeability aren't quite the same
-  sodium_permeability = gna / 1000.0;
-  potassium_permeability = gk / 1000.0;
+  sodium_permeability = gna;
+  potassium_permeability = gk;
 }
 
 void

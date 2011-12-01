@@ -3,7 +3,8 @@
 #include "Parameters.hpp"
 #include "Graph.hpp"
 
-#include <GL/glut.h>
+#include <FL/glut.H>
+#include "GL/glu.h"
 #include <FTGL/ftgl.h>
 // #include <GL/glc.h>
 
@@ -159,6 +160,9 @@ void draw_legend(Time dt)
   WRITE_LINE("Potassium pumped: " << the_system->na_k_pump().potassium_pumped());
   WRITE_LINE("Cell net charge: " << the_system->cell().net_charge);
   WRITE_LINE("FPS: " << (1.0 / dt));
+  WRITE_LINE("m: " << the_system->cell().m);
+  WRITE_LINE("h: " << the_system->cell().h);
+  WRITE_LINE("n: " << the_system->cell().n);
 
   glPopAttrib();
 
