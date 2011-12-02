@@ -8,6 +8,8 @@ class Graph
 public:
   Graph();
 
+  void reset();
+
   void add_point(double t, double val);
 
   void draw();

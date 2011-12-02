@@ -53,6 +53,7 @@ void reset()
 {
   params = initial_params;
   the_system->reset();
+  voltage_graph->reset();
   rotate_x = 0.0;
   rotate_y = 90.0;
   sim_time = 0;
@@ -183,6 +184,7 @@ void draw_graph()
   glColor4f(0.9, 0.9, 0.9, 1.0);
 
   glScalef(2000, 1000, 1);
+  glTranslatef(0, -0.25, 0);
 
   voltage_graph->draw();
 

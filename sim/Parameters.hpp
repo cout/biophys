@@ -20,7 +20,7 @@ public:
     , cell_center(0, 0, 0)
     , cell_radius(1.0)
     , outer_radius(1.25)
-    , initial_membrane_voltage(-200e-3)
+    , initial_membrane_voltage(-70e-3)
     , membrane_capacitance(1e-6)
     , temperature(298)
     , initial_sodium_in(3000)
@@ -29,11 +29,11 @@ public:
     , initial_potassium_out(3500)
     , sodium_mass(100)
     , potassium_mass(100)
-    , sodium_velocity(100.0)
-    , potassium_velocity(100.0)
+    , sodium_velocity(500.0)
+    , potassium_velocity(500.0)
     , stim_delay(0.005)
-    , stim_duration(0.010)
-    , stim_current(1e-8) // TODO: should be 1e-8, but that's too small to get a result
+    , stim_duration(0.001)
+    , stim_current(30e-9)
   {
   }
 

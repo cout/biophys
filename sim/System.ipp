@@ -22,10 +22,10 @@ try_walk(Particle_T & particle, Point dest)
     {
       goto crosswalk;
     }
-    else if (na_k_pump_.pass_particle(particle, dst_is_inside))
-    {
-      goto crosswalk;
-    }
+    // else if (na_k_pump_.pass_particle(particle, dst_is_inside))
+    // {
+      // goto crosswalk;
+    // }
     else
     {
       return;

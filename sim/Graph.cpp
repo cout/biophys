@@ -10,6 +10,13 @@ Graph()
 
 void
 Graph::
+reset()
+{
+  values_.clear();
+}
+
+void
+Graph::
 add_point(double t, double val)
 {
   values_.push_back(std::make_pair(t, val));

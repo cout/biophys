@@ -43,9 +43,9 @@ update_permeabilities(Time const & dt)
     double bn = phi * 0.125 * exp(-(v+65)/80);
     double dn = (dt / steps) * (an*(1-n) - bn*n);
 
-    m += dm;
-    h += dh;
-    n += dn;
+    m += dm * 1000; // TODO: why?
+    h += dh * 1000; // TODO: why?
+    n += dn * 1000; // TODO: why?
   }
 
   double gna = gnabar * ipow(m, 3) * h; // mS/cm²
@@ -76,5 +76,5 @@ apply_stimulus_current(
     Time const & dt)
 {
   double voltage_delta = dt * current / membrane_capacitance;
-  membrane_voltage += voltage_delta;
+  membrane_voltage += 1000 * voltage_delta; // TODO: why?
 }
