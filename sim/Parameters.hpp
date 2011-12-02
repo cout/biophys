@@ -55,11 +55,11 @@ public:
   double initial_potassium_in;
   double initial_potassium_out;
 
-  int sodium_mass;
-  int potassium_mass;
+  int sodium_mass; // unspecified units
+  int potassium_mass; // unspecified units
 
-  double sodium_velocity;
-  double potassium_velocity;
+  double sodium_velocity; // unspecified units
+  double potassium_velocity; // unspecified units
 
   // stimulus current
   double stim_delay;    // seconds

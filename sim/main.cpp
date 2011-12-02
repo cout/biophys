@@ -26,6 +26,7 @@ GtkWidget * window;
 GtkWidget * event_box;
 GtkGLArea * glarea;
 
+Parameters initial_params;
 Parameters params;
 std::auto_ptr<System> the_system;
 
@@ -338,6 +339,38 @@ void on_glarea_realize(GtkWidget * widget, gpointer data)
   toggle_paused();
 }
 
+template<typename T>
+struct Param_Changer
+{
+
+static gint param_changed(GtkEditable * editable, gpointer data)
+{
+  T * value = (T *)data;
+  std::istringstream strm(gtk_entry_get_text(GTK_ENTRY(editable)));
+  strm >> *value;
+  return true;
+}
+
+};
+
+int param_row = 1;
+
+template<typename T>
+void add_param(
+    GtkWidget * params,
+    char const * text,
+    T * value)
+{
+  GtkWidget * label = gtk_label_new(text);
+  gtk_table_attach_defaults(GTK_TABLE(params), label, 0, 1, param_row, param_row+1);
+
+  GtkWidget * entry = gtk_entry_new();
+  gtk_table_attach_defaults(GTK_TABLE(params), entry, 1, 2, param_row, param_row+1);
+  g_signal_connect(entry, "changed", G_CALLBACK(Param_Changer<T>::param_changed), value);
+
+  param_row += 1;
+}
+
 } // namespace
 
 int main(int argc, char** argv)
@@ -347,35 +380,50 @@ int main(int argc, char** argv)
 
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size(GTK_WINDOW(window), 800, 512);
-  gtk_widget_show(window);
   g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), 0);
 
   GtkWidget * hbox = gtk_hbox_new(false, 0);
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(hbox));
-  gtk_widget_show(hbox);
 
   GtkWidget * vbox = gtk_vbox_new(false, 0);
   gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(vbox), false, false, 0);
-  gtk_widget_show(vbox);
+
+  GtkWidget * params = gtk_table_new(40, 2, false);
+  gtk_box_pack_start(GTK_BOX(vbox), GTK_WIDGET(params), false, false, 0);
 
   GtkWidget * buttons = gtk_hbox_new(false, 0);
   gtk_box_pack_end(GTK_BOX(vbox), GTK_WIDGET(buttons), false, false, 0);
-  gtk_widget_show(buttons);
+
+  add_param(params, "Time stretch", &initial_params.time_stretch);
+  add_param(params, "Cell radius", &initial_params.cell_radius);
+  add_param(params, "Outer radius", &initial_params.outer_radius);
+  add_param(params, "Initial membrane voltage", &initial_params.initial_membrane_voltage);
+  add_param(params, "Membrane capacitance", &initial_params.membrane_capacitance);
+  add_param(params, "Initial Na permeability", &initial_params.initial_sodium_permeability);
+  add_param(params, "Initial K permeability", &initial_params.initial_potassium_permeability);
+  add_param(params, "Initial Na in", &initial_params.initial_sodium_in);
+  add_param(params, "Initial Na out", &initial_params.initial_sodium_out);
+  add_param(params, "Initial K in", &initial_params.initial_potassium_in);
+  add_param(params, "Initial K out", &initial_params.initial_potassium_out);
+  add_param(params, "Sodium particle mass", &initial_params.sodium_mass);
+  add_param(params, "Potassium particle mass", &initial_params.potassium_mass);
+  add_param(params, "Sodium velocity", &initial_params.sodium_velocity);
+  add_param(params, "Potassium velocity", &initial_params.potassium_velocity);
+  add_param(params, "Stim delay", &initial_params.stim_delay);
+  add_param(params, "Stim duration", &initial_params.stim_duration);
+  add_param(params, "Stim current", &initial_params.stim_current);
 
   GtkWidget * play_pause_button = gtk_button_new_with_label("Play/Pause");
   gtk_box_pack_start(GTK_BOX(buttons), GTK_WIDGET(play_pause_button), false, false, 0);
-  gtk_widget_show(play_pause_button);
 
   GtkWidget * reset_button = gtk_button_new_with_label("Reset");
   gtk_box_pack_start(GTK_BOX(buttons), GTK_WIDGET(reset_button), false, false, 0);
-  gtk_widget_show(reset_button);
 
   event_box = gtk_event_box_new();
   gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(event_box), true, true, 0);
   g_signal_connect(event_box, "button-press-event", G_CALLBACK(on_event_box_button_press), 0);
   g_signal_connect(event_box, "button-release-event", G_CALLBACK(on_event_box_button_release), 0);
   g_signal_connect(event_box, "motion-notify-event", G_CALLBACK(on_event_box_motion_notify), 0);
-  gtk_widget_show(GTK_WIDGET(event_box));
 
   int attrlist[] = { GDK_GL_RGBA, GDK_GL_DOUBLEBUFFER, GDK_GL_DEPTH_SIZE, 1, GDK_GL_NONE };
   glarea = GTK_GL_AREA(gtk_gl_area_new(attrlist));
@@ -383,9 +431,10 @@ int main(int argc, char** argv)
   g_signal_connect(glarea, "configure-event", G_CALLBACK(on_glarea_configure), 0);
   g_signal_connect(glarea, "expose-event", G_CALLBACK(on_glarea_expose), 0);
   gtk_container_add(GTK_CONTAINER(event_box), GTK_WIDGET(glarea));
-  gtk_widget_show(GTK_WIDGET(glarea));
 
   voltage_graph.reset(new Graph);
+
+  gtk_widget_show_all(window);
 
   return go();
 }
