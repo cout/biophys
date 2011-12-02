@@ -33,7 +33,8 @@ private:
   void init_particles(
       Particles<Particle_T> & particles,
       size_t in,
-      size_t out);
+      size_t out,
+      int mass);
 
   void init_particles();
 

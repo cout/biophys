@@ -27,6 +27,8 @@ public:
     , initial_sodium_out(14000)
     , initial_potassium_in(11350)
     , initial_potassium_out(3500)
+    , sodium_mass(100)
+    , potassium_mass(100)
     , sodium_velocity(100.0)
     , potassium_velocity(100.0)
     , stim_delay(0.005)
@@ -52,6 +54,9 @@ public:
   double initial_sodium_out;
   double initial_potassium_in;
   double initial_potassium_out;
+
+  int sodium_mass;
+  int potassium_mass;
 
   double sodium_velocity;
   double potassium_velocity;

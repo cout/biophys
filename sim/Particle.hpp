@@ -12,10 +12,12 @@ class Particle
 public:
   Particle()
     : Point(0, 0, 0)
+    , mass(1)
   {
   }
 
   bool is_inside_cell;
+  int mass;
 };
 
 template<typename Derived_T, int Charge>
@@ -32,7 +34,7 @@ public:
 
   double charge() const
   {
-    return 10 * Charge * ELEMENTARY_CHARGE;
+    return mass * Charge * ELEMENTARY_CHARGE;
   }
 };
 

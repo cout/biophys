@@ -80,7 +80,8 @@ System::
 init_particles(
     Particles<Particle_T> & particles,
     size_t in,
-    size_t out)
+    size_t out,
+    int mass)
 {
   auto it(particles.begin());
   auto end(particles.end());
@@ -92,6 +93,7 @@ init_particles(
     it->x = cell_.x + p.x;
     it->y = cell_.y + p.y;
     it->z = cell_.z + p.z;
+    it->mass = mass;
 
     cell_.put_inside(*it);
   }
@@ -103,6 +105,7 @@ init_particles(
     it->x = cell_.x + p.x;
     it->y = cell_.y + p.y;
     it->z = cell_.z + p.z;
+    it->mass = mass;
 
     cell_.put_outside(*it);
   }
@@ -115,12 +118,14 @@ init_particles()
   init_particles(
       sodium_,
       params_.initial_sodium_in,
-      params_.initial_sodium_out);
+      params_.initial_sodium_out,
+      params_.sodium_mass);
 
   init_particles(
       potassium_,
       params_.initial_potassium_in,
-      params_.initial_potassium_out);
+      params_.initial_potassium_out,
+      params_.potassium_mass);
 }
 
 void
