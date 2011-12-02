@@ -22,7 +22,6 @@ public:
     , outer_radius(1.25)
     , initial_membrane_voltage(-70e-3)
     , membrane_capacitance(1e-6)
-    , temperature(298)
     , initial_sodium_in(3000)
     , initial_sodium_out(14000)
     , initial_potassium_in(11350)
@@ -34,6 +33,9 @@ public:
     , stim_delay(0.005)
     , stim_duration(0.001)
     , stim_current(30e-9)
+    , n_initial(0)
+    , m_initial(1)
+    , h_initial(0)
   {
   }
 
@@ -46,10 +48,6 @@ public:
   double initial_membrane_voltage; // volts
   double membrane_capacitance; // farads / cm²
 
-  double temperature; // Kelvins
-
-  double initial_sodium_permeability;
-  double initial_potassium_permeability;
   double initial_sodium_in;
   double initial_sodium_out;
   double initial_potassium_in;
@@ -65,6 +63,10 @@ public:
   double stim_delay;    // seconds
   double stim_duration; // seconds
   double stim_current;  // amps / cm² ?
+
+  double n_initial; // no units
+  double m_initial; // no units
+  double h_initial; // no units
 };
 
 #endif // Parameters__hpp

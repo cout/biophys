@@ -10,9 +10,9 @@ Cell::Cell()
   , net_charge(0)
   , membrane_voltage(0)
   , membrane_capacitance(0)
-  , n(1e-3)
-  , m(1e-3)
-  , h(1e-3)
+  , n(0)
+  , m(0)
+  , h(0)
 {
 }
 

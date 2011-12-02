@@ -38,8 +38,6 @@ private:
 
   void init_particles();
 
-  void init_temp();
-
   void apply_stimulus_current(Time const & dt);
 
 private:
@@ -49,7 +47,6 @@ private:
   Texture particle_texture_;
   Cell cell_;
   Cell outer_limit_;
-  double temperature_;
   Particles<Sodium_Particle> sodium_;
   Particles<Potassium_Particle> potassium_;
   Na_K_Pump na_k_pump_;

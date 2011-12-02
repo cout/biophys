@@ -41,10 +41,10 @@ void
 System::
 reset()
 {
+  now_ = 0;
   init_cell();
   init_outer_limit();
   init_particles();
-  init_temp();
 }
 
 void
@@ -61,6 +61,9 @@ init_cell()
   cell_.potassium_outside = 0;
   cell_.membrane_voltage = params_.initial_membrane_voltage;
   cell_.membrane_capacitance = params_.membrane_capacitance;
+  cell_.n = params_.n_initial;
+  cell_.m = params_.m_initial;
+  cell_.h = params_.h_initial;
 }
 
 void
@@ -126,13 +129,6 @@ init_particles()
       params_.initial_potassium_in,
       params_.initial_potassium_out,
       params_.potassium_mass);
-}
-
-void
-System::
-init_temp()
-{
-  temperature_ = params_.temperature;
 }
 
 void

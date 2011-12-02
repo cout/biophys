@@ -449,8 +449,6 @@ int main(int argc, char** argv)
   add_param(params, "Outer radius", &initial_params.outer_radius);
   add_param(params, "Initial membrane voltage", &initial_params.initial_membrane_voltage);
   add_param(params, "Membrane capacitance", &initial_params.membrane_capacitance);
-  add_param(params, "Initial Na permeability", &initial_params.initial_sodium_permeability);
-  add_param(params, "Initial K permeability", &initial_params.initial_potassium_permeability);
   add_param(params, "Initial Na in", &initial_params.initial_sodium_in);
   add_param(params, "Initial Na out", &initial_params.initial_sodium_out);
   add_param(params, "Initial K in", &initial_params.initial_potassium_in);
@@ -462,6 +460,9 @@ int main(int argc, char** argv)
   add_param(params, "Stim delay", &initial_params.stim_delay);
   add_param(params, "Stim duration", &initial_params.stim_duration);
   add_param(params, "Stim current", &initial_params.stim_current);
+  add_param(params, "n", &initial_params.n_initial);
+  add_param(params, "m", &initial_params.m_initial);
+  add_param(params, "h", &initial_params.h_initial);
 
   GtkWidget * play_pause_button = gtk_button_new_with_label("Play/Pause");
   gtk_box_pack_start(GTK_BOX(buttons), GTK_WIDGET(play_pause_button), false, false, 0);
