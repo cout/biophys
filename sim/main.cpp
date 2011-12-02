@@ -49,6 +49,20 @@ Time last_display_time;
 Time last_run_time;
 Time sim_time;
 
+void reset()
+{
+  params = initial_params;
+  the_system->reset();
+  rotate_x = 0.0;
+  rotate_y = 90.0;
+  sim_time = 0;
+}
+
+void redraw()
+{
+  gtk_widget_queue_draw(GTK_WIDGET(glarea));
+}
+
 void init_lighting()
 {
   GLfloat global_ambient[] = { 1.5f, 1.5f, 1.5f, 1.0f };
@@ -237,7 +251,7 @@ static gint idle(gpointer /* data */)
     rotate_y += 0.05;
   }
 
-  gtk_widget_queue_draw(GTK_WIDGET(glarea));
+  redraw();
 
   return true;
 }
@@ -339,6 +353,20 @@ void on_glarea_realize(GtkWidget * widget, gpointer data)
   toggle_paused();
 }
 
+gint on_play_pause_clicked(GtkWidget * /* widget */, gpointer /* data */)
+{
+  toggle_paused();
+  return true;
+}
+
+gint on_reset_clicked(GtkWidget * /* widget */, gpointer /* data */)
+{
+  reset();
+  redraw();
+  return true;
+}
+
+
 template<typename T>
 struct Param_Changer
 {
@@ -435,9 +463,11 @@ int main(int argc, char** argv)
 
   GtkWidget * play_pause_button = gtk_button_new_with_label("Play/Pause");
   gtk_box_pack_start(GTK_BOX(buttons), GTK_WIDGET(play_pause_button), false, false, 0);
+  g_signal_connect(play_pause_button, "clicked", G_CALLBACK(on_play_pause_clicked), 0);
 
   GtkWidget * reset_button = gtk_button_new_with_label("Reset");
   gtk_box_pack_start(GTK_BOX(buttons), GTK_WIDGET(reset_button), false, false, 0);
+  g_signal_connect(reset_button, "clicked", G_CALLBACK(on_reset_clicked), 0);
 
   voltage_graph.reset(new Graph);
 

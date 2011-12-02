@@ -23,6 +23,8 @@ public:
 
   operator double() const { return d_; }
 
+  Time operator=(Time t) { d_ = t.d_; return *this; }
+
   Time operator+=(Time dt) { d_ += dt.d_; return *this; }
 
   static Time now() {
