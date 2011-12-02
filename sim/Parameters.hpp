@@ -21,18 +21,18 @@ public:
     , cell_radius(1.0)
     , outer_radius(1.25)
     , initial_membrane_voltage(-70)
-    , membrane_capacitance(1e-6)
-    , initial_sodium_in(3000)
-    , initial_sodium_out(14000)
-    , initial_potassium_in(11350)
-    , initial_potassium_out(3500)
-    , sodium_mass(100)
-    , potassium_mass(100)
+    , membrane_capacitance(1)
+    , initial_sodium_in(6000)
+    , initial_sodium_out(28000)
+    , initial_potassium_in(22700)
+    , initial_potassium_out(7000)
+    , sodium_mass(500000) // TODO: fudge
+    , potassium_mass(500000) // TODO: fudge
     , sodium_velocity(500.0)
     , potassium_velocity(500.0)
     , stim_delay(0.005)
     , stim_duration(0.001)
-    , stim_current(30e-9)
+    , stim_current(30)
     , n_initial(0)
     , m_initial(1)
     , h_initial(0)
@@ -45,8 +45,8 @@ public:
   double cell_radius; // micrometers
   double outer_radius; // micrometers
 
-  double initial_membrane_voltage; // volts
-  double membrane_capacitance; // farads / cm²
+  double initial_membrane_voltage; // mV
+  double membrane_capacitance; // uF / cm²
 
   double initial_sodium_in;
   double initial_sodium_out;
@@ -62,7 +62,7 @@ public:
   // stimulus current
   double stim_delay;    // seconds
   double stim_duration; // seconds
-  double stim_current;  // amps / cm² ?
+  double stim_current;  // nA / cm² ?
 
   double n_initial; // no units
   double m_initial; // no units

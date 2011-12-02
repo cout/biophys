@@ -63,19 +63,19 @@ charge_changed(double charge_delta)
   net_charge += charge_delta;
 
   double surface_area_in_cm2 = surface_area() / 1e8;
-  double voltage_delta = charge_delta / membrane_capacitance / surface_area_in_cm2;
+  double voltage_delta = charge_delta / (membrane_capacitance * 1e-6) / surface_area_in_cm2;
 
   // TODO: repeated addition like this will result in numerical error
-  membrane_voltage += voltage_delta * 1000.0;
+  membrane_voltage += voltage_delta;
 }
 
 void
 Cell::
 apply_stimulus_current(
-    double current,
+    double current, // nA/cm^2
     Time const & dt)
 {
-  double voltage_delta = dt * current / membrane_capacitance;
-  membrane_voltage += voltage_delta * 1000 * 1000;
+  double voltage_delta = dt * (current * 1e-9) / (membrane_capacitance * 1e-6);
+  membrane_voltage += voltage_delta * 1000 * 1000; // TODO: fudge
 }
 
