@@ -22,7 +22,7 @@ update_permeabilities(Time const & dt)
 {
   double const phi = 1;
 
-  double const v = membrane_voltage * 1000.0; // v is in mV
+  double const v = membrane_voltage;
 
   double const gnabar = 120.0; // mS/cm²
   double const gkbar = 36.0; // mS/cm²
@@ -66,7 +66,7 @@ charge_changed(double charge_delta)
   double voltage_delta = charge_delta / membrane_capacitance / surface_area_in_cm2;
 
   // TODO: repeated addition like this will result in numerical error
-  membrane_voltage += voltage_delta;
+  membrane_voltage += voltage_delta * 1000.0;
 }
 
 void
@@ -76,5 +76,6 @@ apply_stimulus_current(
     Time const & dt)
 {
   double voltage_delta = dt * current / membrane_capacitance;
-  membrane_voltage += 1000 * voltage_delta; // TODO: why?
+  membrane_voltage += voltage_delta * 1000 * 1000;
 }
+

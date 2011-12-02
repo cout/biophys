@@ -140,7 +140,7 @@ void draw_legend(Time dt)
   glTranslatef(2, height, 0);
 
   WRITE_LINE("Time (ms): " << sim_time * 1000.0);
-  WRITE_LINE("Membrane voltage: " << the_system->cell().membrane_voltage * 1000);
+  WRITE_LINE("Membrane voltage: " << the_system->cell().membrane_voltage);
   WRITE_LINE("Sodium permeability: " << the_system->cell().sodium_permeability);
   WRITE_LINE("Potassium permeability: " << the_system->cell().potassium_permeability);
   WRITE_LINE("Sodium inside: " << the_system->cell().sodium_inside);
@@ -183,8 +183,8 @@ void draw_graph()
 
   glColor4f(0.9, 0.9, 0.9, 1.0);
 
-  glScalef(2000, 1000, 1);
-  glTranslatef(0, -0.25, 0);
+  glScalef(2000, 1, 1);
+  glTranslatef(0, -250, 0);
 
   voltage_graph->draw();
 

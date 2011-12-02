@@ -20,7 +20,7 @@ public:
     , cell_center(0, 0, 0)
     , cell_radius(1.0)
     , outer_radius(1.25)
-    , initial_membrane_voltage(-70e-3)
+    , initial_membrane_voltage(-70)
     , membrane_capacitance(1e-6)
     , initial_sodium_in(3000)
     , initial_sodium_out(14000)
