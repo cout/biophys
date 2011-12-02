@@ -362,11 +362,18 @@ void add_param(
     T * value)
 {
   GtkWidget * label = gtk_label_new(text);
+  gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
   gtk_table_attach_defaults(GTK_TABLE(params), label, 0, 1, param_row, param_row+1);
 
   GtkWidget * entry = gtk_entry_new();
+  gtk_entry_set_width_chars(GTK_ENTRY(entry), 5);
   gtk_table_attach_defaults(GTK_TABLE(params), entry, 1, 2, param_row, param_row+1);
   g_signal_connect(entry, "changed", G_CALLBACK(Param_Changer<T>::param_changed), value);
+
+  std::stringstream strm;
+  strm << *value;
+  gtk_entry_set_text(GTK_ENTRY(entry), strm.str().c_str());
 
   param_row += 1;
 }
@@ -384,6 +391,19 @@ int main(int argc, char** argv)
 
   GtkWidget * hbox = gtk_hbox_new(false, 0);
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(hbox));
+
+  event_box = gtk_event_box_new();
+  gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(event_box), true, true, 0);
+  g_signal_connect(event_box, "button-press-event", G_CALLBACK(on_event_box_button_press), 0);
+  g_signal_connect(event_box, "button-release-event", G_CALLBACK(on_event_box_button_release), 0);
+  g_signal_connect(event_box, "motion-notify-event", G_CALLBACK(on_event_box_motion_notify), 0);
+
+  int attrlist[] = { GDK_GL_RGBA, GDK_GL_DOUBLEBUFFER, GDK_GL_DEPTH_SIZE, 1, GDK_GL_NONE };
+  glarea = GTK_GL_AREA(gtk_gl_area_new(attrlist));
+  g_signal_connect(glarea, "realize", G_CALLBACK(on_glarea_realize), 0);
+  g_signal_connect(glarea, "configure-event", G_CALLBACK(on_glarea_configure), 0);
+  g_signal_connect(glarea, "expose-event", G_CALLBACK(on_glarea_expose), 0);
+  gtk_container_add(GTK_CONTAINER(event_box), GTK_WIDGET(glarea));
 
   GtkWidget * vbox = gtk_vbox_new(false, 0);
   gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(vbox), false, false, 0);
@@ -418,19 +438,6 @@ int main(int argc, char** argv)
 
   GtkWidget * reset_button = gtk_button_new_with_label("Reset");
   gtk_box_pack_start(GTK_BOX(buttons), GTK_WIDGET(reset_button), false, false, 0);
-
-  event_box = gtk_event_box_new();
-  gtk_box_pack_start(GTK_BOX(hbox), GTK_WIDGET(event_box), true, true, 0);
-  g_signal_connect(event_box, "button-press-event", G_CALLBACK(on_event_box_button_press), 0);
-  g_signal_connect(event_box, "button-release-event", G_CALLBACK(on_event_box_button_release), 0);
-  g_signal_connect(event_box, "motion-notify-event", G_CALLBACK(on_event_box_motion_notify), 0);
-
-  int attrlist[] = { GDK_GL_RGBA, GDK_GL_DOUBLEBUFFER, GDK_GL_DEPTH_SIZE, 1, GDK_GL_NONE };
-  glarea = GTK_GL_AREA(gtk_gl_area_new(attrlist));
-  g_signal_connect(glarea, "realize", G_CALLBACK(on_glarea_realize), 0);
-  g_signal_connect(glarea, "configure-event", G_CALLBACK(on_glarea_configure), 0);
-  g_signal_connect(glarea, "expose-event", G_CALLBACK(on_glarea_expose), 0);
-  gtk_container_add(GTK_CONTAINER(event_box), GTK_WIDGET(glarea));
 
   voltage_graph.reset(new Graph);
 
